@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="UTF-8">
+    <title>Chat IO</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.min.css">
+    <link rel="stylesheet" href="/css/selectize.default.css">
+    <link rel="stylesheet" href="/library/toastr/build/toastr.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  </head>
+  <body>
+    <div class="container clearfix align-self-center" >
+      <div class="row my-4" style="margin-left: 6%; height: 615px">
+        <div class="controls col-md-3" style="border: none; width: 100%; background-color: #86BB71">
+          <div class="row mb-2">
+            <div class="col-md-6">
+              <h6 class="text-center pt-3 text-light">PROFILE</h6>
+            </div>
+            <a href="/auth/logout" class="logout-btn" style=" padding: 13px; font-size: 12px;">Logout</a>
+          </div>
+          <div class="mt-4">
+            <img src="<%= user.avatar ? user.avatar : '/img/user.jpg'%>" alt="avatar" width="150" height="150" style="border-radius: 150px">
+          </div>
+          <div class="row text-light">
+            <div class="col-md-12 mt-4 py-0 px-3 ">
+              <div class="row mt-1">
+                <div class="col-md-1 text-left">
+                  <i class="fa fa-user pr-2" style="font-size:20px;color:white"></i>
+                </div>
+                <div class="col-md-6 text-left">
+                  <%= user.username %>
+                </div>
+              </div>
+              <div class="row mt-1">
+                <div class="col-md-1 text-left">
+                  <i class="fa fa-envelope pr-2" style="font-size:20px;color:white"></i>
+                </div>
+                <div class="col-md-6 text-left">
+                  <%= user.email %>
+                </div>
+              </div>
+              <div class="row mt-1">
+                <div class="col-md-1 text-left">
+                  <i class="fa fa-cogs pr-2" style="font-size:20px;color:white"></i>
+                </div>
+                <div class="col-md-6 text-left">
+                  <%= user.role === 3 ? 'Admin' : (user.role === 2 ? 'Room Master' : 'Member') %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <% if (user.role === 3) { %>
+          <div class="row text-light mt-4">
+            <div class="col-md-12" style="transform: translateX(-20%)">
+              <a href="/users/all" class="logout-btn bg-light text-dark" style=" padding: 10px; font-size: 12px;">User Manager</a>
+            </div>
+          </div>
+          <% } %>
+        </div>
+
+        <div class="room col-md-8 bg-light">
+          <div class="room-header clearfix row">
+            <div class="room-about col-sm-4">
+              <div class="room-title">Rooms</div>
+              <div class="room-num-rooms"><%= rooms.length %> Room(s)</div>
+            </div>
+            <div class="input-group col-sm-8 mt-3">
+              <input type="text" onchange="searchEvent()" id="search_room_input" class="form-control" placeholder="Search room" aria-label="Recipient's username" aria-describedby="basic-addon2">
+              <a href="?search" id="search_room_button" class="input-group-append" style="height: fit-content; color: transparent">
+               <span class="input-group-text red lighten-3" id="basic-text1">
+                 <i class="material-icons text-grey" style="cursor: pointer">search</i>
+               </span>
+              </a>
+            </div>
+          </div> <!-- end room-header -->
+          <% if (user.role === 3 || user.role === 2) { %>
+             <div class="room-create clearfix" style="border-bottom: 2px solid white;" >
+              <button onclick='showCreateModal()'>Create</button>
+            </div> <!-- end room-create -->
+          <% } %>
+          <div class="room-list">
+            <ul>
+              <% if(rooms.length > 0) { %>
+                <% rooms.forEach(function(room) { %>
+                <div id="<%= room.id %>" class="d-flex w-100">
+                  <a class="w-100" href="/chat/<%= room.id %>">
+                    <li class="room-item w-100">
+                      <%= (room.name.length > 25? room.name.substr(0, 25) + '...': room.name) %>
+                    </li>
+                  </a>
+                  <% if (user.role === 3 || user.role === 2) { %>
+                    <i class="fa fa-pencil-square-o fa-2x px-3 mt-4 "
+                       aria-hidden="true"
+                       onclick="showEditModal('<%= room.id %>')"
+                       style="color:#86BB71;cursor:pointer">
+                    </i>
+                  <% } %>
+                </div>
+                  <% }); %>
+              <% } else {
+                if (user.role === 3 || user.role === 2) { %>
+                  <p class="message" style="text-align: center; padding: 0; margin: 0;">Create first room!</p>
+                <% } %>
+              <% } %>
+            </ul>
+          </div> <!-- end room-list -->
+        </div> <!-- end room -->
+
+        <!-- Modal edit and create -->
+        <div class="modal fade" id="form_room" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header border-bottom-0">
+                <h5 class="modal-title" id="modalHeader">Create Account</h5>
+                <button type="button" id="closeBtn" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <form method="post">
+                <div class="modal-body">
+                  <div class="form-group">
+                    <label for="email">Name</label>
+                    <input type="text" class="form-control" name="title" placeholder="Enter room name">
+                  </div>
+                  <div class="form-group">
+                    <label>Members</label>
+                    <input type="text" id="list_members" name="list_members">
+                  </div>
+                  <input type="hidden" name="room_id">
+                </div>
+
+                <div class="modal-footer border-top-0 d-flex">
+                  <button type="button" class="btn btn-danger" style="margin-right: 52%" id="delete_room">Delete</button>
+                  <div class=" justify-content-end">
+                    <button type="submit" class="btn btn-success" id="submit_room">Submit</button>
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" aria-label="Close" id="cancel_room">Close</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- Modal edit -->
+
+      </div> <!-- end container -->
+    </div>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script>$(function(){app.rooms('<%= user._id %>')});</script>
+    <script src="/library/toastr/build/toastr.min.js"></script>
+    <script src="/js/room.js"></script>
+  </body>
+</html>
