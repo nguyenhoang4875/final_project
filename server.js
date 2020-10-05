@@ -41,7 +41,7 @@ app.use(function (req, res, next) {
 
 ioServer.listen(port, () => {
   ioServer.close(function () {
-    ioServer.listen(port, 'localhost');
+    ioServer.listen(port, '0.0.0.0');
   });
   console.log('Server is runing on port ' + port);
 });
