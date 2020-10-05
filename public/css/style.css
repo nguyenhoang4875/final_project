@@ -5,7 +5,7 @@
 }
 
 body {
-  background: #C5DDEB;
+  background:#dddddd;
   font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;   
@@ -21,9 +21,11 @@ body {
   width: 200px;
   /* float: left; */
 }
+
 .users-list .search {
   padding: 20px;
 }
+
 .users-list input {
   border-radius: 3px;
   border: none;
@@ -33,62 +35,77 @@ body {
   width: 90%;
   font-size: 14px;
 }
+
 .users-list .fa-search {
   position: relative;
   left: -25px;
 }
+
 .users-list ul {
   padding: 20px;
   max-height: 770px;
 }
+
 .users-list ul li {
   padding-bottom: 20px;
 }
+
 .users-list img {
   float: left;
 }
+
 .users-list .about {
   float: left;
   margin-top: 8px;
 }
+
 .users-list .about {
   padding-left: 4px;
 }
+
 .users-list .status {
   color: #92959E;
   font-size: 12px;
 }
+
 .chat, .room {
   width: 490px;
   float: left;
   background: #C5DDEB;
   color: #434651;
 }
+
 .chat .chat-header, .room .room-header {
   padding: 20px;
   border-bottom: 2px solid white;
 }
+
 .chat .chat-header img, .room .room-header img {
   float: left;
 }
+
 .chat .chat-header .chat-about, .room .room-header .room-about {
   float: left;
   padding-left: 10px;
   margin-top: 6px;
 }
+
 .chat .chat-header .chat-room, .room .room-header .room-title {
   font-weight: bold;
   font-size: 16px;
 }
+
 .chat .chat-header .chat-num-users, .room .room-header .room-num-rooms {
   color: #92959E;
 }
+
 .fa-users, .fa-th-list {
   float: right;
   color: #D8DADF;
   font-size: 20px;
   margin-top: 12px;
 }
+
 .chat .chat-history, .room .room-list {
   padding: 10px 30px 20px;
   border-bottom: 2px solid white;
@@ -96,14 +113,17 @@ body {
   max-height: 580px;
   height: 424px;
 }
+
 .chat .chat-history .message-data {
   margin-bottom: 15px;
 }
+
 .chat .chat-history .message-data-time {
   color: #a8aab1;
   padding-left: 6px;
   font-size: 80%;
 }
+
 .chat .chat-history .message {
   color: white;
   padding: 6px 10px;
@@ -111,6 +131,7 @@ body {
   margin-bottom: 12px;
   position: relative;
 }
+
 .chat .chat-history .message:after {
   bottom: 100%;
   left: 7%;
@@ -124,12 +145,15 @@ body {
   border-width: 10px;
   margin-left: -10px;
 }
+
 .chat .chat-history .my-message {
   background: #86BB71;
 }
-.chat .chat-message, .room .room-create {
+
+.chat .chat-message, .room  {
   padding: 20px;
 }
+
 .chat .chat-message textarea, .room .room-create input {
   width: 100%;
   border: none;
@@ -138,6 +162,7 @@ body {
   margin-bottom: 10px;
   resize: none;
 }
+
 .online, .offline, .me {
   margin-right: 3px;
   font-size: 10px;
@@ -183,6 +208,7 @@ body {
   padding: 8% 0 0;
   margin: auto;
 }
+
 .form {
   position: relative;
   z-index: 1;
@@ -193,6 +219,7 @@ body {
   text-align: center;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
+
 .form input {
   font-family: "Roboto", sans-serif;
   outline: 0;
@@ -204,6 +231,7 @@ body {
   box-sizing: border-box;
   font-size: 14px;
 }
+
 .form button {
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
@@ -218,18 +246,22 @@ body {
   transition: all 0.3 ease;
   cursor: pointer;
 }
+
 .form button:hover,.form button:active,.form button:focus {
   background: #89c771;
 }
-.form .message, .room-create .message {
+
+.form .message, .message {
   margin: 15px 0 0;
   color: #b3b3b3;
   font-size: 12px;
 }
+
 .form .message a {
   color: #86BB71;
   text-decoration: none;
 }
+
 .form .register-form {
   display: none;
 }
@@ -238,6 +270,7 @@ body {
 ul {
   list-style: none;
 }
+
 .chat-history ul {
   margin: 0;
   padding: 0;
@@ -246,6 +279,7 @@ ul {
   font: inherit;
   vertical-align: baseline;
 }
+
 .room .room-list .room-item {
   color: white;
   padding: 12px 14px;
@@ -258,29 +292,37 @@ ul {
   cursor: pointer;
   text-align: center;
 }
+
 .room .room-list .room-item {
   background: #86BB71;
 }
+
 .room .room-list a {
   text-decoration: none;
 }
+
 .users-list .name {
   color: white;
   font-size: 14px;
 }
+
 .users-list ul {
   overflow-y: scroll;
   height: 538px;
 }
+
 .loginBtn {
   width: 80%;
 }
+
 .form {
   background-color: #F2F5F8;
 }
+
 .form input {
     background-color: white;
 }
+
 .form-line {
   position: absolute; 
   left: 0px;
@@ -288,12 +330,13 @@ ul {
   margin-top: 2px; 
   border-bottom: 2px solid white;
 }
+
 .social-buttons div span {
   font-weight: bold;
 }
-.chat-message button, .room-create button, .controls a {
+
+.chat-message button, .controls a {
   font-family: "Roboto", sans-serif;
-  float: right;
   text-transform: uppercase;
   outline: 0;
   background: #86BB71;
@@ -305,28 +348,35 @@ ul {
   transition: all 0.3 ease;
   cursor: pointer;
 }
+
 button:hover, button:active, button:focus {
   background: #89c771;
 }
+
 a.rooms-btn:hover, a.rooms-btn:active, a.rooms-btn:focus {
   background: #89c771;
 }
+
 a.logout-btn{
   background-color: rgb(226, 98, 92);
 }
+
 a.logout-btn:hover, a.logout-btn:active, a.logout-btn:focus {
   background-color: rgb(245, 106, 99);
 }
+
 .controls {
   width: 200px;
   float: left;
   margin: 0;
   text-align: center;
 }
+
 .controls a {
   width: 50%;
   margin: 0;
 }
+
 .users-list li img, .chat-header img {
   width: 50px;
   height: 50px;
@@ -335,28 +385,35 @@ a.logout-btn:hover, a.logout-btn:active, a.logout-btn:focus {
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
 }
+
 .controls a {
   text-decoration: none;
 }
+
 .message.error {
   color: red;
 }
+
 .message.success {
   color: #86BB71;
 }
+
 .container {
   overflow: hidden;
 }
+
 .users-list{
   background-color: #C5DDEB;
   height: 538px;
   /*padding-bottom: 500em;
   margin-bottom: -500em;*/
 }
+
 .not-found-error {
   padding: 5%;
   background-color: white;
 }
+
 .chat .chat-history .my-message {
   text-align: initial;
 }

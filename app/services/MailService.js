@@ -23,7 +23,7 @@ class MailService {
             const transporter = nodemailer.createTransport(config);
 
             const mailOptions = {
-                from: 'Training 2019',
+                from: 'Training 2020',
                 to: msg.reciver,
                 subject: msg.subject,
                 text: 'You recieved message from ' + config.auth.user,

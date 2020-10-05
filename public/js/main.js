@@ -29,11 +29,11 @@ const app = {
             $('#submit_room').on('click', function (e) {
                 e.preventDefault();
                 let roomId = $("input[name='room_id']").val();
-                let name = $("input[name='title']").val().trim();
+                let name = $("input[name='topic']").val().trim();
                 let members = $("input[name='list_members']").val().trim();
                 members = members.split(",");
 
-                let local = localStorage.getItem('datn_2019');
+                let local = localStorage.getItem('datn_2020');
                 local = !!local ? JSON.parse(local) : null;
                 let id = local._id;
 
@@ -310,7 +310,7 @@ const app = {
                         query.remove();
                     }
                     let users = room.users;
-                    let local = localStorage.getItem('datn_2019');
+                    let local = localStorage.getItem('datn_2020');
                     local = !!local ? JSON.parse(local) : null;
                     let userId = local._id;
 

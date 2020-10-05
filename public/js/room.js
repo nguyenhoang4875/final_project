@@ -2,7 +2,7 @@ let options = [];
 let select;
 axios.get('/users/me')
     .then(res => {
-        localStorage.setItem('datn_2019', JSON.stringify(res.data));
+        localStorage.setItem('datn_2020', JSON.stringify(res.data));
     })
     .catch(err => {
         console.log(err);

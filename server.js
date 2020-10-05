@@ -14,7 +14,7 @@ const passport = require('./app/auth');
 const ioServer = require('./app/socket')(app);
 
 // Set the port number
-const port = process.env.PORT || 2019;
+const port = process.env.PORT || 2020;
 
 // View engine setup
 app.set('views', path.join(__dirname, 'app/views'));

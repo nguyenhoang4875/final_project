@@ -1,3 +1,61 @@
 .test-css {
     color: red;
 }
+
+.logo-image {
+    width: 6rem;
+    height: 4.5rem;
+}
+
+.btn-create-room {
+    height: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.card-room {
+    background-color: #7FBFBF ;
+    margin: 1rem;
+    width: 18rem;
+    height: 12rem;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.header-main {
+    display: flex;
+    justify-content: space-between;
+}
+
+.main-title {
+    font-size: 2rem;
+    text-align: center;
+}
+
+.header-user {
+    text-align: right;
+}
+
+.room-search {
+    width: 100%;
+}
+
+
+@media only screen and(max-width: 900px) {
+    .card-room{
+        max-width: 18rem;
+        margin: 12rem;
+      }
+
+}
+
+@media only screen and(max-width: 600px) {
+    .card-room{
+      max-width: 24rem;
+      margin: 18rem;
+    }
+
+}
