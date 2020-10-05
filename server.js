@@ -11,10 +11,11 @@ const flash = require('connect-flash');
 const routes = require('./app/routes');
 const session = require('./app/session');
 const passport = require('./app/auth');
-const ioServer = require('./app/socket')(app);
 
 // Set the port number
 const port = process.env.PORT || 2020;
+
+const ioServer = require('./app/socket')(app);
 
 // View engine setup
 app.set('views', path.join(__dirname, 'app/views'));
@@ -34,13 +35,13 @@ app.use(flash());
 app.use('/', routes);
 
 // Middleware to catch 404 errors
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.status(404).sendFile(process.cwd() + '/app/views/404.htm');
 });
 
-ioServer.listen(port , () => {
-  ioServer.close(function(){
-    ioServer.listen(port,'localhost')
-});
+ioServer.listen(port, () => {
+  ioServer.close(function () {
+    ioServer.listen(port, 'localhost');
+  });
   console.log('Server is runing on port ' + port);
 });
