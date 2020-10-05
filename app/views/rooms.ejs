@@ -5,6 +5,7 @@
     <title>Chat IO</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/rooms.css">
     <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.min.css">
     <link rel="stylesheet" href="/css/selectize.default.css">
@@ -13,55 +14,7 @@
   </head>
   <body>
     <div class="container clearfix align-self-center" >
-      <div class="row my-4" style="margin-left: 6%; height: 615px">
-        <div class="controls col-md-3" style="border: none; width: 100%; background-color: #86BB71">
-          <div class="row mb-2">
-            <div class="col-md-6">
-              <h6 class="text-center pt-3 text-light">PROFILE</h6>
-            </div>
-            <a href="/auth/logout" class="logout-btn" style=" padding: 13px; font-size: 12px;">Logout</a>
-          </div>
-          <div class="mt-4">
-            <img src="<%= user.avatar ? user.avatar : '/img/user.jpg'%>" alt="avatar" width="150" height="150" style="border-radius: 150px">
-          </div>
-          <div class="row text-light">
-            <div class="col-md-12 mt-4 py-0 px-3 ">
-              <div class="row mt-1">
-                <div class="col-md-1 text-left">
-                  <i class="fa fa-user pr-2" style="font-size:20px;color:white"></i>
-                </div>
-                <div class="col-md-6 text-left">
-                  <%= user.username %>
-                </div>
-              </div>
-              <div class="row mt-1">
-                <div class="col-md-1 text-left">
-                  <i class="fa fa-envelope pr-2" style="font-size:20px;color:white"></i>
-                </div>
-                <div class="col-md-6 text-left">
-                  <%= user.email %>
-                </div>
-              </div>
-              <div class="row mt-1">
-                <div class="col-md-1 text-left">
-                  <i class="fa fa-cogs pr-2" style="font-size:20px;color:white"></i>
-                </div>
-                <div class="col-md-6 text-left">
-                  <%= (user.role > 0 ? 'Room Master' : 'Member') %>
-                </div>
-              </div>
-            </div>
-          </div>
-          <% if (user.role === 3) { %>
-          <div class="row text-light mt-4">
-            <div class="col-md-12" style="transform: translateX(-20%)">
-              <a href="/users/all" class="logout-btn bg-light text-dark" style=" padding: 10px; font-size: 12px;">User Manager</a>
-            </div>
-          </div>
-          <% } %>
-        </div>
-
-        <div class="room col-md-8 bg-light">
+        <div class="">
           <div class="room-header clearfix row">
             <div class="room-about col-sm-4">
               <div class="room-title">Rooms</div>
@@ -122,8 +75,16 @@
               <form method="post">
                 <div class="modal-body">
                   <div class="form-group">
-                    <label for="email">Topic</label>
-                    <input type="text" class="form-control" name="title" placeholder="Enter room name">
+                    <label for="topic">Topic</label>
+                    <input type="text" class="form-control" name="topic" placeholder="Any topic">
+                  </div>
+                  <div class="form-group">
+                    <label for="quantity">Maximum Pepleo</label>
+                    <input type="text" class="form-control" name="quantity" placeholder="number">
+                  </div>
+                  <div class="form-group">
+                    <label for="level">Level</label>
+                    <input type="text" class="form-control" name="level" placeholder="Any Level">
                   </div>
                   <div class="form-group">
                     <label>Members</label>
@@ -144,9 +105,8 @@
           </div>
         </div>
         <!-- Modal edit -->
-
-      </div> <!-- end container -->
-    </div>
+        <p class="test-css">Test</p>
+    </div> <!-- end container -->
     <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
