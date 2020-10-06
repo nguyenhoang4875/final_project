@@ -11,12 +11,6 @@ body {
   -moz-osx-font-smoothing: grayscale;   
 }
 
-.my_container {
-  margin: 2% 1%;
-  width: 96%;
-  background-color: #C5DDEB;
-}
-
 .users-list {
   width: 200px;
   /* float: left; */
