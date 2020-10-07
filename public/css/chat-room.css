@@ -6,3 +6,11 @@ body {
 .right-bar {
     background-color: blue;
 }
+
+#path-micro-on {
+  visibility: hidden;
+}
+
+#path-camera-on {
+  visibility: hidden;
+}
