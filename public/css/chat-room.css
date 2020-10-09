@@ -4,7 +4,7 @@ body {
 }
 
 .right-bar {
-    background-color: blue;
+    background-color: dimgrey;
 }
 
 #path-micro-on {
@@ -13,4 +13,10 @@ body {
 
 #path-camera-on {
   visibility: hidden;
+}
+
+.sticky {
+    position: fixed;
+    bottom: 0;
+    right: 0;
 }
