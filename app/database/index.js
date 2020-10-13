@@ -6,7 +6,9 @@ const logger = require('../logger');
 const dotenv = require('dotenv');
 const { DB_HOST_CHAT, DB_NAME_CHAT } = process.env;
 //Thiết lập một kết nối mongoose mặc định
-const mongoDB = `mongodb://localhost:27017/video_chat`;
+//const mongoDB = `mongodb://localhost:27017/video_chat`;
+const mongoDB = `mongodb+srv://mariana:mariana@cluster0.h8dsg.mongodb.net/mariana?retryWrites=true&w=majority`;
+
 
 // Connect to the database
 // construct the database URI and encode username and password.
