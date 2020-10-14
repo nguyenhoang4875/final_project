@@ -1,12 +1,11 @@
 'use strict';
 
-const config = require('../config');
+const config = require('../config/config.json');
 const passport = require('passport');
 const logger = require('../logger');
 
 const LocalStrategy = require('passport-local').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
-const TwitterStrategy = require('passport-twitter').Strategy;
 
 const User = require('../models/user');
 
@@ -67,7 +66,6 @@ const init = function () {
 
 	// Plug-in Facebook & Twitter Strategies
 	passport.use(new FacebookStrategy(config.facebook, verifySocialAccount));
-	passport.use(new TwitterStrategy(config.twitter, verifySocialAccount));
 
 	return passport;
 };

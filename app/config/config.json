@@ -1,27 +1,17 @@
-{
+ {
 	"db": {
-		"username": "<MongoDBUsername>",
-		"password": "<MongoDBPassword>",
-		"host": "<MongoDBHost>",
-		"port": "<MongoDBPort>",
-		"name": "<MongoDBName>"
+		"username": "mariana",
+		"password": "mariana",
+		"host": "localhost",
+		"port": 27017,
+		"name": "video_chat"
 	},
-	"sessionSecret": "<RandomString>",
+	"sessionSecret": "Mariana",
 	"facebook": {
-		"clientID": "<AppID>",
-		"clientSecret": "<AppSecret>",
+		"clientID": 2766133773603473,
+		"clientSecret": "98aca9e89011a219d96d7029f194526f",
 		"callbackURL": "/auth/facebook/callback",
 		"profileFields": ["id", "displayName", "photos"]
-	},
-	"twitter": {
-		"consumerKey": "<ConsumerKey>",
-		"consumerSecret": "<ConsumerSecret>",
-		"callbackURL": "/auth/twitter/callback",
-		"profileFields": ["id", "displayName", "photos"]
-	},
-	"redis": {
-		"host": "127.0.0.1",
-		"port": 6379,
-		"password": ""
 	}
 }
+
