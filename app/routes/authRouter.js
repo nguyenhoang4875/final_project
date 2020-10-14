@@ -29,4 +29,14 @@ router.get('/logout', function(req, res, next) {
     res.redirect('/');
 });
 
+// Social Authentication routes
+// 1. Login via Facebook
+router.get('/facebook', passport.authenticate('facebook'));
+router.get('/facebook/callback', passport.authenticate('facebook', {
+    successRedirect: '/rooms/me',
+    failureRedirect: '/',
+    failureFlash: true
+}));
+
+
 module.exports = router;

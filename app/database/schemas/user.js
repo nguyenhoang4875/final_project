@@ -17,12 +17,12 @@ const DEFAULT_USER_PICTURE = "/img/user.jpg";
  */
 var UserSchema = new Mongoose.Schema({
     username: { type: String, required: true},
-    email: { type: String, required: true},
-    mailToken: { type: String, default: null},
-    remebertoken: { type: String, default: null},
+    email: { type: String, required: false},
+    mail_token: { type: String, default: null},
+    remember_token: { type: String, default: null},
     password: { type: String, default: null },
     socialId: { type: String, default: null },
-    picture:  { type: String, default:  DEFAULT_USER_PICTURE},
+    avatar:  { type: String, default:  DEFAULT_USER_PICTURE},
     created: { 
         type: Date,
         default: Date.now

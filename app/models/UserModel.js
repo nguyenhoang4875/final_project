@@ -13,7 +13,7 @@ const UserModel = new Schema({
     },
     email: String,
     mail_token: String,
-    remebertoken: String,
+    remember_token: String,
     status: {
         type: Number,
         default: STATUS_USER.ACTIVE
