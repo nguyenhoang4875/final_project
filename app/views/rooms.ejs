@@ -71,18 +71,18 @@
         <div class="room-num-rooms"><%= rooms.length %> Room(s)</div>
         <div class="col-xs-12 list d-flex justify-content-start">
           <% if(rooms.length > 0) { %> <% rooms.forEach(function(room) { %>
-
           <div class="card card-room" id="<%= room.id %>">
             <div class="card-body">
               <div class="card-title">
-                <div class="room-item w-100">
+                <div class="room-item w-100"> Topic:
                   <%= (room.name.length > 25? room.name.substr(0, 25) + '...': room.name) %>
                 </div>
-                <p class="card-text">Awesome room for study</p>
+                <p class="card-text">Max people: <%= room.quantity %></p>
+                <p class="card-text">Level: <%= room.level%></p>
               </div>
               <footer>
                 <a class="card-link" href="/chat/<%= room.id %>">
-                  <p class="card-text">Join and talk now</p>
+                  <p class="card-text text-center">Join and talk now</p>
                 </a>
               </footer>
             </div>
