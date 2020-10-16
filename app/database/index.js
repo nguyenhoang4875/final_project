@@ -13,6 +13,8 @@ const dbURI = "mongodb://" +
 	config.db.port + "/" +
 	config.db.name;
 
+console.log('dbURI ', dbURI);
+
 Mongoose.connect(dbURI, { useNewUrlParser: true });
 
 // Connect to the database

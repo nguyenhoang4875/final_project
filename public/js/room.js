@@ -79,6 +79,8 @@ toogleModal = () => {
     $("#submit_room").attr("disabled", false).html('Submit');
     $("input[name='list_members']").val('');
     $("input[name='title']").val('');
+    $("input[name='quantity']").val('');
+    $("input[name='level']").val('');
     $("input[name='room_id']").val('');
 };
 
@@ -94,6 +96,8 @@ showEditModal = function (id) {
             const room = res.data.data;
             let users = room.users;
             $("input[name='title']").val(room.name);
+            $("input[name='quantity']").val(room.quantity);
+            $("input[name='level']").val(room.level);
             $("input[name='room_id']").val(room._id);
             if (!!users && !!users[0]) {
                 let emails = users.map(user => user.email + "");

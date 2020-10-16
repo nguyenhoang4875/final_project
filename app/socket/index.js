@@ -20,8 +20,8 @@ const ioEvents = function (io) {
   // Rooms namespace
   io.of('/rooms').on('connection', function (socket) {
     // Create a new room
-    socket.on('createRoom', async function ({ name, members, id }) {
-      const newRoom = await RoomService.create({ name, members, id });
+    socket.on('createRoom', async function ({ name,level, quantity, members, id }) {
+      const newRoom = await RoomService.create({ name,level,quantity, members, id });
       console.log('NEW ROOM: ', newRoom);
       socket.emit('updateRoomsList', { room: newRoom, creator: id });
       socket.broadcast.emit('updateRoomsList', { room: newRoom, creator: id });

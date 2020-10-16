@@ -48,12 +48,15 @@ class RoomController {
 
     async createRoom(req, res) {
         try {
-            const result = await this.roomService.create(req);
+            console.log('----------------------------');
+            console.log(req);
+            console.log('----------------------------');
+/*            const result = await this.roomService.create(req);
             if (result.status === 200) {
                 return res.status(result.status).json(result);
             }
             req.flash('error', result.message);
-            return res.redirect('/');
+            return res.redirect('/');*/
         } catch (error) {
         console.log(error)
         }

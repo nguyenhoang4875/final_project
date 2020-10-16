@@ -80,11 +80,19 @@ class RoomService {
         return { status: 200, role: creator.role };
     };
 
-    async create({ name, members, id }){
+    async create({ name, members,quantity, level, id }){
         try {
+
+            console.log('----------------------------');
+            console.log(name);
+            console.log(quantity);
+            console.log(level);
+            console.log(id);
+            console.log('----------------------------');
+
             //let img = image ? await CommonService.uploadImage(image) : '';
             await this.checkRole({ userId: id });
-            let room = await this.roomModel.create({name, creator: id});
+            let room = await this.roomModel.create({name, quantity: quantity , level: level, creator: id});
             const admins = await UserModel.find({ role: ROLES.ADMIN }).select('-password -mail_token').exec();
             await admins.map( async admin => {
                 await this.roomModel.update({_id: room._id},{ $push: { users: admin }}).exec()
@@ -109,6 +117,32 @@ class RoomService {
                 data: error
             }
         }
+    }
+
+    async createForAllUser({name,maxPeople, level,id}){
+        try {
+
+            console.log('----------------------------');
+            console.log(name);
+            console.log(maxPeople);
+            console.log(level);
+            console.log(id);
+            console.log('----------------------------');
+
+            let room = await this.roomModel.create({name: name, max_people: maxPeople, level: level, creator: id});
+            return {
+                status: 200,
+                message: 'Create room success',
+                room
+            }
+        } catch (error) {
+            return {
+                status: 500,
+                message: 'Create room failed',
+                data: error
+            }
+        }
+
     }
 
     async edit(req){

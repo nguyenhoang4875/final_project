@@ -30,6 +30,8 @@ const app = {
                 e.preventDefault();
                 let roomId = $("input[name='room_id']").val();
                 let name = $("input[name='topic']").val().trim();
+                let quantity = $("input[name='quantity']").val().trim();
+                let level = $("input[name='level']").val().trim();
                 let members = $("input[name='list_members']").val().trim();
                 members = members.split(",");
 
@@ -47,7 +49,7 @@ const app = {
                             socket.emit('editRoom', {name, members, id, roomId});
                         } else {
                             $(this).attr("disabled", true).html('Creating ...');
-                            socket.emit('createRoom', {name, members, id});
+                            socket.emit('createRoom', {name,level, quantity, members, id});
                         }
 /*                        $("input[name='title']").val('');
                         $("input[name='list_members']").val('')*/

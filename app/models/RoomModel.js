@@ -8,8 +8,9 @@ const RoomModel = new Schema({
         required: true,
         ref: 'Users'
     },
+    quantity: String,
+    level: String,
     users: [],
-    image: String,
     status: {
         type: String,
         default: 'active'
