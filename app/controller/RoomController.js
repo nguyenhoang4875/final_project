@@ -1,7 +1,8 @@
 const RoomService = require('../services/RoomService');
 const UserService = require('../services/UserService');
-const { validationResult } = require('express-validator');
-const { ROLES } = require('../config/constant');
+const {validationResult} = require('express-validator');
+const {ROLES} = require('../config/constant');
+
 class RoomController {
     constructor() {
         this.roomService = RoomService;
@@ -9,22 +10,26 @@ class RoomController {
     }
 
     async findRoom(req, res) {
+
+        console.log('in find room');
         const {id} = req.params;
-        let room = await this.roomService.findRoom({ id });
+        let room = await this.roomService.findRoom({id});
+        console.log('id: ', room);
         res.status(room.status).json(room);
     }
 
     async getListByMe(req, res) {
         try {
-            const id  = req.user._id;
-            const { search } = req.query;
+            const id = req.user._id;
+            //  const { search } = req.query;
             const user = await this.userService.getUserbyId(id);
-            let isAdmin = false;
+            /*let isAdmin = false;
             if (user.role === ROLES.ADMIN) {
                 isAdmin = true;
-            }
-            let rooms = await this.roomService.getListByMe({ id, isAdmin, search });
-            res.render('rooms', { rooms: rooms.data, user });
+            }*/
+            let rooms = await this.roomService.getListAll(req);
+            console.log('rooms length: ', rooms.data.length)
+            res.render('rooms', {rooms: rooms.data, user});
         } catch (error) {
             req.flash('error', 'Get list rooms failed');
             res.status(500).json({
@@ -51,14 +56,14 @@ class RoomController {
             console.log('----------------------------');
             console.log(req);
             console.log('----------------------------');
-/*            const result = await this.roomService.create(req);
-            if (result.status === 200) {
-                return res.status(result.status).json(result);
-            }
-            req.flash('error', result.message);
-            return res.redirect('/');*/
+            /*            const result = await this.roomService.create(req);
+                        if (result.status === 200) {
+                            return res.status(result.status).json(result);
+                        }
+                        req.flash('error', result.message);
+                        return res.redirect('/');*/
         } catch (error) {
-        console.log(error)
+            console.log(error)
         }
     }
 
@@ -75,29 +80,29 @@ class RoomController {
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-              return res.status(422).json({'message': 'Error', data: errors.array()});
+                return res.status(422).json({'message': 'Error', data: errors.array()});
             }
             const result = await this.roomService.update(req);
-      
+
             return res.status(result.status).json(result);
         } catch (error) {
-        console.log(error)
+            console.log(error)
         }
     }
 
     async deleteRoom(req, res) {
-       try {
-           let result = await this.roomService.delete(req);
-           res.status(result.status).json(result);
-       } catch (error) {
-           res.status(500);
-       } 
+        try {
+            let result = await this.roomService.delete(req);
+            res.status(result.status).json(result);
+        } catch (error) {
+            res.status(500);
+        }
     }
 
     async joinRoom(req, res) {
         try {
             let result = await this.roomService.joinRoom(req);
-            res.status(result.status).json(result); 
+            res.status(result.status).json(result);
         } catch (error) {
             res.status(500);
         }

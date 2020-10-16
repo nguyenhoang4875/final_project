@@ -119,17 +119,17 @@ class RoomService {
         }
     }
 
-    async createForAllUser({name,maxPeople, level,id}){
+    async createForAllUser({name,quantity, level,id}){
         try {
 
             console.log('----------------------------');
             console.log(name);
-            console.log(maxPeople);
+            console.log(quantity);
             console.log(level);
             console.log(id);
             console.log('----------------------------');
 
-            let room = await this.roomModel.create({name: name, max_people: maxPeople, level: level, creator: id});
+            let room = await this.roomModel.create({name: name, quantity: quantity, level: level, creator: id});
             return {
                 status: 200,
                 message: 'Create room success',

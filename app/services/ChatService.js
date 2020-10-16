@@ -64,10 +64,10 @@ class ChatService {
     async getMsgs({ roomId, userId, limit = null }) {
         try {
             const room = await this.roomModel.findOne({ _id: roomId }).exec();
-            let users = room.users;
-            users = users.map(user => user._id );
+           // let users = room.users;
+           // users = users.map(user => user._id );
 
-            if (!room || users.indexOf(userId) === -1) {
+            if (!room) {
                 return {
                     status: 400,
                     message: 'Room is not exist !',
