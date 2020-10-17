@@ -50,7 +50,7 @@ class UserService {
         } else {
             query = this.userModel.find(status === 1 ? { status: 1 } : {}).select('-password').sort({created: -1});
             users = limit === -1 ? await query.exec() : await query.skip(page*limit).limit(limit).exec();
-            total = await this.userModel.count({});
+            total = await this.userModel.countDocuments({});
         }
 
         return {

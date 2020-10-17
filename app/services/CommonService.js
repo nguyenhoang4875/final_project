@@ -81,7 +81,7 @@ class CommonService {
         const { ENCODE_MODE } = process.env;
         const { model, modelTrans, req, where, order, include } = resource;
         const per_page = req.query.per_page && req.query.per_page > 1 ? parseInt(req.query.per_page) : 10;
-        const total = await model.count({ where });
+        const total = await model.countDocuments({ where });
         const last_page = Math.ceil(total / per_page) || 0;
         const current_page = req.query.page && req.query.page > 0 && req.query.page <= last_page ? parseInt(req.query.page) : 1;
         const offset = (current_page - 1) * per_page;

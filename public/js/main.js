@@ -8,7 +8,9 @@ const app = {
         socket.on('connect', function () {
 
             // Update rooms list upon emitting updateRoomsList event
-            socket.on('updateRoomsList', function ({ room, creator }) {
+            socket.on('updateRoomsList', function ({room, creator}) {
+                console.log('room: in socket updateRoomList: ', room);
+                console.log('create: in socket updateRoomList: ', creator);
                 // Display an error message upon a user error(i.e. creating a room with an existing title)
                 $('.room-create p.message').remove();
                 if (room.status !== 200) {
@@ -49,10 +51,10 @@ const app = {
                             socket.emit('editRoom', {name, members, id, roomId});
                         } else {
                             $(this).attr("disabled", true).html('Creating ...');
-                            socket.emit('createRoom', {name,level, quantity, members, id});
+                            socket.emit('createRoom', {name, level, quantity, members, id});
                         }
-/*                        $("input[name='title']").val('');
-                        $("input[name='list_members']").val('')*/
+                        /*                        $("input[name='title']").val('');
+                                                $("input[name='list_members']").val('')*/
                     }
                 }
                 //$('#form').modal('toggle')
@@ -63,13 +65,13 @@ const app = {
                 let roomId = $("input[name='room_id']").val();
                 $(this).attr("disabled", true).html('Deleting ...');
                 $(this).attr("style", "margin-right: 46%");
-                socket.emit('deleteRoom', { roomId, userId });
+                socket.emit('deleteRoom', {roomId, userId});
             });
 
         });
     },
 
-    chat: function (roomId, username, userId ) {
+    chat: function (roomId, username, userId) {
         const socket = io('/chatroom', {transports: ['websocket']});
         let answersFrom = {}, offer;
         const peerConnection = window.RTCPeerConnection ||
@@ -105,8 +107,8 @@ const app = {
             vid.srcObject = obj.stream;
         };
 
-        pc.oniceconnectionstatechange = function(e) {
-            if(pc.iceConnectionState === 'disconnected') {
+        pc.oniceconnectionstatechange = function (e) {
+            if (pc.iceConnectionState === 'disconnected') {
                 console.log('One user has disconnected');
             }
         };
@@ -133,7 +135,7 @@ const app = {
         }
 
         function getHistoryMsg(roomId) {
-            axios.get('/chat/'+roomId+'/messages')
+            axios.get('/chat/' + roomId + '/messages')
                 .then(res => {
                     showHistoryMsg(res.data);
                 })
@@ -156,7 +158,7 @@ const app = {
         // When socket connects, join the current chatroom
         socket.on('connect', function () {
 
-            socket.emit('join', { roomId, userId });
+            socket.emit('join', {roomId, userId});
             getHistoryMsg(roomId);
 
             // Update users list upon emitting updateUsersList event
@@ -181,7 +183,7 @@ const app = {
                         date: Date.now()
                     };
 
-                    socket.emit('newMessage', { roomId, message, userId });
+                    socket.emit('newMessage', {roomId, message, userId});
                     textareaEle.val('');
                     app.helpers.addMessage(message);
                 }
@@ -218,7 +220,7 @@ const app = {
                 }
             });
 
-            socket.on('remove-user', function ({ id }) {
+            socket.on('remove-user', function ({id}) {
                 const removeId = id.trim().substr(10);
                 const div = document.getElementById(id);
 
@@ -226,7 +228,7 @@ const app = {
                     document.getElementById('users').removeChild(div);
                 }
 
-                $("#"+removeId).remove();
+                $("#" + removeId).remove();
             });
 
 
@@ -270,37 +272,54 @@ const app = {
         },
 
         // Update rooms list
-        updateRoomsList: function (newRoom) {
-            if (newRoom.status === 200) {
-                let room = newRoom.room;
+        updateRoomsList1: function (newRoom) {
+            const room = newRoom.room;
 
-                if (room.isDelete) {
-                    if ($(".room-list ul li").length > 0) {
-                        let id = room._id;
-                        let query = $("#" + id);
-                        if (query.length) {
-                            query.remove();
-                        }
-                    }
-                } else {
+
+            console.log('in update room list: ', room.name);
+
                     room.name = this.encodeHTML(room.name);
                     room.name = room.name.length > 25 ? room.name.substr(0, 25) + '...' : room.name;
-                    let html = `<div id="${room._id}" class="d-flex w-100">
-                            <a href="/chat/${room._id}" class="w-100">
-                                <li class="room-item w-100">${room.name}</li>
-                            </a>
-                        </div>`;
+                    let html = ` <div class="card card-room" id="${room.id}">
+                                    <div class="card-body">
+                                      <div class="card-title">
+                                        <div class="room-item w-100"> Topic:${room.name}
+                                        </div>
+                                        <p class="card-text">Max people: ${room.quantity}</p>
+                                        <p class="card-text">Level: ${room.level}</p>
+                                      </div>
+                                      <footer>
+                                        <a class="card-link" href="/chat/${room.id}">
+                                          <p class="card-text text-center">Join and talk now</p>
+                                        </a>
+                                      </footer>
+                                    </div>
+                                  </div>`
 
-                    let htmlEdit = `<div id="${room._id}" class="d-flex w-100">
-                            <a href="/chat/${room._id}" class="w-100">
-                                <li class="room-item w-100">${room.name}</li>
-                            </a>
-                            <i class="fa fa-pencil-square-o fa-2x px-3 mt-4 "
-                               aria-hidden="true"
-                               onclick="showEditModal('${room._id}')"
-                               style="color:#86BB71;cursor:pointer">
-                            </i>
-                        </div>`;
+                    let htmlEdit = `
+
+                        <div class="card card-room" id="${room.id}">
+                                    <div class="card-body">
+                                      <div class="card-title">
+                                        <div class="room-item w-100"> Topic:${room.name}
+                                        </div>
+                                        <p class="card-text">Max people: ${room.quantity}</p>
+                                        <p class="card-text">Level: ${room.level}</p>
+                                      </div>
+                                      <footer>
+                                        <a class="card-link" href="/chat/${room.id}">
+                                          <p class="card-text text-center">Join and talk now</p>
+                                        </a>
+                                      </footer>
+                                        <i class="fa fa-pencil-square-o fa-2x px-3 mt-4 "
+                                           aria-hidden="true"
+                                           onclick="showEditModal('${room._id}')"
+                                           style="color:#86BB71;cursor:pointer">
+                                        </i>
+                                    </div>
+                        </div>
+
+                        `;
 
                     if (html === '') {
                         return;
@@ -316,15 +335,121 @@ const app = {
                     local = !!local ? JSON.parse(local) : null;
                     let userId = local._id;
 
-                    if ($(".room-list ul li").length === 0) {
-                        $('.room-list ul').html('');
+                    if ($(".room-list").length === 0) {
+                        $('.room-list').html('');
+                    }
+
+
+                    $('.room-list').prepend(html);
+
+/*
+                    for (let user of users) {
+                        if (user._id === userId) {
+                            if (user.role > 0) {
+                                $('.room-list').prepend(htmlEdit);
+                            } else {
+                                $('.room-list').prepend(html);
+                            }
+                            break;
+                        }
+                    }
+*/
+
+                    this.updateNumOfRooms();
+        },
+
+
+        // Update rooms list
+        updateRoomsList: function (newRoom) {
+            if (newRoom.status === 200) {
+                let room = newRoom.room;
+
+                if (room.isDelete) {
+                    console.log('in is delete');
+                    if ($(".room-list ul li").length > 0) {
+                        let id = room._id;
+                        let query = $("#" + id);
+                        if (query.length) {
+                            query.remove();
+                        }
+                    }
+                } else {
+                    console.log(' not in is delete');
+                    room.name = this.encodeHTML(room.name);
+                    room.name = room.name.length > 25 ? room.name.substr(0, 25) + '...' : room.name;
+                    /*
+                                        let html = `<div id="${room._id}" class="d-flex w-100">
+                                                <a href="/chat/${room._id}" class="w-100">
+                                                    <li class="room-item w-100">${room.name}</li>
+                                                </a>
+                                            </div>`;
+                    */
+                    let html = ` <div class="card card-room" id="${room.id}">
+                                    <div class="card-body">
+                                      <div class="card-title">
+                                        <div class="room-item w-100"> Topic:${room.name}
+                                        </div>
+                                        <p class="card-text">Max people: ${room.quantity}</p>
+                                        <p class="card-text">Level: ${room.level}</p>
+                                      </div>
+                                      <footer>
+                                        <a class="card-link" href="/chat/${room.id}">
+                                          <p class="card-text text-center">Join and talk now</p>
+                                        </a>
+                                      </footer>
+                                    </div>
+                                  </div>`
+
+                    let htmlEdit = `
+
+                        <div class="card card-room" id="${room.id}">
+                                    <div class="card-body">
+                                      <div class="card-title">
+                                        <div class="room-item w-100"> Topic:${room.name}
+                                        <div>
+                                        <i class="fa fa-cog "
+                                           aria-hidden="true"
+                                           onclick="showEditModal('${room._id}')"
+                                           style="color:#ffffff;cursor:pointer">
+                                        </i>
+                                        </div>
+                                        </div>
+                                        <p class="card-text">Max people: ${room.quantity}</p>
+                                        <p class="card-text">Level: ${room.level}</p>
+                                      </div>
+                                      <footer>
+                                        <a class="card-link" href="/chat/${room.id}">
+                                          <p class="card-text text-center">Join and talk now</p>
+                                        </a>
+                                      </footer>
+                                    </div>
+                        </div>
+
+                        `;
+
+                    if (html === '') {
+                        return;
+                    }
+
+                    let id = room._id;
+                    let query = $("#" + id);
+                    if (query.length) {
+                        query.remove();
+                    }
+                    let users = room.users;
+                    let local = localStorage.getItem('user');
+                    local = !!local ? JSON.parse(local) : null;
+                    let userId = local._id;
+
+                    if ($(".room-list").length === 0) {
+                        $('.room-list').html('');
                     }
                     for (let user of users) {
                         if (user._id === userId) {
-                            if (user.role === 3 || user.role === 2) {
-                                $('.room-list ul').prepend(htmlEdit);
+                            if (user.role > 0) {
+                                $('.room-list').prepend(htmlEdit);
                             } else {
-                                $('.room-list ul').prepend(html);
+                                $('.room-list').prepend(html);
                             }
                             break;
                         }
@@ -351,8 +476,8 @@ const app = {
                      <div class="about">
                         <div class="name text-info">${user.username}</div>
                         <div class="status">
-                            <i class="fa fa-circle ${(!!userConnected && userConnected.indexOf(user._id+'') !== -1) ? 'online' : 'offline' }"></i> 
-                                ${(!!userConnected && userConnected.indexOf(user._id+'') !== -1) ? 'online' : 'offline' }
+                            <i class="fa fa-circle ${(!!userConnected && userConnected.indexOf(user._id + '') !== -1) ? 'online' : 'offline'}"></i> 
+                                ${(!!userConnected && userConnected.indexOf(user._id + '') !== -1) ? 'online' : 'offline'}
                          </div>
                      </div></li>`;
             }

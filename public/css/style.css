@@ -106,7 +106,7 @@ body {
   margin-top: 12px;
 }
 
-.chat .chat-history, .room .room-list {
+.chat .chat-history, .room {
   padding: 10px 30px 20px;
   border-bottom: 2px solid white;
   overflow-y: scroll;
@@ -280,7 +280,7 @@ ul {
   vertical-align: baseline;
 }
 
-.room .room-list .room-item {
+.room .room-item {
   color: white;
   padding: 12px 14px;
   line-height: 26px;
@@ -293,11 +293,11 @@ ul {
   text-align: center;
 }
 
-.room .room-list .room-item {
+.room .room-item {
   background: #86BB71;
 }
 
-.room .room-list a {
+.room a {
   text-decoration: none;
 }
 

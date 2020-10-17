@@ -24,7 +24,8 @@ const ioEvents = function (io) {
       const newRoom = await RoomService.create({ name,level,quantity, members, id });
       console.log('NEW ROOM: ', newRoom);
       socket.emit('updateRoomsList', { room: newRoom, creator: id });
-      socket.broadcast.emit('updateRoomsList', { room: newRoom, creator: id });
+      console.log('in create room');
+      //socket.broadcast.emit('updateRoomsList', { room: newRoom, creator: id });
     });
 
     // Edit a room
