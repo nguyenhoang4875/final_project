@@ -4,7 +4,7 @@ const CommonService = require('../services/CommonService');
 const jwt = require('json-web-token');
 const bcrypt = require('bcryptjs');
 const _ = require('lodash');
-const ENCODE_KEY = 'datn_2020_by_hd';
+const ENCODE_KEY = 'user_by_hd';
 
 class AuthService {
     constructor() {

@@ -35,7 +35,7 @@ const app = {
                 let members = $("input[name='list_members']").val().trim();
                 members = members.split(",");
 
-                let local = localStorage.getItem('datn_2020');
+                let local = localStorage.getItem('user');
                 local = !!local ? JSON.parse(local) : null;
                 let id = local._id;
 
@@ -312,7 +312,7 @@ const app = {
                         query.remove();
                     }
                     let users = room.users;
-                    let local = localStorage.getItem('datn_2020');
+                    let local = localStorage.getItem('user');
                     local = !!local ? JSON.parse(local) : null;
                     let userId = local._id;
 

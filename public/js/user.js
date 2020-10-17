@@ -58,7 +58,7 @@ searchEvent = () => {
     $("#search_button").attr('href', '?search=' + search);
 };
 
-let local = localStorage.getItem('datn_2020');
+let local = localStorage.getItem('user');
 local = !!local ? JSON.parse(local) : null;
 const creator = local._id;
 
@@ -100,7 +100,7 @@ socket.on('connect', function () {
         let email = $("input[name='email']").val().trim();
         let role = $("#role").val();
         let newPassword = $("input[name='newPassword']").val().trim();
-        let local = localStorage.getItem('datn_2020');
+        let local = localStorage.getItem('user');
         local = !!local ? JSON.parse(local) : null;
         let id = local._id;
 
