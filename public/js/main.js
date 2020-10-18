@@ -276,8 +276,7 @@ const app = {
                 let room = newRoom.room;
 
                 if (room.isDelete) {
-                    console.log('in is delete');
-                    if ($(".room-list ul li").length > 0) {
+                    if ($(".room-list").length > 0) {
                         let id = room._id;
                         let query = $("#" + id);
                         if (query.length) {
@@ -285,9 +284,6 @@ const app = {
                         }
                     }
                 } else {
-
-                    console.log("room xxxx _id: ", room._id, 'and room id', room.id );
-                    console.log(' not in is delete');
                     room.name = this.encodeHTML(room.name);
                     room.name = room.name.length > 25 ? room.name.substr(0, 25) + '...' : room.name;
                     let html = ` <div class="card card-room" id="${room.id}">
@@ -308,41 +304,34 @@ const app = {
                                   </div>`
 
                     let htmlEdit = `
-
                         <div class="card card-room" id="${room.id}">
-                                    <div class="card-body">
-                                      <div class="card-title">
-                                        <div class="room-topic">
-                                         <p>
-                                            Topic: ${ room.name }
-                                         </p>
-                                        <i class="fa fa-cog "
-                                           aria-hidden="true"
-                                           onclick="showEditModal('${room._id}')"
-                                           style="color:#495c68;cursor:pointer">
-                                        </i>
-                                        </div>
-                                        <p class="card-text">Max people: ${room.quantity}</p>
-                                        <p class="card-text">Level: ${room.level}</p>
-                                      </div>
-                                      <footer>
-                                        <a class="card-link" href="/chat/${room._id}">
-                                          <p class="card-text text-center">Join and talk now</p>
-                                        </a>
-                                      </footer>
-                                    </div>
+                            <div class="card-body">
+                              <div class="card-title">
+                                <div class="room-topic">
+                                 <p>
+                                    Topic: ${ room.name }
+                                 </p>
+                                <i class="fa fa-cog "
+                                   aria-hidden="true"
+                                   onclick="showEditModal('${room._id}')"
+                                   style="color:#495c68;cursor:pointer">
+                                </i>
+                                </div>
+                                <p class="card-text">Max people: ${room.quantity}</p>
+                                <p class="card-text">Level: ${room.level}</p>
+                              </div>
+                              <footer>
+                                <a class="card-link" href="/chat/${room._id}">
+                                  <p class="card-text text-center">Join and talk now</p>
+                                </a>
+                              </footer>
+                            </div>
                         </div>
 
                         `;
 
                     if (html === '') {
                         return;
-                    }
-
-                    let id = room._id;
-                    let query = $("#" + id);
-                    if (query.length) {
-                        query.remove();
                     }
 
                     //let users = room.users;
@@ -353,8 +342,6 @@ const app = {
                     if ($(".room-list").length === 0) {
                         $('.room-list').html('');
                     }
-
-                    console.log("all users in update list room: ", users);
 
                     for (let user of users) {
                         if (user._id === userId) {

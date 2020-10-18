@@ -1,6 +1,5 @@
 const RoomModel = require('../models/RoomModel');
 const UserModel = require('../models/UserModel');
-const CommonService = require('../services/CommonService');
 const { ROLES } = require('../config/constant');
 
 class RoomService {
@@ -67,10 +66,10 @@ class RoomService {
         }
     }
 
-    async checkRole( { userId }) {
+    async checkRole( userId, roomId) {
         const creator = await this.userModel.findOne({ _id: userId }).exec();
-
-        if (creator.role !== ROLES.ADMIN && creator.role !== ROLES.ROOM_MASTER) {
+        const room = await this.roomModel.findOne({ _id: roomId}).exec();
+        if (creator.role !== ROLES.ADMIN && userId.toString() !== room.creator.toString()) {
             return {
                 status: 400,
                 role: creator.role,
@@ -91,19 +90,12 @@ class RoomService {
             console.log('----------------------------');
 
             //let img = image ? await CommonService.uploadImage(image) : '';
-            await this.checkRole({ userId: id });
+            //await this.checkRole({ userId: id });
             let room = await this.roomModel.create({name, quantity: quantity , level: level, creator: id});
             const admins = await UserModel.find({ role: ROLES.ADMIN }).select('-password -mail_token').exec();
             await admins.map( async admin => {
                 await this.roomModel.update({_id: room._id},{ $push: { users: admin }}).exec()
             });
-           /* await Promise.all(
-                members.map(email =>
-                    this.userModel.findOne({ email }).select('-password -mail_token').exec()))
-                .then(async users =>
-                    await this.roomModel.update({_id: room._id},{ $push: { users }}).exec()
-                );*/
-
             room = await this.roomModel.findOne({_id: room._id}).exec();
             return {
                 status: 200,
@@ -119,31 +111,6 @@ class RoomService {
         }
     }
 
-    async createForAllUser({name,quantity, level,id}){
-        try {
-
-            console.log('----------------------------');
-            console.log(name);
-            console.log(quantity);
-            console.log(level);
-            console.log(id);
-            console.log('----------------------------');
-
-            let room = await this.roomModel.create({name: name, quantity: quantity, level: level, creator: id});
-            return {
-                status: 200,
-                message: 'Create room success',
-                room
-            }
-        } catch (error) {
-            return {
-                status: 500,
-                message: 'Create room failed',
-                data: error
-            }
-        }
-
-    }
 
     async edit(req){
         try {
@@ -167,7 +134,7 @@ class RoomService {
     async update({ name, level, quantity, id, roomId }){
         try {
             //let img = image ? await CommonService.uploadImage(image) : old_img;
-            const role = await this.checkRole({ userId: id });
+            const role = await this.checkRole(id, roomId);
             if (role.status !== 200) {
                 return {
                     status: 400,
