@@ -4,6 +4,7 @@ const config = require('../config');
 const redis = require('redis').createClient;
 const adapter = require('socket.io-redis');
 const https = require('https');
+const http = require('http');
 const fs = require('fs');
 
 const RoomService = require('../services/RoomService');
@@ -190,20 +191,21 @@ const ioEvents = function (io) {
 const init = function (app) {
 
   // set https server
-  const options = {
+/*  const options = {
     key: fs.readFileSync('./certificates/key.pem', 'utf8'),
     cert: fs.readFileSync('./certificates/cert.pem', 'utf8'),
   };
 
-  const server = https.createServer(options, app);
+  const server = https.createServer(options, app);*/
 
+  const server = http.createServer(app);
   const io = require('socket.io')(server);
   const mongoAdapter = require('socket.io-adapter-mongo');
 
   // Force Socket.io to ONLY use "websockets"; No Long Polling.
   io.set('transports', ['websocket']);
 
-  io.adapter(mongoAdapter('mongodb://localhost:27017'));
+ // io.adapter(mongoAdapter('mongodb://localhost:27017'));
 
   // Allow sockets to access session data
   io.use((socket, next) => {
