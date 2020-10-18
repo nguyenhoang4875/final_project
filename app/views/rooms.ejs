@@ -1,188 +1,203 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
+<head>
+    <meta charset="UTF-8"/>
     <title>Mariana</title>
     <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-      crossorigin="anonymous"
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+            integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+            crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="/css/style.css" />
-    <link rel="stylesheet" href="/css/rooms.css" />
+    <link rel="stylesheet" href="/css/style.css"/>
+    <link rel="stylesheet" href="/css/rooms.css"/>
     <link
-      rel="stylesheet prefetch"
-      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
+            rel="stylesheet prefetch"
+            href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
     />
     <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.min.css"
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.min.css"
     />
-    <link rel="stylesheet" href="/css/selectize.default.css" />
-    <link rel="stylesheet" href="/library/toastr/build/toastr.css" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-  </head>
-  <body>
-    <div class="container clearfix align-self-center">
-      <div class="header-main">
-          <div class="logo-image">
-            <img class="logo-image" src="/img/mariana_200x200.png" />
-          </div>
-        <% if (user != null ) {%>
-          <div>
-              <a href="/auth/logout" class="logout-btn">Logout</a>
-          </div>
-        <% }%>
-      </div>
-        <div>
-           <p class="main-title">Leaning Taking Community</p>
+    <link rel="stylesheet" href="/css/selectize.default.css"/>
+    <link rel="stylesheet" href="/library/toastr/build/toastr.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+</head>
+<body>
+<div class="container clearfix align-self-center">
+    <div class="header-main">
+        <div class="logo-image">
+            <img class="logo-image" src="/img/mariana_200x200.png"/>
         </div>
-        <!-- end room-header -->
-        <% if (user.role > 0) { %>
+        <% if (user != null ) { %>
+            <div>
+                <a href="/auth/logout" class="logout-btn">Logout</a>
+            </div>
+        <% } %>
+    </div>
+    <div>
+        <p class="main-title">Leaning Taking Community</p>
+    </div>
+    <!-- end room-header -->
+    <% if (user.role > 0) { %>
         <div class="clearfix">
-          <button class="btn btn-success btn-create-room" onclick="showCreateModal()"> <i class="fa fa-plus" aria-hidden="true"></i>
-            Create a new room
-          </button>
+            <button class="btn btn-success btn-create-room" onclick="showCreateModal()"><i class="fa fa-plus"
+                                                                                           aria-hidden="true"></i>
+                Create a new room
+            </button>
         </div>
         <!-- end room-create -->
-        <% } %>
-        <div class="input-group room-search">
-          <input
-            type="text"
-            onchange="searchEvent()"
-            id="search_room_input"
-            class="form-control"
-            placeholder="Search room"
-            aria-label="Recipient's username"
-            aria-describedby="basic-addon2"
-          />
-          <a
-            href="?search"
-            id="search_room_button"
-            class="input-group-append"
-            style="height: fit-content; color: transparent"
-          >
+    <% } %>
+    <div class="input-group room-search">
+        <input
+                type="text"
+                onchange="searchEvent()"
+                id="search_room_input"
+                class="form-control"
+                placeholder="Search room"
+                aria-label="Recipient's username"
+                aria-describedby="basic-addon2"
+        />
+        <a
+                href="?search"
+                id="search_room_button"
+                class="input-group-append"
+                style="height: fit-content; color: transparent"
+        >
             <span class="input-group-text red lighten-3" id="basic-text1">
               <i class="material-icons text-grey" style="cursor: pointer">search</i>
             </span>
-          </a>
-        </div>
-        <div class="room-num-rooms"><%= rooms.length %> Room(s)</div>
-        <div class="col-xs-12 room-list">
-          <% if(rooms.length > 0) { %> <% rooms.forEach(function(room) { %>
-          <div class="card card-room" id="<%= room.id %>">
-            <div class="card-body">
-              <div class="card-title">
-                <div class="room-item w-100"> Topic:
-                  <%= (room.name.length > 25? room.name.substr(0, 25) + '...': room.name) %>
+        </a>
+    </div>
+    <div class="room-num-rooms"><%= rooms.length %> Room(s)</div>
+
+    <div class="col-xs-12 room-list">
+        <% if(rooms.length > 0) { %> <% rooms.forEach(function(room) { %>
+            <div class="card card-room" id="<%= room.id %>">
+                <div class="card-body">
+                    <div class="card-title">
+                        <div class="room-topic">
+                            <p>
+                                Topic:
+                                <%= (room.name.length > 25 ? room.name.substr(0, 25) + '...' : room.name) %>
+                                <% if(room.creator.toString() === user._id.toString())  { %>
+                            </p>
+                            <i class="fa fa-cog "
+                               aria-hidden="true"
+                               onclick="showEditModal('<%= room.id %>')"
+                               style="color:#495c68;cursor:pointer">
+                            </i>
+                            <% } %>
+                        </div>
+
+                        <p class="card-text">Max people: <%= room.quantity %></p>
+                        <p class="card-text">Level: <%= room.level %></p>
+                    </div>
+                    <footer>
+                        <a class="card-link" href="/chat/<%= room.id %>">
+                            <p class="card-text text-center">Join and talk now</p>
+                        </a>
+                    </footer>
                 </div>
-                <p class="card-text">Max people: <%= room.quantity %></p>
-                <p class="card-text">Level: <%= room.level%></p>
-              </div>
-              <footer>
-                <a class="card-link" href="/chat/<%= room.id %>">
-                  <p class="card-text text-center">Join and talk now</p>
-                </a>
-              </footer>
             </div>
-          </div>
 
-          <% }); %> <% } else { if (user.role > 0) { %>
-          <p class="message" style="text-align: center; padding: 0; margin: 0">
-            Create first room!
-          </p>
-          <% } %> <% } %>
-        </div>
-        <!-- end room-list -->
-      </div>
-      <!-- end room -->
+        <% }); %>
+        <% } else { if (user.role > 0) { %>
+            <p class="message" style="text-align: center; padding: 0; margin: 0">
+                Create first room!
+            </p>
+        <% } %>
+        <% } %>
+    </div>
+    <!-- end room-list -->
+</div>
+<!-- end room -->
 
-      <!-- Modal edit and create -->
-      <div
+<!-- Modal edit and create -->
+<div
         class="modal fade"
         id="form_room"
         tabindex="-1"
         role="dialog"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
-      >
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
+>
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
             <div class="modal-header border-bottom-0">
-              <h5 class="modal-title" id="modalHeader">Create Account</h5>
-              <button
-                type="button"
-                id="closeBtn"
-                class="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
+                <h5 class="modal-title" id="modalHeader">Create Account</h5>
+                <button
+                        type="button"
+                        id="closeBtn"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                >
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <form method="post">
-              <div class="modal-body">
-                <div class="form-group">
-                  <label for="topic">Topic</label>
-                  <input type="text" class="form-control" name="topic" placeholder="Any topic" />
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="topic">Topic</label>
+                        <input type="text" class="form-control" name="topic" placeholder="Any topic"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity">Maximum Pepleo</label>
+                        <input type="text" class="form-control" name="quantity" placeholder="number"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="level">Level</label>
+                        <input type="text" class="form-control" name="level" placeholder="Any Level"/>
+                    </div>
+                    <input type="hidden" name="room_id"/>
                 </div>
-                <div class="form-group">
-                  <label for="quantity">Maximum Pepleo</label>
-                  <input type="text" class="form-control" name="quantity" placeholder="number" />
-                </div>
-                <div class="form-group">
-                  <label for="level">Level</label>
-                  <input type="text" class="form-control" name="level" placeholder="Any Level" />
-                </div>
-                <input type="hidden" name="room_id" />
-              </div>
 
-              <div class="modal-footer border-top-0 d-flex">
-                <button
-                  type="button"
-                  class="btn btn-danger"
-                  style="margin-right: 52%"
-                  id="delete_room"
-                >
-                  Delete
-                </button>
-                <div class="justify-content-end">
-                  <button type="submit" class="btn btn-success" id="submit_room">Submit</button>
-                  <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-dismiss="modal"
-                    aria-label="Close"
-                    id="cancel_room"
-                  >
-                    Close
-                  </button>
+                <div class="modal-footer border-top-0 d-flex">
+                    <button
+                            type="button"
+                            class="btn btn-danger"
+                            style="margin-right: 52%"
+                            id="delete_room"
+                    >
+                        Delete
+                    </button>
+                    <div class="justify-content-end">
+                        <button type="submit" class="btn btn-success" id="submit_room">Submit</button>
+                        <button
+                                type="button"
+                                class="btn btn-secondary"
+                                data-dismiss="modal"
+                                aria-label="Close"
+                                id="cancel_room"
+                        >
+                            Close
+                        </button>
+                    </div>
                 </div>
-              </div>
             </form>
-          </div>
         </div>
-      </div>
-      <!-- Modal edit -->
     </div>
-    <!-- end container -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/js/main.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.js"></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-      integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-      crossorigin="anonymous"
-    ></script>
-    <script>
-      $(function () {
+</div>
+<!-- Modal edit -->
+</div>
+<!-- end container -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/main.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.js"></script>
+<script
+        src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"
+></script>
+<script>
+    $(function () {
         app.rooms('<%= user._id %>');
-      });
-    </script>
-    <script src="/library/toastr/build/toastr.min.js"></script>
-    <script src="/js/room.js"></script>
-  </body>
+    });
+</script>
+<script src="/library/toastr/build/toastr.min.js"></script>
+<script src="/js/room.js"></script>
+</body>
 </html>

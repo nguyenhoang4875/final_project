@@ -29,8 +29,8 @@ const ioEvents = function (io) {
     });
 
     // Edit a room
-    socket.on('editRoom', async function ({ name, id, roomId }) {
-      const room = await RoomService.update({ name,id, roomId });
+    socket.on('editRoom', async function ({ name,level,quantity, id, roomId }) {
+      const room = await RoomService.update({ name,level, quantity,id, roomId });
       socket.emit('updateRoomsList', { room, creator: id });
       socket.broadcast.emit('updateRoomsList', { room, creator: id });
     });

@@ -47,7 +47,7 @@ const app = {
                         if (roomId) {
                             $(this).attr("disabled", true).html('Updating ...');
                             $("#delete_room").attr("style", "margin-right: 43%");
-                            socket.emit('editRoom', {name, id, roomId});
+                            socket.emit('editRoom', {name,level, quantity, id, roomId});
                         } else {
                             $(this).attr("disabled", true).html('Creating ...');
                             socket.emit('createRoom', {name, level, quantity, id});
@@ -285,19 +285,22 @@ const app = {
                         }
                     }
                 } else {
+
+                    console.log("room xxxx _id: ", room._id, 'and room id', room.id );
                     console.log(' not in is delete');
                     room.name = this.encodeHTML(room.name);
                     room.name = room.name.length > 25 ? room.name.substr(0, 25) + '...' : room.name;
                     let html = ` <div class="card card-room" id="${room.id}">
                                     <div class="card-body">
                                       <div class="card-title">
-                                        <div class="room-item w-100"> Topic:${room.name}
+                                        <div class="room-topic">
+                                         <p> Topic: ${ room.name } </p>
                                         </div>
                                         <p class="card-text">Max people: ${room.quantity}</p>
                                         <p class="card-text">Level: ${room.level}</p>
                                       </div>
                                       <footer>
-                                        <a class="card-link" href="/chat/${room.id}">
+                                        <a class="card-link" href="/chat/${room._id}">
                                           <p class="card-text text-center">Join and talk now</p>
                                         </a>
                                       </footer>
@@ -309,20 +312,21 @@ const app = {
                         <div class="card card-room" id="${room.id}">
                                     <div class="card-body">
                                       <div class="card-title">
-                                        <div class="room-item w-100"> Topic:${room.name}
-                                        <div>
+                                        <div class="room-topic">
+                                         <p>
+                                            Topic: ${ room.name }
+                                         </p>
                                         <i class="fa fa-cog "
                                            aria-hidden="true"
                                            onclick="showEditModal('${room._id}')"
-                                           style="color:#ffffff;cursor:pointer">
+                                           style="color:#495c68;cursor:pointer">
                                         </i>
-                                        </div>
                                         </div>
                                         <p class="card-text">Max people: ${room.quantity}</p>
                                         <p class="card-text">Level: ${room.level}</p>
                                       </div>
                                       <footer>
-                                        <a class="card-link" href="/chat/${room.id}">
+                                        <a class="card-link" href="/chat/${room._id}">
                                           <p class="card-text text-center">Join and talk now</p>
                                         </a>
                                       </footer>

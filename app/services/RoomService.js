@@ -164,7 +164,7 @@ class RoomService {
         }
     }
 
-    async update({ name, members, id, roomId }){
+    async update({ name, level, quantity, id, roomId }){
         try {
             //let img = image ? await CommonService.uploadImage(image) : old_img;
             const role = await this.checkRole({ userId: id });
@@ -175,11 +175,11 @@ class RoomService {
                     data: null
                 }
             }
-            let room = await this.roomModel.findOne({ _id: roomId }).exec();
-            let users = room.users;
+         //   let room = await this.roomModel.findOne({ _id: roomId }).exec();
 
-            await this.roomModel.update({_id: roomId},{name, $pullAll:{ users }}).exec();
+            await this.roomModel.update({_id: roomId},{name, level,quantity}).exec();
 
+/*
             if (role.role === ROLES.ROOM_MASTER) {
                 const admins = await UserModel.find({ role: ROLES.ADMIN }).select('-password -mail_token').exec();
                 await admins.map( async admin => {
@@ -194,6 +194,7 @@ class RoomService {
                         await this.roomModel.update({_id: roomId}, {$push: {users}}).exec();
                     }
                 );
+*/
             let result = await this.roomModel.findOne({_id: roomId}).exec();
             return {
                 status: 200,
