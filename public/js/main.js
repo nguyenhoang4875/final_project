@@ -1,4 +1,5 @@
 'use strict';
+
 const app = {
 
     rooms: function (userId) {
@@ -8,7 +9,7 @@ const app = {
         socket.on('connect', function () {
 
             // Update rooms list upon emitting updateRoomsList event
-            socket.on('updateRoomsList', function ({room, creator}) {
+            socket.on('updateRoomsList', function ({room, creator, users}) {
                 console.log('room: in socket updateRoomList: ', room);
                 console.log('create: in socket updateRoomList: ', creator);
                 // Display an error message upon a user error(i.e. creating a room with an existing title)
@@ -23,7 +24,7 @@ const app = {
                         toastr.info(room.message);
                         $('#form_room').modal('toggle');
                     }
-                    app.helpers.updateRoomsList(room);
+                    app.helpers.updateRoomsList(room, users);
                 }
             });
 
@@ -34,24 +35,22 @@ const app = {
                 let name = $("input[name='topic']").val().trim();
                 let quantity = $("input[name='quantity']").val().trim();
                 let level = $("input[name='level']").val().trim();
-                let members = $("input[name='list_members']").val().trim();
-                members = members.split(",");
 
                 let local = localStorage.getItem('user');
                 local = !!local ? JSON.parse(local) : null;
                 let id = local._id;
 
-                if (name === '' || !members.length) {
+                if (name === '') {
                     toastr.error("Room's name and members is required !.");
                 } else {
                     if (id) {
                         if (roomId) {
                             $(this).attr("disabled", true).html('Updating ...');
                             $("#delete_room").attr("style", "margin-right: 43%");
-                            socket.emit('editRoom', {name, members, id, roomId});
+                            socket.emit('editRoom', {name, id, roomId});
                         } else {
                             $(this).attr("disabled", true).html('Creating ...');
-                            socket.emit('createRoom', {name, level, quantity, members, id});
+                            socket.emit('createRoom', {name, level, quantity, id});
                         }
                         /*                        $("input[name='title']").val('');
                                                 $("input[name='list_members']").val('')*/
@@ -272,95 +271,7 @@ const app = {
         },
 
         // Update rooms list
-        updateRoomsList1: function (newRoom) {
-            const room = newRoom.room;
-
-
-            console.log('in update room list: ', room.name);
-
-                    room.name = this.encodeHTML(room.name);
-                    room.name = room.name.length > 25 ? room.name.substr(0, 25) + '...' : room.name;
-                    let html = ` <div class="card card-room" id="${room.id}">
-                                    <div class="card-body">
-                                      <div class="card-title">
-                                        <div class="room-item w-100"> Topic:${room.name}
-                                        </div>
-                                        <p class="card-text">Max people: ${room.quantity}</p>
-                                        <p class="card-text">Level: ${room.level}</p>
-                                      </div>
-                                      <footer>
-                                        <a class="card-link" href="/chat/${room.id}">
-                                          <p class="card-text text-center">Join and talk now</p>
-                                        </a>
-                                      </footer>
-                                    </div>
-                                  </div>`
-
-                    let htmlEdit = `
-
-                        <div class="card card-room" id="${room.id}">
-                                    <div class="card-body">
-                                      <div class="card-title">
-                                        <div class="room-item w-100"> Topic:${room.name}
-                                        </div>
-                                        <p class="card-text">Max people: ${room.quantity}</p>
-                                        <p class="card-text">Level: ${room.level}</p>
-                                      </div>
-                                      <footer>
-                                        <a class="card-link" href="/chat/${room.id}">
-                                          <p class="card-text text-center">Join and talk now</p>
-                                        </a>
-                                      </footer>
-                                        <i class="fa fa-pencil-square-o fa-2x px-3 mt-4 "
-                                           aria-hidden="true"
-                                           onclick="showEditModal('${room._id}')"
-                                           style="color:#86BB71;cursor:pointer">
-                                        </i>
-                                    </div>
-                        </div>
-
-                        `;
-
-                    if (html === '') {
-                        return;
-                    }
-
-                    let id = room._id;
-                    let query = $("#" + id);
-                    if (query.length) {
-                        query.remove();
-                    }
-                    let users = room.users;
-                    let local = localStorage.getItem('user');
-                    local = !!local ? JSON.parse(local) : null;
-                    let userId = local._id;
-
-                    if ($(".room-list").length === 0) {
-                        $('.room-list').html('');
-                    }
-
-
-                    $('.room-list').prepend(html);
-
-/*
-                    for (let user of users) {
-                        if (user._id === userId) {
-                            if (user.role > 0) {
-                                $('.room-list').prepend(htmlEdit);
-                            } else {
-                                $('.room-list').prepend(html);
-                            }
-                            break;
-                        }
-                    }
-*/
-
-                    this.updateNumOfRooms();
-        },
-
-
-        // Update rooms list
-        updateRoomsList: function (newRoom) {
+        updateRoomsList: function (newRoom, users) {
             if (newRoom.status === 200) {
                 let room = newRoom.room;
 
@@ -377,13 +288,6 @@ const app = {
                     console.log(' not in is delete');
                     room.name = this.encodeHTML(room.name);
                     room.name = room.name.length > 25 ? room.name.substr(0, 25) + '...' : room.name;
-                    /*
-                                        let html = `<div id="${room._id}" class="d-flex w-100">
-                                                <a href="/chat/${room._id}" class="w-100">
-                                                    <li class="room-item w-100">${room.name}</li>
-                                                </a>
-                                            </div>`;
-                    */
                     let html = ` <div class="card card-room" id="${room.id}">
                                     <div class="card-body">
                                       <div class="card-title">
@@ -436,7 +340,8 @@ const app = {
                     if (query.length) {
                         query.remove();
                     }
-                    let users = room.users;
+
+                    //let users = room.users;
                     let local = localStorage.getItem('user');
                     local = !!local ? JSON.parse(local) : null;
                     let userId = local._id;
@@ -444,19 +349,21 @@ const app = {
                     if ($(".room-list").length === 0) {
                         $('.room-list').html('');
                     }
+
+                    console.log("all users in update list room: ", users);
+
                     for (let user of users) {
                         if (user._id === userId) {
-                            if (user.role > 0) {
-                                $('.room-list').prepend(htmlEdit);
-                            } else {
-                                $('.room-list').prepend(html);
-                            }
-                            break;
+                            $('.room-list').prepend(htmlEdit);
+                        } else {
+                            $('.room-list').prepend(html);
                         }
+                        break;
                     }
 
-                    this.updateNumOfRooms();
                 }
+
+                this.updateNumOfRooms();
             } else {
                 toastr.error(newRoom.message)
             }

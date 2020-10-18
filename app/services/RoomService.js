@@ -80,7 +80,7 @@ class RoomService {
         return { status: 200, role: creator.role };
     };
 
-    async create({ name, members,quantity, level, id }){
+    async create({ name ,quantity, level, id }){
         try {
 
             console.log('----------------------------');
@@ -97,12 +97,12 @@ class RoomService {
             await admins.map( async admin => {
                 await this.roomModel.update({_id: room._id},{ $push: { users: admin }}).exec()
             });
-            await Promise.all(
+           /* await Promise.all(
                 members.map(email =>
                     this.userModel.findOne({ email }).select('-password -mail_token').exec()))
                 .then(async users =>
                     await this.roomModel.update({_id: room._id},{ $push: { users }}).exec()
-                );
+                );*/
 
             room = await this.roomModel.findOne({_id: room._id}).exec();
             return {

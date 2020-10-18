@@ -22,7 +22,7 @@ class RoomController {
         try {
             const id = req.user._id;
             //  const { search } = req.query;
-            const user = await this.userService.getUserbyId(id);
+            const user = await this.userService.getUserById(id);
             /*let isAdmin = false;
             if (user.role === ROLES.ADMIN) {
                 isAdmin = true;

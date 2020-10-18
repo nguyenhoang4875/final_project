@@ -29,7 +29,7 @@ class AuthMiddleware {
         };
         req.userId = data_token.user_id;
         req.token = data_token;
-        const user = await this.userService.getUserbyId(req.userId);
+        const user = await this.userService.getUserById(req.userId);
         req.user = user;
         next();
       }

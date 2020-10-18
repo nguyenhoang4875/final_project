@@ -75,9 +75,7 @@ axios.get('/users/')
         // always executed
     });
 toogleModal = () => {
-    $('#list_members').data('selectize').setValue("");
     $("#submit_room").attr("disabled", false).html('Submit');
-    $("input[name='list_members']").val('');
     $("input[name='title']").val('');
     $("input[name='quantity']").val('');
     $("input[name='level']").val('');

@@ -52,17 +52,13 @@ class Validator {
 
   static async createRoomValidator(req, res, next) {
     try {
-      const { name, members } = req.body;
+      const { name } = req.body;
 
       if(!name){
         req.flash('error', "Room's name is required");
         res.redirect('/rooms');
       }
 
-      if ( !members.length ) {
-        req.flash('error', 'Members is empty');
-        return res.redirect('/rooms');
-      }
 
       return next();
     } catch(err) {

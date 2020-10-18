@@ -20,7 +20,7 @@ class UserService {
      * @param id
      * @returns {Promise<*>}
      */
-    async getUserbyId(id){
+    async getUserById(id){
         try {
             const user = await this.userModel.findOne({_id: id}).select('-password -mail_token').exec();
             return user;
@@ -60,6 +60,12 @@ class UserService {
             current: Number(page) + 1,
             total
         };
+    }
+
+    async getUser(){
+        const users = await this.userModel.find();
+        console.log('users in service: ', users);
+        return users;
     }
 
     /**

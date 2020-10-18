@@ -33,7 +33,7 @@ class UserController {
     async getUserById({ req, res }) {
         try {
             const id = req.params.id === 'me' ? req.user._id : req.params.id;
-            const result = await UserService.getUserbyId(id);
+            const result = await UserService.getUserById(id);
             return res.json(result);
         } catch (e) {
             console.log(e);

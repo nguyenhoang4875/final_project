@@ -10,7 +10,6 @@ const RoomModel = new Schema({
     },
     quantity: String,
     level: String,
-    users: [],
     status: {
         type: String,
         default: 'active'

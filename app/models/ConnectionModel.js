@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const ConnectionModel = new Schema({
     roomId: String,
-    users: [String],
+    users: [],
     created: {
         type: Date,
         default: Date.now()
