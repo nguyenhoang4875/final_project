@@ -5,7 +5,8 @@ const Mongoose = require('mongoose');
 const logger = require('../logger');
 const dotenv = require('dotenv');
 const { DB_HOST_CHAT, DB_NAME_CHAT } = process.env;
-//const dbURI = `mongodb+srv://mariana:mariana@cluster0.h8dsg.mongodb.net/mariana?retryWrites=true&w=majority`;
+const mongoDB = `mongodb+srv://mariana:mariana@cluster0.h8dsg.mongodb.net/mariana?retryWrites=true&w=majority`;
+/*
 const dbURI = "mongodb://" +
 	encodeURIComponent(config.db.username) + ":" +
 	encodeURIComponent(config.db.password) + "@" +
@@ -15,7 +16,9 @@ const dbURI = "mongodb://" +
 
 console.log('dbURI ', dbURI);
 
-Mongoose.connect(dbURI, { useNewUrlParser: true ,useUnifiedTopology: true });
+*/
+
+Mongoose.connect(mongoDB, { useNewUrlParser: true ,useUnifiedTopology: true });
 
 // Connect to the database
 // construct the database URI and encode username and password.
