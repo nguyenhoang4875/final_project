@@ -1,62 +1,397 @@
 <!DOCTYPE html>
-<html >
-  <head>
-    <meta charset="UTF-8">
-    <title>Chat IO</title>
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css'>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-  </head>
-  <body>
-    <div class="my_container clearfix">
-      <div class="row">
-        <div class="col-md-6 d-flex flex-row bg-white">
-          <div class="d-flex flex-column">
-            <div class="controls">
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Mariana</title>
+    <link
+            rel="stylesheet prefetch"
+            href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
+    />
+    <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+            integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+            crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/css/chunk.css"/>
+    <link rel="stylesheet" href="/css/style.css"/>
+
+    <link rel="stylesheet" href="/css/chat-room.css"/>
+
+</head>
+<body>
+<div class="ant-row-flex ant-row-flex-space-around ant-row-flex-middle mb-2">
+    <div class="ant-col">
+        <div class="sc-gisBJw iWsRjj">
+            <div class="ant-row-flex ant-row-flex-center">
+                <div class="ant-col">
+                    <div
+                            class="ant-row-flex gutter4"
+                            style="
+                  margin-left: -2px;
+                  margin-right: -2px;
+                  flex-wrap: nowrap;
+                  padding: 5px 3px;
+                  border-radius: 10px;
+                  background: rgb(0, 0, 0);
+                "
+                    >
+                        <div class="ant-col" style="padding-left: 2px; padding-right: 2px">
+                            <button
+                                    id="microphone-mode"
+                                    type="button"
+                                    class="ant-btn ant-btn-primary ant-btn-lg"
+                            >
+                                <i id="micro-off" class="anticon" style="font-size: 20px"
+                                >
+                                    <svg
+                                            viewBox="0 0 1024 1024"
+                                            data-icon="line"
+                                            width="1em"
+                                            height="1em"
+                                            fill="currentColor"
+                                            aria-hidden="true"
+                                            focusable="false"
+                                    >
+                                        <path
+                                                id="path-micro-off"
+                                                d="M752.850763 578.028574a261.0432 261.0432 0 0 0 8.727033-66.028574h99.913005c0 52.0039-11.107132 101.320591-30.634187 145.95386l-78.005851-79.925286zM361.951368 153.705412c0-84.455153 67.43616-153.554824 149.843915-153.554824 82.433348 0 149.869508 69.099671 149.869508 153.554824v330.910644l-299.713423-307.109647V153.705412z m514.178326 803.961871l-155.346296-159.159575a342.555219 342.555219 0 0 1-159.031613 67.692085V921.479529l99.913006 102.369883H361.951368l99.913005-102.369883v-55.279736C292.67255 841.221542 162.125357 692.1454 162.125357 512H262.038362c0 141.116883 112.043836 255.924706 249.756921 255.924706a243.691505 243.691505 0 0 0 137.559529-42.611464l-73.168873-74.985938a145.109308 145.109308 0 0 1-64.390656 15.22752c-82.407755 0-149.843915-69.099671-149.843915-153.554824v-81.179317L76.851245 138.708224l70.635219-72.375507 799.278449 818.959059-70.635219 72.375507z"
+                                        ></path>
+
+                                        <path
+                                                id="path-micro-on"
+                                                d="M563.2 866.304V921.6l102.4 102.4H358.4l102.4-102.4v-55.296C287.4112 841.3184 153.6 692.1984 153.6 512h102.4c0 141.1584 114.8416 256 256 256s256-114.8416 256-256h102.4c0 180.1984-133.8112 329.3184-307.2 354.304zM512 665.6c-84.48 0-153.6-69.12-153.6-153.6V153.6c0-84.48 69.12-153.6 153.6-153.6s153.6 69.12 153.6 153.6v358.4c0 84.48-69.12 153.6-153.6 153.6z"
+                                        ></path>
+                                    </svg>
+                                </i>
+                                <div class="blind">Turn ON your microphone</div>
+                            </button>
+                        </div>
+                        <div class="ant-col" style="padding-left: 2px; padding-right: 2px">
+                            <button id="video-mode" type="button" class="ant-btn ant-btn-primary ant-btn-lg">
+                                <i class="anticon" style="font-size: 20px"
+                                >
+                                    <svg
+                                            viewBox="0 0 1024 1024"
+                                            data-icon="line"
+                                            width="1em"
+                                            height="1em"
+                                            fill="currentColor"
+                                            aria-hidden="true"
+                                            focusable="false"
+                                    >
+                                        <path
+                                                id="path-camera-off"
+                                                d="M1267.6 916.2l-110-85c30.8-2.8 58.4-27.4 58.4-62.2v-514c0-51-58.2-80.8-100.8-51.6L896 354.6v274.4l-64-49.4v-356c0-52.8-42.8-95.6-95.6-95.6H247.8L91 6.8C77-4 57-1.6 46 12.4L6.8 62.8c-10.8 14-8.4 34 5.6 44.8L85.4 164 832 741.2l357 276c14 10.8 34 8.4 45-5.6l39.2-50.6c11-13.8 8.4-34-5.6-44.8zM64 800.4c0 52.8 42.8 95.6 95.6 95.6h576.8c22.4 0 42.8-8 59.2-21L64 309.4v491z"
+                                        ></path>
+                                        <path
+                                                id="path-camera-on"
+                                                d="M672.4 128H95.6C42.8 128 0 170.8 0 223.6v576.8C0 853.2 42.8 896 95.6 896h576.8c52.8 0 95.6-42.8 95.6-95.6V223.6c0-52.8-42.8-95.6-95.6-95.6z m378.8 75.4L832 354.6v314.8l219.2 151c42.4 29.2 100.8-0.6 100.8-51.6V255c0-50.8-58.2-80.8-100.8-51.6z"
+                                        ></path>
+                                    </svg>
+                                </i>
+                                <div class="blind">Turn ON your camera</div>
+                            </button>
+                        </div>
+                        <div class="ant-col" style="padding-left: 2px; padding-right: 2px">
+                            <button type="button" class="ant-btn no-border ant-btn-lg">
+                                <i class="anticon" style="font-size: 24px"
+                                >
+                                    <svg
+                                            viewBox="0 0 1024 1024"
+                                            data-icon="line"
+                                            width="1em"
+                                            height="1em"
+                                            fill="currentColor"
+                                            aria-hidden="true"
+                                            focusable="false"
+                                    >
+                                        <path d="M160 704l128 0 0 128-128 0 0-128Z"></path>
+                                        <path d="M352 576l128 0 0 256-128 0 0-256Z"></path>
+                                        <path d="M544 384l128 0 0 448-128 0 0-448Z"></path>
+                                        <path d="M736 192l128 0 0 640-128 0 0-640Z"></path>
+                                    </svg>
+                                </i>
+                                <div class="blind">Bandwidth Settings</div>
+                            </button>
+                        </div>
+                        <div class="ant-col" style="padding-left: 2px; padding-right: 2px">
+                            <button type="button" class="ant-btn no-border ant-btn-lg">
+                                <i
+                                        aria-label="icon: setting"
+                                        class="anticon anticon-setting"
+                                        style="font-size: 20px"
+                                >
+                                    <svg
+                                            viewBox="64 64 896 896"
+                                            focusable="false"
+                                            class=""
+                                            data-icon="setting"
+                                            width="1em"
+                                            height="1em"
+                                            fill="currentColor"
+                                            aria-hidden="true"
+                                    >
+                                        <path
+                                                d="M924.8 625.7l-65.5-56c3.1-19 4.7-38.4 4.7-57.8s-1.6-38.8-4.7-57.8l65.5-56a32.03 32.03 0 0 0 9.3-35.2l-.9-2.6a443.74 443.74 0 0 0-79.7-137.9l-1.8-2.1a32.12 32.12 0 0 0-35.1-9.5l-81.3 28.9c-30-24.6-63.5-44-99.7-57.6l-15.7-85a32.05 32.05 0 0 0-25.8-25.7l-2.7-.5c-52.1-9.4-106.9-9.4-159 0l-2.7.5a32.05 32.05 0 0 0-25.8 25.7l-15.8 85.4a351.86 351.86 0 0 0-99 57.4l-81.9-29.1a32 32 0 0 0-35.1 9.5l-1.8 2.1a446.02 446.02 0 0 0-79.7 137.9l-.9 2.6c-4.5 12.5-.8 26.5 9.3 35.2l66.3 56.6c-3.1 18.8-4.6 38-4.6 57.1 0 19.2 1.5 38.4 4.6 57.1L99 625.5a32.03 32.03 0 0 0-9.3 35.2l.9 2.6c18.1 50.4 44.9 96.9 79.7 137.9l1.8 2.1a32.12 32.12 0 0 0 35.1 9.5l81.9-29.1c29.8 24.5 63.1 43.9 99 57.4l15.8 85.4a32.05 32.05 0 0 0 25.8 25.7l2.7.5a449.4 449.4 0 0 0 159 0l2.7-.5a32.05 32.05 0 0 0 25.8-25.7l15.7-85a350 350 0 0 0 99.7-57.6l81.3 28.9a32 32 0 0 0 35.1-9.5l1.8-2.1c34.8-41.1 61.6-87.5 79.7-137.9l.9-2.6c4.5-12.3.8-26.3-9.3-35zM788.3 465.9c2.5 15.1 3.8 30.6 3.8 46.1s-1.3 31-3.8 46.1l-6.6 40.1 74.7 63.9a370.03 370.03 0 0 1-42.6 73.6L721 702.8l-31.4 25.8c-23.9 19.6-50.5 35-79.3 45.8l-38.1 14.3-17.9 97a377.5 377.5 0 0 1-85 0l-17.9-97.2-37.8-14.5c-28.5-10.8-55-26.2-78.7-45.7l-31.4-25.9-93.4 33.2c-17-22.9-31.2-47.6-42.6-73.6l75.5-64.5-6.5-40c-2.4-14.9-3.7-30.3-3.7-45.5 0-15.3 1.2-30.6 3.7-45.5l6.5-40-75.5-64.5c11.3-26.1 25.6-50.7 42.6-73.6l93.4 33.2 31.4-25.9c23.7-19.5 50.2-34.9 78.7-45.7l37.9-14.3 17.9-97.2c28.1-3.2 56.8-3.2 85 0l17.9 97 38.1 14.3c28.7 10.8 55.4 26.2 79.3 45.8l31.4 25.8 92.8-32.9c17 22.9 31.2 47.6 42.6 73.6L781.8 426l6.5 39.9zM512 326c-97.2 0-176 78.8-176 176s78.8 176 176 176 176-78.8 176-176-78.8-176-176-176zm79.2 255.2A111.6 111.6 0 0 1 512 614c-29.9 0-58-11.7-79.2-32.8A111.6 111.6 0 0 1 400 502c0-29.9 11.7-58 32.8-79.2C454 401.6 482.1 390 512 390c29.9 0 58 11.6 79.2 32.8A111.6 111.6 0 0 1 624 502c0 29.9-11.7 58-32.8 79.2z"
+                                        ></path>
+                                    </svg>
+                                </i>
+                                <div class="blind">Settings</div>
+                            </button>
+                        </div>
+                        <div class="ant-col" style="padding-left: 2px; padding-right: 2px">
+                            <button type="button" class="ant-btn no-border ant-btn-lg">
+                                <i class="anticon" style="color: rgb(245, 34, 45); font-size: 20px"
+                                >
+                                    <svg
+                                            viewBox="0 0 1024 1024"
+                                            data-icon="line"
+                                            width="1em"
+                                            height="1em"
+                                            fill="currentColor"
+                                            aria-hidden="true"
+                                            focusable="false"
+                                    >
+                                        <path
+                                                d="M1006.933333 518.826667c-146.773333-139.946667-320.853333-215.04-494.933333-215.04S163.84 378.88 17.066667 518.826667c-10.24 10.24-17.066667 23.893333-17.066667 40.96s6.826667 30.72 17.066667 40.96l102.4 102.4c20.48 20.48 61.44 20.48 81.92 0 30.72-30.72 68.266667-54.613333 105.813333-75.093334 20.48-10.24 34.133333-30.72 34.133333-54.613333v-105.813333c64.853333-20.48 119.466667-27.306667 170.666667-27.306667 54.613333 0 109.226667 10.24 170.666667 27.306667v105.813333c0 23.893333 13.653333 44.373333 34.133333 54.613333 40.96 20.48 75.093333 44.373333 105.813333 75.093334 10.24 10.24 27.306667 17.066667 40.96 17.066666 17.066667 0 30.72-6.826667 40.96-17.066666l102.4-102.4c10.24-10.24 17.066667-27.306667 17.066667-40.96 0-17.066667-6.826667-30.72-17.066667-40.96z"
+                                        ></path>
+                                    </svg>
+                                </i>
+                                <div class="blind">Hangup this call</div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="col-md-6 mt-2" id="show-video">
+    <video id="local-video" class="video-small mr-4 ml-4" width="200px" autoplay></video>
+    <div class="users-container d-flex flex-row" id="users-container">
+        <div id="users"></div>
+    </div>
+</div>
+
+<div class="chat">
+    <div class="chat-header clearfix">
+        <img src="/img/hangout-icon-5.jpg" alt="avatar">
+        <div class="chat-about">
+            <div class="chat-room"><%= room.name %></div>
+            <div class="chat-num-users"> User(s)</div>
+        </div>
+        <i class="fa fa-users"></i>
+    </div> <!-- end chat-header -->
+
+    <div class="chat-history">
+        <ul>
+
+        </ul>
+    </div> <!-- end chat-history -->
+
+    <div class="chat-message clearfix">
+        <textarea name="message" placeholder="Type your message" rows="3"></textarea>
+        <button type="submit">Send</button>
+    </div> <!-- end chat-message -->
+</div> <!-- end chat -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/main.js"></script>
+<script
+        src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"
+></script>
+<script>
+    $(function () {
+        app.chat('<%= room.id %>', '<%= user.username %>', '<%= user._id %>');
+    });
+</script>
+</body>
+<div class="sticky">
+    <div class="right-bar">
+        <div class="ant-tabs-nav-wrap">
+            <div class="ant-tabs-nav-scroll">
+                <div class="ant-tabs-nav ant-tabs-nav-animated">
+                    <div>
+                        <div role="tab" aria-disabled="false" aria-selected="false" class="ant-tabs-tab">
+                            <i style="display: inline-block">
+                                <button type="button" class="btn-blind">
+                    <span class="ant-badge">
+                      <i class="anticon" style="margin: 0px; font-size: 26px">
+                        <svg
+                                viewBox="-100 -100 1224 1224"
+                                data-icon="line"
+                                width="1em"
+                                height="1em"
+                                fill="currentColor"
+                                aria-hidden="true"
+                                focusable="false"
+                        >
+                          <path
+                                  d="M844.565138 794.918843v229.008892L532.162032 794.918843H72.265349a72.265349 72.265349 0 0 1-72.265349-72.26535V144.530699a72.265349 72.265349 0 0 1 72.265349-72.26535h867.184192a72.265349 72.265349 0 0 1 72.26535 72.26535v578.122794a72.265349 72.265349 0 0 1-72.26535 72.26535h-94.884403zM252.928723 289.061397a36.132675 36.132675 0 0 0 0 72.26535h289.061397a36.132675 36.132675 0 0 0 0-72.26535h-289.061397z m0 216.796048a36.132675 36.132675 0 0 0 0 72.26535h505.857445a36.132675 36.132675 0 1 0 0-72.26535h-505.857445z"
+                          ></path>
+                        </svg>
+                      </i>
+                      <div class="blind">Chat Box</div>
+                    </span>
+                                </button>
+                            </i>
+                        </div>
+                        <div role="tab" aria-disabled="false" aria-selected="false" class="ant-tabs-tab">
+                            <i style="display: inline-block">
+                                <button type="button" class="btn-blind">
+                                    <i class="anticon youtube-btn" style="margin: 0px; font-size: 26px">
+                                        <svg
+                                                viewBox="0 0 1024 1024"
+                                                data-icon="line"
+                                                width="1em"
+                                                height="1em"
+                                                fill="currentColor"
+                                                aria-hidden="true"
+                                                focusable="false"
+                                        >
+                                            <path
+                                                    d="M1013.76 307.264s-9.984-70.570667-40.704-101.632c-38.933333-40.789333-82.56-41.002667-102.592-43.392C727.168 151.893333 512.213333 151.893333 512.213333 151.893333h-0.426666s-214.954667 0-358.250667 10.346667c-20.010667 2.389333-63.658667 2.602667-102.613333 43.392C20.245333 236.693333 10.24 307.264 10.24 307.264S0 390.122667 0 473.002667v77.674666c0 82.858667 10.24 165.738667 10.24 165.738667s9.984 70.570667 40.704 101.632c38.933333 40.789333 90.112 39.509333 112.896 43.776 81.92 7.850667 348.16 10.282667 348.16 10.282667s215.168-0.32 358.464-10.666667c20.010667-2.410667 63.658667-2.602667 102.613333-43.392 30.698667-31.061333 40.704-101.632 40.704-101.632S1024 633.536 1024 550.677333v-77.674666c0-82.88-10.24-165.738667-10.24-165.738667z"
+                                                    fill="#DC2217"
+                                            ></path>
+                                            <path
+                                                    d="M406.293333 644.821333l-0.064-287.722666 276.693334 144.362666-276.629334 143.36z"
+                                                    fill="#FFFFFF"
+                                            ></path>
+                                        </svg>
+                                    </i>
+                                    <div class="blind">Youtube Share</div>
+                                </button>
+                            </i>
+                        </div>
+                        <div role="tab" aria-disabled="false" aria-selected="false" class="ant-tabs-tab">
+                            <i style="display: inline-block">
+                                <button type="button" class="btn-blind">
+                                    <i class="anticon" style="margin: 0px; font-size: 26px">
+                                        <svg
+                                                viewBox="0 0 1024 1024"
+                                                data-icon="line"
+                                                width="1em"
+                                                height="1em"
+                                                fill="currentColor"
+                                                aria-hidden="true"
+                                                focusable="false"
+                                        >
+                                            <path
+                                                    d="M853.333333 768c46.933333 0 84.906667-38.4 84.906667-85.333333L938.666667 256c0-47.36-38.4-85.333333-85.333334-85.333333H170.666667c-47.36 0-85.333333 37.973333-85.333334 85.333333v426.666667c0 46.933333 37.973333 85.333333 85.333334 85.333333H0v85.333333h1024v-85.333333h-170.666667z m-298.666666-150.613333v-93.44c-118.613333 0-196.693333 36.266667-256 116.053333 23.893333-113.92 90.026667-227.413333 256-250.453333V298.666667l170.666666 159.146666-170.666666 159.573334z"
+                                            ></path>
+                                        </svg>
+                                    </i>
+                                    <div class="blind">Screen Share</div>
+                                </button>
+                            </i>
+                        </div>
+                        <div role="tab" aria-disabled="false" aria-selected="false" class="ant-tabs-tab">
+                            <i style="display: inline-block">
+                                <button type="button" class="btn-blind">
+                                    <i class="anticon" style="margin: 0px; font-size: 26px">
+                                        <svg
+                                                viewBox="-100 -100 1224 1224"
+                                                data-icon="line"
+                                                width="1em"
+                                                height="1em"
+                                                fill="currentColor"
+                                                aria-hidden="true"
+                                                focusable="false"
+                                        >
+                                            <path
+                                                    d="M928 70.4H544V32c0-18.133333-13.866667-32-32-32S480 13.866667 480 32v38.4H96c-18.133333 0-32 13.866667-32 32v536.533333H960V102.4c0-18.133333-13.866667-32-32-32zM992 692.266667H32c-17.066667 0-32 14.933333-32 32 0 18.133333 13.866667 32 32 32h414.933333l-188.8 199.466666c-11.733333 12.8-11.733333 33.066667 1.066667 44.8 12.8 11.733333 33.066667 11.733333 44.8-1.066666l176-185.6v178.133333c0 18.133333 13.866667 32 32 32s32-13.866667 32-32v-178.133333l176 185.6c11.733333 12.8 32 13.866667 44.8 1.066666 12.8-11.733333 13.866667-32 1.066667-44.8l-188.8-199.466666H992c18.133333 0 32-13.866667 32-32s-13.866667-32-32-32z"
+                                            ></path>
+                                        </svg>
+                                    </i>
+                                    <div class="blind">Whiteboard</div>
+                                </button>
+                            </i>
+                        </div>
+                        <div role="tab" aria-disabled="false" aria-selected="false" class="ant-tabs-tab">
+                            <i style="display: inline-block">
+                                <button type="button" class="btn-blind">
+                                    <i class="anticon" style="margin: 0px; font-size: 26px">
+                                        <svg
+                                                viewBox="-200 -200 1424 1424"
+                                                data-icon="line"
+                                                width="1em"
+                                                height="1em"
+                                                fill="currentColor"
+                                                aria-hidden="true"
+                                                focusable="false"
+                                        >
+                                            <path
+                                                    d="M887.435636 887.482182h-204.8V1024H1024v-341.317818h-136.564364v204.8z m0-750.917818v204.8H1024V0h-341.317818v136.564364h204.8z m-750.871272 0h204.8V0H0v341.317818h136.564364v-204.8z m0 750.871272v-204.8H0V1024h341.317818v-136.564364h-204.8z"
+                                            ></path>
+                                        </svg>
+                                    </i>
+                                    <div class="blind">Full Screen</div>
+                                </button>
+                            </i>
+                        </div>
+                    </div>
+                    <div
+                            class="ant-tabs-ink-bar ant-tabs-ink-bar-animated"
+                            style="display: none; transform: translate3d(0px, 0px, 0px); top: 0px; height: 0px"
+                    ></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</html>
+
+<!-- <div class="row">
+          <div class="col-md-6 d-flex flex-row bg-white">
+            <div class="d-flex flex-column">
+              <div class="controls">
                 <a href="/auth/logout" class="logout-btn">Logout</a>
                 <a href="/rooms/me" class="rooms-btn">Rooms</a>
-            </div>
-  
-            <div class="users-list">
-              <ul class="list">
-              </ul>
-            </div>
-          </div>
-          <div class="chat" >
-            <div class="chat-header clearfix">
-              <img src="/img/hangout-icon-5.jpg" alt="avatar">
-              <div class="chat-about">
-                <div class="chat-room"><%= room.name %></div>
-                <div class="chat-num-users"> User(s)</div>
               </div>
-              <i class="fa fa-users"></i>
-            </div> <!-- end chat-header -->
-            
-            <div class="chat-history">
-              <ul>
 
-              </ul>
-            </div> <!-- end chat-history -->
-            
-            <div class="chat-message clearfix">
-              <textarea name="message" placeholder ="Type your message" rows="3"></textarea> 
-              <button type="submit">Send</button>
-            </div> <!-- end chat-message -->
-          </div> <!-- end chat -->
-        </div>
-        <div class="col-md-6 bg-white" id="show-video">
-          <video id="local-video" class="video-small mr-4 ml-4" width="180px" autoplay></video>
-          <div class="users-container d-flex flex-row" id="users-container">
+              <div class="users-list">
+                <ul class="list"></ul>
+              </div>
+            </div>
+            <div class="chat">
+              <div class="chat-header clearfix">
+                <img src="/img/hangout-icon-5.jpg" alt="avatar" />
+                <div class="chat-about">
+                  <div class="chat-room"><%= room.name %></div>
+                  <div class="chat-num-users">User(s)</div>
+                </div>
+                <i class="fa fa-users"></i>
+              </div> -->
+<!-- end chat-header -->
+
+<!--  <div class="chat-history">
+                <ul></ul>
+              </div>
+               -->
+<!-- end chat-history -->
+<!-- 
+              <div class="chat-message clearfix">
+                <textarea name="message" placeholder="Type your message" rows="3"></textarea>
+                <button type="submit">Send</button>
+              </div> -->
+<!-- end chat-message -->
+<!-- end chat -->
+<!--  </div>
+          <div class="col-md-6 bg-white" id="show-video">
+            <video id="local-video" class="video-small mr-4 ml-4" width="180px" autoplay></video>
+            <div class="users-container d-flex flex-row" id="users-container">
               <div id="users"></div>
+            </div>
           </div>
         </div>
-      </div>
-    </div> <!-- end container -->
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/js/main.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-    <script>$(function(){app.chat('<%= room.id %>', '<%= user.username %>', '<%= user._id %>')});</script>
-  </body>
-</html>
+      </div> -->
+<!-- end container -->

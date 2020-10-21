@@ -1,0 +1,22 @@
+
+body {
+  background-color: #dddddd !important ;
+}
+
+.right-bar {
+    background-color: dimgrey;
+}
+
+#path-micro-on {
+  visibility: hidden;
+}
+
+#path-camera-on {
+  visibility: hidden;
+}
+
+.sticky {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+}
