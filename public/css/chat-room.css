@@ -1,6 +1,6 @@
 
 body {
-  background-color: #dddddd !important ;
+    background-color: #dddddd !important;
 }
 
 .right-bar {
@@ -8,11 +8,11 @@ body {
 }
 
 #path-micro-on {
-  visibility: hidden;
+    visibility: hidden;
 }
 
 #path-camera-on {
-  visibility: hidden;
+    visibility: hidden;
 }
 
 .sticky {

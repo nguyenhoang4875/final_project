@@ -13,7 +13,6 @@ body {
 
 .users-list {
   width: 200px;
-  /* float: left; */
 }
 
 .users-list .search {
@@ -62,11 +61,19 @@ body {
   font-size: 12px;
 }
 
-.chat, .room {
-  width: 490px;
+.room {
+  width: 450px;
   float: left;
   background: #C5DDEB;
   color: #434651;
+}
+
+.chat {
+  width: 450px;
+  height: 85%;
+  float: left;
+  background: #C5DDEB;
+  color: #434651
 }
 
 .chat .chat-header, .room .room-header {
@@ -103,9 +110,9 @@ body {
 .chat .chat-history, .room {
   padding: 10px 30px 20px;
   border-bottom: 2px solid white;
-  overflow-y: scroll;
+  overflow-y: auto;
   max-height: 580px;
-  height: 424px;
+  height: 70%;
 }
 
 .chat .chat-history .message-data {

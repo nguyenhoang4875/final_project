@@ -1,5 +1,8 @@
 'use strict';
+var videoMode = false;
+var audioMode = false;
 const app = {
+
 
     rooms: function (userId) {
         const socket = io('/rooms', {transports: ['websocket']});
@@ -121,7 +124,7 @@ const app = {
       );
     }
 
- //   setModeVideoAndAudio(videoMode, audioMode);
+  //  setModeVideoAndAudio(false, true);
 
         function createOffer(id) {
             pc.createOffer(function (offer) {
@@ -168,7 +171,7 @@ const app = {
             socket.on('updateUsersList', function (users, clear, userConnected) {
                 $('.container p.message').remove();
                 if ((!!users && users.error) != null) {
-                    $('.container').html(`<p class="message error">${users.error}</p>`);
+                    //$('.container').html(`<p class="message error">${users.error}</p>`);
                 } else {
                     app.helpers.updateUsersList(users, clear, userConnected);
                 }
@@ -204,7 +207,7 @@ const app = {
 
       // Whenever the user hits the save button, emit newMessage event.
       $('.chat-message button').on('click', function (e) {
-        const textareaEle = $("textarea[name='message']");
+        const textareaEle = $("input[name='message']");
         const messageContent = textareaEle.val().trim();
         if (messageContent !== '') {
           const message = {
@@ -218,6 +221,13 @@ const app = {
                     app.helpers.addMessage(message);
                 }
             });
+
+      // Enter in input send message
+      $('#input-message').keypress(function (e) {
+            if (e.which == 13) {
+                $('.chat-message button').click();
+            }
+        });
 
       // Whenever a user leaves the current room, remove the user from users list
       socket.on('removeUser', function (userId) {
@@ -422,7 +432,7 @@ const app = {
             $(html).hide().appendTo('.chat-history ul').slideDown(200);
 
             // Keep scroll bar down
-            $(".chat-history").animate({scrollTop: $('.chat-history')[0].scrollHeight}, 1000);
+            $(".chat-history").animate({scrollTop: $('.chat-history')[0].scrollHeight}, 100);
         },
 
         // Update number of rooms
