@@ -48,16 +48,13 @@ const app = {
                         if (roomId) {
                             $(this).attr("disabled", true).html('Updating ...');
                             $("#delete_room").attr("style", "margin-right: 43%");
-                            socket.emit('editRoom', {name,level, quantity, id, roomId});
+                            socket.emit('editRoom', {name, level, quantity, id, roomId});
                         } else {
                             $(this).attr("disabled", true).html('Creating ...');
                             socket.emit('createRoom', {name, level, quantity, id});
                         }
-                        /*                        $("input[name='title']").val('');
-                                                $("input[name='list_members']").val('')*/
                     }
                 }
-                //$('#form').modal('toggle')
             });
 
             $('#delete_room').on('click', function (e) {
@@ -91,17 +88,33 @@ const app = {
 
         const pc = new peerConnection({
             iceServers: [{
-                url: "stun:stun.services.mozilla.com",
-                username: "somename",
-                credential: "somecredentials"
-            }]
+                 url: "stun:stun.services.mozilla.com",
+                 username: "somename",
+                 credential: "somecredentials"
+             }]
+
+            /*'iceServers': [
+                {
+                    'urls': 'stun:stun.l.google.com:19302'
+                },
+                {
+                    'urls': 'turn:192.158.29.39:3478?transport=udp',
+                    'credential': 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+                    'username': '28224511:1379330808'
+                },
+                {
+                    'urls': 'turn:192.158.29.39:3478?transport=tcp',
+                    'credential': 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+                    'username': '28224511:1379330808'
+                }
+            ]*/
         });
 
         pc.onaddstream = function (obj) {
             const vid = document.createElement('video');
             vid.setAttribute('class', 'video-small');
             vid.setAttribute('autoplay', 'autoplay');
-            vid.setAttribute('id', 'video-remote');
+            vid.setAttribute('class', 'video-remote');
             vid.setAttribute("style", "width:300px");
             $("#local-video").after(vid);
             vid.srcObject = obj.stream;
@@ -113,19 +126,19 @@ const app = {
             }
         };
 
-    function setModeVideoAndAudio(videoMode, audioMode) {
-      navigator.getUserMedia(
-        { video: videoMode, audio: audioMode },
-        function (stream) {
-          const video = document.querySelector('video');
-          video.srcObject = stream;
-          pc.addStream(stream);
-        },
-        error
-      );
-    }
+        function setModeVideoAndAudio(videoMode, audioMode) {
+            navigator.getUserMedia(
+                {video: videoMode, audio: audioMode},
+                function (stream) {
+                    const video = document.querySelector('video');
+                    video.srcObject = stream;
+                    pc.addStream(stream);
+                },
+                error
+            );
+        }
 
-  //  setModeVideoAndAudio(false, true);
+        setModeVideoAndAudio(true, false);
 
         function createOffer(id) {
             pc.createOffer(function (offer) {
@@ -179,69 +192,69 @@ const app = {
                 }
             });
 
-      // Whenever the user hits the save button, emit newMessage event.
+            // Whenever the user hits the save button, emit newMessage event.
 
-      $('#microphone-mode').on('click', function (e) {
-        audioMode = !audioMode;
-        console.log('log audio mode: ', audioMode);
-        setModeVideoAndAudio(videoMode, audioMode);
-        if (audioMode) {
-          $('#path-micro-off').css('visibility', 'hidden');
-          $('#path-micro-on').css('visibility', 'visible');
-        } else {
-          $('#path-micro-off').css('visibility', 'visible');
-          $('#path-micro-on').css('visibility', 'hidden');
-        }
-      });
+            $('#microphone-mode').on('click', function (e) {
+                audioMode = !audioMode;
+                console.log('log audio mode: ', audioMode);
+                setModeVideoAndAudio(videoMode, audioMode);
+                if (audioMode) {
+                    $('#path-micro-off').css('visibility', 'hidden');
+                    $('#path-micro-on').css('visibility', 'visible');
+                } else {
+                    $('#path-micro-off').css('visibility', 'visible');
+                    $('#path-micro-on').css('visibility', 'hidden');
+                }
+            });
 
-      $('#video-mode').on('click', function (e) {
-        videoMode = !videoMode;
-        setModeVideoAndAudio(videoMode, audioMode);
-        if (videoMode) {
-          $('#path-camera-off').css('visibility', 'hidden');
-          $('#path-camera-on').css('visibility', 'visible');
-        } else {
-          $('#path-camera-off').css('visibility', 'visible');
-          $('#path-camera-on').css('visibility', 'hidden');
-        }
+            $('#video-mode').on('click', function (e) {
+                videoMode = !videoMode;
+                setModeVideoAndAudio(videoMode, audioMode);
+                if (videoMode) {
+                    $('#path-camera-off').css('visibility', 'hidden');
+                    $('#path-camera-on').css('visibility', 'visible');
+                } else {
+                    $('#path-camera-off').css('visibility', 'visible');
+                    $('#path-camera-on').css('visibility', 'hidden');
+                }
 
-      });
+            });
 
-      // Whenever the user hits the save button, emit newMessage event.
-      $('.chat-message button').on('click', function (e) {
-        const textareaEle = $("input[name='message']");
-        const messageContent = textareaEle.val().trim();
-        if (messageContent !== '') {
-          const message = {
-            content: messageContent,
-            username: username,
-            date: Date.now(),
-          };
+            // Whenever the user hits the save button, emit newMessage event.
+            $('.chat-message button').on('click', function (e) {
+                const textareaEle = $("input[name='message']");
+                const messageContent = textareaEle.val().trim();
+                if (messageContent !== '') {
+                    const message = {
+                        content: messageContent,
+                        username: username,
+                        date: Date.now(),
+                    };
 
-                    socket.emit('newMessage', { roomId, message, userId });
+                    socket.emit('newMessage', {roomId, message, userId});
                     textareaEle.val('');
                     app.helpers.addMessage(message);
                 }
             });
 
-      // Enter in input send message
-      $('#input-message').keypress(function (e) {
-            if (e.which == 13) {
-                $('.chat-message button').click();
-            }
-        });
+            // Enter in input send message
+            $('#input-message').keypress(function (e) {
+                if (e.which == 13) {
+                    $('.chat-message button').click();
+                }
+            });
 
-      // Whenever a user leaves the current room, remove the user from users list
-      socket.on('removeUser', function (userId) {
-        console.log(userId);
-        $('li#user-' + userId).remove();
-        app.helpers.updateNumOfUsers();
-      });
+            // Whenever a user leaves the current room, remove the user from users list
+            socket.on('removeUser', function (userId) {
+                console.log(userId);
+                $('li#user-' + userId).remove();
+                app.helpers.updateNumOfUsers();
+            });
 
-      // Append a new message
-      socket.on('addMessage', function (message) {
-        app.helpers.addMessage(message);
-      });
+            // Append a new message
+            socket.on('addMessage', function (message) {
+                app.helpers.addMessage(message);
+            });
 
             socket.on('add-users', function (data) {
                 for (let i = 0; i < data.users.length; i++) {
@@ -262,7 +275,7 @@ const app = {
                 }
             });
 
-            socket.on('remove-user', function ({ id }) {
+            socket.on('remove-user', function ({id}) {
                 const removeId = id.trim().substr(10);
                 const div = document.getElementById(id);
 
@@ -270,7 +283,7 @@ const app = {
                     document.getElementById('users').removeChild(div);
                 }
 
-                $("#"+removeId).remove();
+                $("#" + removeId).remove();
             });
 
 
@@ -337,7 +350,7 @@ const app = {
                                     <div class="card-body">
                                       <div class="card-title">
                                         <div class="room-topic">
-                                         <p> Topic: ${ room.name } </p>
+                                         <p> Topic: ${room.name} </p>
                                         </div>
                                         <p class="card-text">Max people: ${room.quantity}</p>
                                         <p class="card-text">Level: ${room.level}</p>
@@ -356,7 +369,7 @@ const app = {
                               <div class="card-title">
                                 <div class="room-topic">
                                  <p>
-                                    Topic: ${ room.name }
+                                    Topic: ${room.name}
                                  </p>
                                 <i class="fa fa-cog "
                                    aria-hidden="true"

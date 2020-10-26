@@ -15,7 +15,7 @@ const dbURI = "mongodb://" +
 
 console.log('dbURI ', dbURI);
 
-Mongoose.connect(dbURI, { useNewUrlParser: true });
+Mongoose.connect(dbURI, { useNewUrlParser: true ,useUnifiedTopology: true });
 
 // Connect to the database
 // construct the database URI and encode username and password.
