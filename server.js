@@ -43,5 +43,5 @@ ioServer.listen(port, () => {
   ioServer.close(function () {
     ioServer.listen(port, '0.0.0.0');
   });
-  console.log('Server is runing on port ' + port);
+  console.log('Server is running on port ' + port);
 });

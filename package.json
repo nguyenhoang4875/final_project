@@ -7,15 +7,15 @@
     "start": "nodemon server.js"
   },
   "repository": {
-    "url": "git+https://github.com/OmarElGabry/chat.io.git",
+    "url": "git+https://github.com/nguyenhoang4875/final_project.git",
     "type": "git"
   },
-  "author": "Omar El Gabry <omar.elgabry.93@gmail.com> (http://omarelgabry.me)",
-  "license": "MIT",
+  "author": "Nguyen Hoang",
+  "license": "DHBK",
   "bugs": {
-    "url": "https://github.com/OmarElGabry/chat.io/issues"
+    "url": "https://github.com/nguyenhoang4875/final_project/issues"
   },
-  "homepage": "https://github.com/OmarElGabry/chat.io",
+  "homepage": "https://github.com/nguyenhoang4875/final_project",
   "dependencies": {
     "@babel/core": "^7.7.4",
     "@babel/polyfill": "^7.7.0",
