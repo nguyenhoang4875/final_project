@@ -1,20 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8"/>
-    <title>Mariana</title>
-    <link
-            rel="stylesheet"
-            href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-            integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-            crossorigin="anonymous"
-    />
-    <link rel="stylesheet" href="/css/style.css"/>
-    <link rel="stylesheet" href="/css/rooms.css"/>
-    <link
-            rel="stylesheet prefetch"
-            href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
-    />
+<%- include('includes/header.ejs')%>
+
     <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.min.css"
@@ -22,6 +7,8 @@
     <link rel="stylesheet" href="/css/selectize.default.css"/>
     <link rel="stylesheet" href="/library/toastr/build/toastr.css"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+    <link rel="stylesheet" href="/css/style.css"/>
+    <link rel="stylesheet" href="/css/rooms.css"/>
 </head>
 <body>
 <div class="container clearfix align-self-center">
@@ -182,22 +169,15 @@
 <!-- Modal edit -->
 </div>
 <!-- end container -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="/socket.io/socket.io.js"></script>
+<%- include('includes/end.ejs')%>
+
 <script src="/js/main.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.js"></script>
-<script
-        src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-        crossorigin="anonymous"
-></script>
 <script>
     $(function () {
         app.rooms('<%= user._id %>');
     });
 </script>
-<script src="/library/toastr/build/toastr.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
 <script src="/js/room.js"></script>
 </body>
 </html>

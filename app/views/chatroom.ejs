@@ -1,21 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8"/>
-    <title>Mariana</title>
-    <link
-            rel="stylesheet prefetch"
-            href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
-    />
-    <link
-            rel="stylesheet"
-            href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-            integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-            crossorigin="anonymous"
-    />
+<%- include('includes/header.ejs')%>
     <link rel="stylesheet" href="/css/chunk.css"/>
     <link rel="stylesheet" href="/css/style.css"/>
-
     <link rel="stylesheet" href="/css/chat-room.css"/>
 
 </head>
@@ -334,23 +319,20 @@
         </div>
     </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<%- include('includes/end.ejs')%>
+
+
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/main.js"></script>
-<script src="/js/chatroom.js"></script>
-<script
-        src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-        crossorigin="anonymous"
-></script>
+
 <script>
     $(function () {
         app.chat('<%= room.id %>', '<%= user.username %>', '<%= user._id %>');
     });
 </script>
+<script src="/js/chatroom.js"></script>
 </body>
-
 
 </html>
 
