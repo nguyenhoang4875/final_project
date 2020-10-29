@@ -88,10 +88,10 @@ const app = {
 
         const pc = new peerConnection({
             iceServers: [{
-                 url: "stun:stun.services.mozilla.com",
-                 username: "somename",
-                 credential: "somecredentials"
-             }]
+                url: "stun:stun.services.mozilla.com",
+                username: "somename",
+                credential: "somecredentials"
+            }]
 
             /*'iceServers': [
                 {
@@ -179,18 +179,20 @@ const app = {
         // When socket connects, join the current chatroom
         socket.on('connect', function () {
 
+            console.log("joined room!")
+
             socket.emit('join', {roomId, userId});
             getHistoryMsg(roomId);
 
             // Update users list upon emitting updateUsersList event
-            socket.on('updateUsersList', function (users, clear, userConnected) {
+          /*  socket.on('updateUsersList', function (users, clear, userConnected) {
                 $('.container p.message').remove();
                 if ((!!users && users.error) != null) {
                     //$('.container').html(`<p class="message error">${users.error}</p>`);
                 } else {
                     app.helpers.updateUsersList(users, clear, userConnected);
                 }
-            });
+            });*/
 
             // Whenever the user hits the save button, emit newMessage event.
 
@@ -257,6 +259,9 @@ const app = {
             });
 
             socket.on('add-users', function (data) {
+
+                console.log('socket on add users');
+                console.log('data: ', data)
                 for (let i = 0; i < data.users.length; i++) {
                     const el = document.createElement('div'),
                         id = data.users[i];
@@ -276,6 +281,7 @@ const app = {
             });
 
             socket.on('remove-user', function ({id}) {
+                console.log('in remove user id: ', id);
                 const removeId = id.trim().substr(10);
                 const div = document.getElementById(id);
 
@@ -290,7 +296,7 @@ const app = {
             socket.on('offer-made', function (data) {
                 console.log('OFFER: ', data);
                 let videoId = data.socket.trim().substr(10);
-                $("#video-remote").attr("id", videoId);
+                $(".video-remote").attr("id", videoId);
                 offer = data.offer;
 
                 pc.setRemoteDescription(new sessionDescription(data.offer), function () {
@@ -305,24 +311,25 @@ const app = {
                 }, error);
             });
 
-      socket.on('answer-made', function (data) {
-        console.log('ANSWER: ', data);
-        let videoId = data.socket.trim().substr(10);
-        $('#video-remote').attr('id', videoId);
-        pc.setRemoteDescription(
-          new sessionDescription(data.answer),
-          function () {
-            document.getElementById(data.socket).setAttribute('class', 'active');
-            if (!answersFrom[data.socket]) {
-              createOffer(data.socket);
-              answersFrom[data.socket] = true;
-            }
-          },
-          error
-        );
-      });
-    });
-  },
+            socket.on('answer-made', function (data) {
+                console.log('ANSWER: ', data);
+                let videoId = data.socket.trim().substr(10);
+                $('.video-remote').attr('id', videoId);
+                pc.setRemoteDescription(
+                    new sessionDescription(data.answer),
+                    function () {
+                        document.getElementById(data.socket).setAttribute('class', 'active');
+                        if (!answersFrom[data.socket]) {
+                            createOffer(data.socket);
+                            answersFrom[data.socket] = true;
+                        }
+                    },
+                    error
+                );
+            });
+            console.log('end join room!');
+        });
+    },
 
     helpers: {
 
