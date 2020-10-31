@@ -203,10 +203,13 @@ const init = function (app) {
     const server = https.createServer(options, app);
 
     const io = require('socket.io')(server);
+    require('../controller/socketController')(io)
+
+
     const mongoAdapter = require('socket.io-adapter-mongo');
 
     // Force Socket.io to ONLY use "websockets"; No Long Polling.
-    io.set('transports', ['websocket']);
+    //io.set('transports', ['websocket']);
 
     io.adapter(mongoAdapter('mongodb://localhost:27017'));
 

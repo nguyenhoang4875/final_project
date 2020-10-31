@@ -320,17 +320,30 @@
     </div>
 </div>
 
+
+<div id="videos" class="container">
+    <video id="localVideo" class="vid" autoplay muted></video>
+</div>
+<br />
+<div style="display:block">
+    <button id="switchButton" class="settings" onclick="switchMedia()">Switch
+        Camera</button>
+    <button id="muteButton" class="settings" onclick="toggleMute()">Unmuted</button>
+    <button id="vidButton" class="settings" onclick="toggleVid()">Video Enabled</button>
+</div>
+
 <%- include('includes/end.ejs')%>
 
 
+<script src="/js/simplepeer.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/main.js"></script>
 
-<script>
+<!--<script>
     $(function () {
         app.chat('<%= room.id %>', '<%= user.username %>', '<%= user._id %>');
     });
-</script>
+</script>-->
 <script src="/js/chatroom.js"></script>
 </body>
 
