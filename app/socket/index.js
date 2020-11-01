@@ -11,6 +11,8 @@ const ChatService = require('../services/ChatService');
 const ConnectService = require('../services/ConnectionService');
 const UserService = require('../services/UserService');
 const users = [];
+const peers = {}
+
 
 /**
  * Encapsulates all code for emitting and listening to socket events
@@ -45,11 +47,15 @@ const ioEvents = function (io) {
 
     // Chatroom namespace
     io.of('/chatroom').on('connection', function (socket) {
+
+
+
+
         // Join a chatroom
         socket.on('join', async function ({roomId, userId}) {
             const result = await RoomService.findRoom({id: roomId});
             const room = result.data;
-            console.log('room :', room);
+            // console.log('room :', room);
 
             console.log('chat room join!!!!');
             if (!result || result.status !== 200) {
@@ -62,12 +68,63 @@ const ioEvents = function (io) {
                     return;
                 }
 
+
+                console.log('a client is connected')
+
+
+                // Initiate the connection process as soon as the client connects
+
+                peers[socket.id] = socket
+
+                // console.log('peers is: ', peers)
+                //  console.log('socket current is: ', socket);
+
+                // Asking all other clients to setup the peer connection receiver
+                for (let id in peers) {
+                    if (id === socket.id) continue
+                    console.log('sending init receive to ' + socket.id)
+                    peers[id].emit('initReceive', socket.id)
+                    console.log('in sending init receive emit :))')
+                }
+                /**
+                 * relay a peerconnection signal to a specific socket
+                 */
+                socket.on('signal', data => {
+                    console.log('sending signal from ' + socket.id + ' to ', data)
+                    if (!peers[data.socket_id]) return
+                    peers[data.socket_id].emit('signal', {
+                        socket_id: socket.id,
+                        signal: data.signal
+                    })
+                })
+
+                /**
+                 * remove the disconnected peer connection from all other connected clients
+                 */
+                socket.on('disconnect', () => {
+                    console.log('socket disconnected ' + socket.id)
+                    socket.broadcast.emit('removePeer', socket.id)
+                    delete peers[socket.id]
+                })
+
+                /**
+                 * Send message to client to initiate a connection
+                 * The sender has already setup a peer connection receiver
+                 */
+                socket.on('initSend', init_socket_id => {
+                    console.log('INIT SEND by ' + socket.id + ' for ' + init_socket_id)
+                    peers[init_socket_id].emit('initSend', socket.id)
+                })
+
+
+
+
                 socket.join(room._id);
                 socket.chatRoomId = room._id;
                 socket.userId = userId;
-              //  users.push(socket.id);
-                console.log('socket id: ', socket.id);
-                console.log('users : ', users);
+                //  users.push(socket.id);
+                //    console.log('socket id: ', socket.id);
+                //   console.log('users : ', users);
                 socket.broadcast.to(room._id).emit('add-users', {
                     users: [socket.id],
                 });
@@ -79,8 +136,11 @@ const ioEvents = function (io) {
                     socket.emit('updateUsersList', users, true, userConnected);
                     socket.broadcast.to(room._id).emit('updateUsersList', users, true, userConnected);
                 }
+
             }
+
         });
+
 
         // When a socket exits
         socket.on('disconnect', async function () {
@@ -91,7 +151,7 @@ const ioEvents = function (io) {
             users.splice(users.indexOf(socket.id), 1);
 
             socket.emit('remove-user', socket.id);
-            socket.broadcast.to(roomId).emit('remove-user', { id: socket.id });
+            socket.broadcast.to(roomId).emit('remove-user', {id: socket.id});
 
             // Check if user exists in the session
             if (socket.request.session.passport == null) {
@@ -140,6 +200,8 @@ const ioEvents = function (io) {
                 answer: data.answer,
             });
         });
+
+
     });
 
     // User namespace
@@ -203,7 +265,7 @@ const init = function (app) {
     const server = https.createServer(options, app);
 
     const io = require('socket.io')(server);
-    require('../controller/socketController')(io)
+    //  require('../controller/socketController')(io)
 
 
     const mongoAdapter = require('socket.io-adapter-mongo');

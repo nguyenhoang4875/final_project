@@ -338,13 +338,12 @@
 <script src="/js/simplepeer.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/main.js"></script>
-
-<!--<script>
-    $(function () {
-        app.chat('<%= room.id %>', '<%= user.username %>', '<%= user._id %>');
-    });
-</script>-->
 <script src="/js/chatroom.js"></script>
+<script>
+    $(function () {
+        rooms.chat('<%= room.id %>', '<%= user.username %>', '<%= user._id %>');
+    });
+</script>
 </body>
 
 </html>
