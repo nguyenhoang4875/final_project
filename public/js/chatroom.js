@@ -6,6 +6,7 @@ $("#chat-toggle").click(function () {
 'use strict';
 var videoMode = false;
 var audioMode = false;
+var localStream = null;
 const rooms = {
   chat: function (roomId, username, userId) {
 
@@ -20,7 +21,6 @@ const rooms = {
     /**
      * The stream object used to send media
      */
-    let localStream = null;
     /**
      * All peer connections
      */
@@ -74,12 +74,8 @@ const rooms = {
 // enabling the camera at startup
     navigator.mediaDevices.getUserMedia(constraints).then(stream => {
       console.log('Received local stream');
-
       localVideo.srcObject = stream;
       localStream = stream;
-
-
-
     }).catch(e => alert(`getusermedia error ${e.name}`))
 
       getHistoryMsg(roomId);
@@ -191,121 +187,6 @@ const rooms = {
       el.requestPictureInPicture()
     }
 
-    /**
-     * Switches the camera between user and environment. It will just enable the camera 2 cameras not supported.
-     */
-    function switchMedia() {
-      if (constraints.video.facingMode.ideal === 'user') {
-        constraints.video.facingMode.ideal = 'environment'
-      } else {
-        constraints.video.facingMode.ideal = 'user'
-      }
-
-      const tracks = localStream.getTracks();
-
-      tracks.forEach(function (track) {
-        track.stop()
-      })
-
-      localVideo.srcObject = null
-      navigator.mediaDevices.getUserMedia(constraints).then(stream => {
-
-        for (let socket_id in peers) {
-          for (let index in peers[socket_id].streams[0].getTracks()) {
-            for (let index2 in stream.getTracks()) {
-              if (peers[socket_id].streams[0].getTracks()[index].kind === stream.getTracks()[index2].kind) {
-                peers[socket_id].replaceTrack(peers[socket_id].streams[0].getTracks()[index], stream.getTracks()[index2], peers[socket_id].streams[0])
-                break;
-              }
-            }
-          }
-        }
-
-        localStream = stream
-        localVideo.srcObject = stream
-
-        updateButtons()
-      })
-    }
-
-    /**
-     * Enable screen share
-     */
-    function setScreen() {
-      navigator.mediaDevices.getDisplayMedia().then(stream => {
-        for (let socket_id in peers) {
-          for (let index in peers[socket_id].streams[0].getTracks()) {
-            for (let index2 in stream.getTracks()) {
-              if (peers[socket_id].streams[0].getTracks()[index].kind === stream.getTracks()[index2].kind) {
-                peers[socket_id].replaceTrack(peers[socket_id].streams[0].getTracks()[index], stream.getTracks()[index2], peers[socket_id].streams[0])
-                break;
-              }
-            }
-          }
-
-        }
-        localStream = stream
-
-        localVideo.srcObject = localStream
-        socket.emit('removeUpdatePeer', '')
-      })
-      updateButtons()
-    }
-
-    /**
-     * Disables and removes the local stream and all the connections to other peers.
-     */
-    function removeLocalStream() {
-      if (localStream) {
-        const tracks = localStream.getTracks();
-
-        tracks.forEach(function (track) {
-          track.stop()
-        })
-
-        localVideo.srcObject = null
-      }
-
-      for (let socket_id in peers) {
-        removePeer(socket_id)
-      }
-    }
-
-    /**
-     * Enable/disable microphone
-     */
-    function toggleMute() {
-      for (let index in localStream.getAudioTracks()) {
-        localStream.getAudioTracks()[index].enabled = !localStream.getAudioTracks()[index].enabled
-        muteButton.innerText = localStream.getAudioTracks()[index].enabled ? "Unmuted" : "Muted"
-      }
-    }
-    /**
-     * Enable/disable video
-     */
-    function toggleVid() {
-      for (let index in localStream.getVideoTracks()) {
-        localStream.getVideoTracks()[index].enabled = !localStream.getVideoTracks()[index].enabled
-        vidButton.innerText = localStream.getVideoTracks()[index].enabled ? "Video Enabled" : "Video Disabled"
-      }
-    }
-
-    /**
-     * updating text of buttons
-     */
-    function updateButtons() {
-      for (let index in localStream.getVideoTracks()) {
-        vidButton.innerText = localStream.getVideoTracks()[index].enabled ? "Video Enabled" : "Video Disabled"
-      }
-      for (let index in localStream.getAudioTracks()) {
-        muteButton.innerText = localStream.getAudioTracks()[index].enabled ? "Unmuted" : "Muted"
-      }
-    }
-
-
-
-
-
 
     function error(err) {
       console.warn('Error', err);
@@ -381,15 +262,15 @@ const rooms = {
         const removeId = id.trim().substr(10);
         const div = document.getElementById(id);
 
-        if (!!div) {
+       /* if (!!div) {
           document.getElementById('users').removeChild(div);
         }
 
-        $("#" + removeId).remove();
+        $("#" + removeId).remove();*/
       });
 
 
-      socket.on('offer-made', function (data) {
+     /* socket.on('offer-made', function (data) {
         console.log('OFFER: ', data);
         let videoId = data.socket.trim().substr(10);
         $(".video-remote").attr("id", videoId);
@@ -422,7 +303,7 @@ const rooms = {
             },
             error
         );
-      });
+      });*/
       console.log('end join room!');
     });
   },
@@ -590,6 +471,151 @@ const rooms = {
     }
   }
 };
+
+/**
+ * Switches the camera between user and environment. It will just enable the camera 2 cameras not supported.
+ */
+function switchMedia() {
+  if (constraints.video.facingMode.ideal === 'user') {
+    constraints.video.facingMode.ideal = 'environment'
+  } else {
+    constraints.video.facingMode.ideal = 'user'
+  }
+
+  const tracks = localStream.getTracks();
+
+  tracks.forEach(function (track) {
+    track.stop()
+  })
+
+  localVideo.srcObject = null
+  navigator.mediaDevices.getUserMedia(constraints).then(stream => {
+
+    for (let socket_id in peers) {
+      for (let index in peers[socket_id].streams[0].getTracks()) {
+        for (let index2 in stream.getTracks()) {
+          if (peers[socket_id].streams[0].getTracks()[index].kind === stream.getTracks()[index2].kind) {
+            peers[socket_id].replaceTrack(peers[socket_id].streams[0].getTracks()[index], stream.getTracks()[index2], peers[socket_id].streams[0])
+            break;
+          }
+        }
+      }
+    }
+
+    localStream = stream
+    localVideo.srcObject = stream
+
+    updateButtons()
+  })
+}
+
+/**
+ * Enable screen share
+ */
+function setScreen() {
+  navigator.mediaDevices.getDisplayMedia().then(stream => {
+    for (let socket_id in peers) {
+      for (let index in peers[socket_id].streams[0].getTracks()) {
+        for (let index2 in stream.getTracks()) {
+          if (peers[socket_id].streams[0].getTracks()[index].kind === stream.getTracks()[index2].kind) {
+            peers[socket_id].replaceTrack(peers[socket_id].streams[0].getTracks()[index], stream.getTracks()[index2], peers[socket_id].streams[0])
+            break;
+          }
+        }
+      }
+
+    }
+    localStream = stream
+
+    localVideo.srcObject = localStream
+    socket.emit('removeUpdatePeer', '')
+  })
+  updateButtons()
+}
+
+/**
+ * Disables and removes the local stream and all the connections to other peers.
+ */
+function removeLocalStream() {
+  if (localStream) {
+    const tracks = localStream.getTracks();
+
+    tracks.forEach(function (track) {
+      track.stop()
+    })
+
+    localVideo.srcObject = null
+  }
+
+  for (let socket_id in peers) {
+    removePeer(socket_id)
+  }
+}
+
+/**
+ * Enable/disable microphone
+ */
+function toggleMute() {
+  for (let index in localStream.getAudioTracks()) {
+    localStream.getAudioTracks()[index].enabled = !localStream.getAudioTracks()[index].enabled
+    muteButton.innerText = localStream.getAudioTracks()[index].enabled ? "Unmuted" : "Muted"
+  }
+}
+/**
+ * Enable/disable video
+ */
+function toggleVid() {
+  for (let index in localStream.getVideoTracks()) {
+    localStream.getVideoTracks()[index].enabled = !localStream.getVideoTracks()[index].enabled
+    vidButton.innerText = localStream.getVideoTracks()[index].enabled ? "Video Enabled" : "Video Disabled"
+  }
+}
+
+/**
+ * updating text of buttons
+ */
+function updateButtons() {
+  for (let index in localStream.getVideoTracks()) {
+    vidButton.innerText = localStream.getVideoTracks()[index].enabled ? "Video Enabled" : "Video Disabled"
+  }
+  for (let index in localStream.getAudioTracks()) {
+    muteButton.innerText = localStream.getAudioTracks()[index].enabled ? "Unmuted" : "Muted"
+  }
+}
+
+$('#microphone-mode').on('click', function (e) {
+
+  for (let index in localStream.getAudioTracks()) {
+    localStream.getAudioTracks()[index].enabled = !localStream.getAudioTracks()[index].enabled
+    if (localStream.getAudioTracks()[index].enabled){
+      $('#path-micro-off').css('visibility', 'hidden');
+      $('#path-micro-on').css('visibility', 'visible');
+    }
+    else {
+      $('#path-micro-off').css('visibility', 'visible');
+      $('#path-micro-on').css('visibility', 'hidden');
+    }
+  }
+});
+
+$('#video-mode').on('click', function (e) {
+
+  for (let index in localStream.getVideoTracks()) {
+    localStream.getVideoTracks()[index].enabled = !localStream.getVideoTracks()[index].enabled
+    if (localStream.getVideoTracks()[index].enabled) {
+      $('#path-camera-off').css('visibility', 'hidden');
+      $('#path-camera-on').css('visibility', 'visible');
+    } else {
+      $('#path-camera-off').css('visibility', 'visible');
+      $('#path-camera-on').css('visibility', 'hidden');
+    }
+  }
+
+});
+
+
+
+
 
 
 

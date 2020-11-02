@@ -48,11 +48,9 @@ const ioEvents = function (io) {
     // Chatroom namespace
     io.of('/chatroom').on('connection', function (socket) {
 
-
-
-
         // Join a chatroom
         socket.on('join', async function ({roomId, userId}) {
+            console.log('join room here abx wwww');
             const result = await RoomService.findRoom({id: roomId});
             const room = result.data;
             // console.log('room :', room);

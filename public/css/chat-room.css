@@ -7,11 +7,11 @@ body {
     background-color: dimgrey;
 }
 
-#path-micro-on {
+#path-micro-off {
     visibility: hidden;
 }
 
-#path-camera-on {
+#path-camera-off {
     visibility: hidden;
 }
 
