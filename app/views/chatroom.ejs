@@ -2,10 +2,234 @@
     <link rel="stylesheet" href="/css/chunk.css"/>
     <link rel="stylesheet" href="/css/style.css"/>
     <link rel="stylesheet" href="/css/chat-room.css"/>
+    <script src="https://kit.fontawesome.com/0516be47bc.js" crossorigin="anonymous"></script>
 
 </head>
 <body>
-<div class="ant-row-flex ant-row-flex-space-around ant-row-flex-middle mb-2">
+
+<div class="main">
+    <div class="main__left">
+        <div class="menu__top">
+        <div class="ant-col">
+            <div class="sc-gisBJw iWsRjj">
+                <div class="ant-row-flex ant-row-flex-center">
+                    <div class="ant-col">
+                        <div
+                                class="ant-row-flex gutter4"
+                                style="
+                  margin-left: -2px;
+                  margin-right: -2px;
+                  flex-wrap: nowrap;
+                  padding: 5px 3px;
+                  border-radius: 10px;
+                  background: rgb(0, 0, 0);
+                "
+                        >
+                            <div class="ant-col" style="padding-left: 2px; padding-right: 2px">
+                                <button
+                                        id="microphone-mode"
+                                        type="button"
+                                        class="ant-btn ant-btn-primary ant-btn-lg"
+                                >
+                                    <i id="micro-off" class="anticon" style="font-size: 20px"
+                                    >
+                                        <svg
+                                                viewBox="0 0 1024 1024"
+                                                data-icon="line"
+                                                width="1em"
+                                                height="1em"
+                                                fill="currentColor"
+                                                aria-hidden="true"
+                                                focusable="false"
+                                        >
+                                            <path
+                                                    id="path-micro-off"
+                                                    d="M752.850763 578.028574a261.0432 261.0432 0 0 0 8.727033-66.028574h99.913005c0 52.0039-11.107132 101.320591-30.634187 145.95386l-78.005851-79.925286zM361.951368 153.705412c0-84.455153 67.43616-153.554824 149.843915-153.554824 82.433348 0 149.869508 69.099671 149.869508 153.554824v330.910644l-299.713423-307.109647V153.705412z m514.178326 803.961871l-155.346296-159.159575a342.555219 342.555219 0 0 1-159.031613 67.692085V921.479529l99.913006 102.369883H361.951368l99.913005-102.369883v-55.279736C292.67255 841.221542 162.125357 692.1454 162.125357 512H262.038362c0 141.116883 112.043836 255.924706 249.756921 255.924706a243.691505 243.691505 0 0 0 137.559529-42.611464l-73.168873-74.985938a145.109308 145.109308 0 0 1-64.390656 15.22752c-82.407755 0-149.843915-69.099671-149.843915-153.554824v-81.179317L76.851245 138.708224l70.635219-72.375507 799.278449 818.959059-70.635219 72.375507z"
+                                            ></path>
+
+                                            <path
+                                                    id="path-micro-on"
+                                                    d="M563.2 866.304V921.6l102.4 102.4H358.4l102.4-102.4v-55.296C287.4112 841.3184 153.6 692.1984 153.6 512h102.4c0 141.1584 114.8416 256 256 256s256-114.8416 256-256h102.4c0 180.1984-133.8112 329.3184-307.2 354.304zM512 665.6c-84.48 0-153.6-69.12-153.6-153.6V153.6c0-84.48 69.12-153.6 153.6-153.6s153.6 69.12 153.6 153.6v358.4c0 84.48-69.12 153.6-153.6 153.6z"
+                                            ></path>
+                                        </svg>
+                                    </i>
+                                    <div class="blind">Turn ON your microphone</div>
+                                </button>
+                            </div>
+                            <div class="ant-col" style="padding-left: 2px; padding-right: 2px">
+                                <button id="video-mode" type="button" class="ant-btn ant-btn-primary ant-btn-lg">
+                                    <i class="anticon" style="font-size: 20px"
+                                    >
+                                        <svg
+                                                viewBox="0 0 1024 1024"
+                                                data-icon="line"
+                                                width="1em"
+                                                height="1em"
+                                                fill="currentColor"
+                                                aria-hidden="true"
+                                                focusable="false"
+                                        >
+                                            <path
+                                                    id="path-camera-off"
+                                                    d="M1267.6 916.2l-110-85c30.8-2.8 58.4-27.4 58.4-62.2v-514c0-51-58.2-80.8-100.8-51.6L896 354.6v274.4l-64-49.4v-356c0-52.8-42.8-95.6-95.6-95.6H247.8L91 6.8C77-4 57-1.6 46 12.4L6.8 62.8c-10.8 14-8.4 34 5.6 44.8L85.4 164 832 741.2l357 276c14 10.8 34 8.4 45-5.6l39.2-50.6c11-13.8 8.4-34-5.6-44.8zM64 800.4c0 52.8 42.8 95.6 95.6 95.6h576.8c22.4 0 42.8-8 59.2-21L64 309.4v491z"
+                                            ></path>
+                                            <path
+                                                    id="path-camera-on"
+                                                    d="M672.4 128H95.6C42.8 128 0 170.8 0 223.6v576.8C0 853.2 42.8 896 95.6 896h576.8c52.8 0 95.6-42.8 95.6-95.6V223.6c0-52.8-42.8-95.6-95.6-95.6z m378.8 75.4L832 354.6v314.8l219.2 151c42.4 29.2 100.8-0.6 100.8-51.6V255c0-50.8-58.2-80.8-100.8-51.6z"
+                                            ></path>
+                                        </svg>
+                                    </i>
+                                    <div class="blind">Turn ON your camera</div>
+                                </button>
+                            </div>
+                            <div class="ant-col" style="padding-left: 2px; padding-right: 2px">
+                                <button type="button" class="ant-btn no-border ant-btn-lg">
+                                    <i class="anticon" style="font-size: 24px"
+                                    >
+                                        <svg
+                                                viewBox="0 0 1024 1024"
+                                                data-icon="line"
+                                                width="1em"
+                                                height="1em"
+                                                fill="currentColor"
+                                                aria-hidden="true"
+                                                focusable="false"
+                                        >
+                                            <path d="M160 704l128 0 0 128-128 0 0-128Z"></path>
+                                            <path d="M352 576l128 0 0 256-128 0 0-256Z"></path>
+                                            <path d="M544 384l128 0 0 448-128 0 0-448Z"></path>
+                                            <path d="M736 192l128 0 0 640-128 0 0-640Z"></path>
+                                        </svg>
+                                    </i>
+                                    <div class="blind">Bandwidth Settings</div>
+                                </button>
+                            </div>
+                            <div class="ant-col" style="padding-left: 2px; padding-right: 2px">
+                                <button type="button" class="ant-btn no-border ant-btn-lg">
+                                    <i
+                                            aria-label="icon: setting"
+                                            class="anticon anticon-setting"
+                                            style="font-size: 20px"
+                                    >
+                                        <svg
+                                                viewBox="64 64 896 896"
+                                                focusable="false"
+                                                class=""
+                                                data-icon="setting"
+                                                width="1em"
+                                                height="1em"
+                                                fill="currentColor"
+                                                aria-hidden="true"
+                                        >
+                                            <path
+                                                    d="M924.8 625.7l-65.5-56c3.1-19 4.7-38.4 4.7-57.8s-1.6-38.8-4.7-57.8l65.5-56a32.03 32.03 0 0 0 9.3-35.2l-.9-2.6a443.74 443.74 0 0 0-79.7-137.9l-1.8-2.1a32.12 32.12 0 0 0-35.1-9.5l-81.3 28.9c-30-24.6-63.5-44-99.7-57.6l-15.7-85a32.05 32.05 0 0 0-25.8-25.7l-2.7-.5c-52.1-9.4-106.9-9.4-159 0l-2.7.5a32.05 32.05 0 0 0-25.8 25.7l-15.8 85.4a351.86 351.86 0 0 0-99 57.4l-81.9-29.1a32 32 0 0 0-35.1 9.5l-1.8 2.1a446.02 446.02 0 0 0-79.7 137.9l-.9 2.6c-4.5 12.5-.8 26.5 9.3 35.2l66.3 56.6c-3.1 18.8-4.6 38-4.6 57.1 0 19.2 1.5 38.4 4.6 57.1L99 625.5a32.03 32.03 0 0 0-9.3 35.2l.9 2.6c18.1 50.4 44.9 96.9 79.7 137.9l1.8 2.1a32.12 32.12 0 0 0 35.1 9.5l81.9-29.1c29.8 24.5 63.1 43.9 99 57.4l15.8 85.4a32.05 32.05 0 0 0 25.8 25.7l2.7.5a449.4 449.4 0 0 0 159 0l2.7-.5a32.05 32.05 0 0 0 25.8-25.7l15.7-85a350 350 0 0 0 99.7-57.6l81.3 28.9a32 32 0 0 0 35.1-9.5l1.8-2.1c34.8-41.1 61.6-87.5 79.7-137.9l.9-2.6c4.5-12.3.8-26.3-9.3-35zM788.3 465.9c2.5 15.1 3.8 30.6 3.8 46.1s-1.3 31-3.8 46.1l-6.6 40.1 74.7 63.9a370.03 370.03 0 0 1-42.6 73.6L721 702.8l-31.4 25.8c-23.9 19.6-50.5 35-79.3 45.8l-38.1 14.3-17.9 97a377.5 377.5 0 0 1-85 0l-17.9-97.2-37.8-14.5c-28.5-10.8-55-26.2-78.7-45.7l-31.4-25.9-93.4 33.2c-17-22.9-31.2-47.6-42.6-73.6l75.5-64.5-6.5-40c-2.4-14.9-3.7-30.3-3.7-45.5 0-15.3 1.2-30.6 3.7-45.5l6.5-40-75.5-64.5c11.3-26.1 25.6-50.7 42.6-73.6l93.4 33.2 31.4-25.9c23.7-19.5 50.2-34.9 78.7-45.7l37.9-14.3 17.9-97.2c28.1-3.2 56.8-3.2 85 0l17.9 97 38.1 14.3c28.7 10.8 55.4 26.2 79.3 45.8l31.4 25.8 92.8-32.9c17 22.9 31.2 47.6 42.6 73.6L781.8 426l6.5 39.9zM512 326c-97.2 0-176 78.8-176 176s78.8 176 176 176 176-78.8 176-176-78.8-176-176-176zm79.2 255.2A111.6 111.6 0 0 1 512 614c-29.9 0-58-11.7-79.2-32.8A111.6 111.6 0 0 1 400 502c0-29.9 11.7-58 32.8-79.2C454 401.6 482.1 390 512 390c29.9 0 58 11.6 79.2 32.8A111.6 111.6 0 0 1 624 502c0 29.9-11.7 58-32.8 79.2z"
+                                            ></path>
+                                        </svg>
+                                    </i>
+                                    <div class="blind">Settings</div>
+                                </button>
+                            </div>
+                            <div class="ant-col" style="padding-left: 2px; padding-right: 2px">
+                                <button type="button" class="ant-btn no-border ant-btn-lg" onclick="history.back()">
+                                    <i class="anticon" style="color: rgb(245, 34, 45); font-size: 20px">
+                                        <svg
+                                                viewBox="0 0 1024 1024"
+                                                data-icon="line"
+                                                width="1em"
+                                                height="1em"
+                                                fill="currentColor"
+                                                aria-hidden="true"
+                                                focusable="false"
+                                        >
+                                            <path
+                                                    d="M1006.933333 518.826667c-146.773333-139.946667-320.853333-215.04-494.933333-215.04S163.84 378.88 17.066667 518.826667c-10.24 10.24-17.066667 23.893333-17.066667 40.96s6.826667 30.72 17.066667 40.96l102.4 102.4c20.48 20.48 61.44 20.48 81.92 0 30.72-30.72 68.266667-54.613333 105.813333-75.093334 20.48-10.24 34.133333-30.72 34.133333-54.613333v-105.813333c64.853333-20.48 119.466667-27.306667 170.666667-27.306667 54.613333 0 109.226667 10.24 170.666667 27.306667v105.813333c0 23.893333 13.653333 44.373333 34.133333 54.613333 40.96 20.48 75.093333 44.373333 105.813333 75.093334 10.24 10.24 27.306667 17.066667 40.96 17.066666 17.066667 0 30.72-6.826667 40.96-17.066666l102.4-102.4c10.24-10.24 17.066667-27.306667 17.066667-40.96 0-17.066667-6.826667-30.72-17.066667-40.96z"
+                                            ></path>
+                                        </svg>
+                                    </i>
+                                    <div class="blind">Hangup this call</div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div id="videos" class="video_section">
+            <video  controls id="myVideo" class="vid" autoplay muted></video>
+        </div>
+
+        <div class="video_options">
+            <div class="video_share" onclick="setScreen()">
+                <i class="fas fa-share-square fa-2x" ></i>
+            </div>
+            <div class="video_chat" onclick="handleChat()">
+
+                <i class="fas fa-comment-alt fa-2x">
+                    <span class="chat_count"></span>
+                </i>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="main__right" >
+        <div class="main__header">
+            <h2>Chat</h2>
+        </div>
+
+        <div  class="main__chat_window">
+            <ul class="messages"></ul>
+        </div>
+
+        <div class="main__message_container">
+            <input
+                    id="chat_message"
+                    type="text"
+                    placeholder="Type message here..."
+            />
+            <i class="fas fa-paper-plane"></i>
+        </div>
+    </div>
+</div>
+
+<!-- chat section toggle -->
+<script>
+    var isChat = true;
+    function handleChat(){
+        var main_right = document.querySelector(".main__right");
+        if (isChat) {
+            document.querySelector(".main__right").style.display = "none" ;
+            document.querySelector(".main__left").style.flex = 1 ;
+            isChat = false;
+        } else {
+            document.querySelector(".main__right").style.display = "flex" ;
+            document.querySelector(".main__left").style.flex = 0.7 ;
+            document.querySelector(".chat_count").style.display = "none";
+
+            chat_count = 0;
+            isChat = true;
+        }
+    }
+
+</script>
+
+<!-- room id display -->
+<script>
+    var isInfo = true
+    document.querySelector(".fa-info-circle").addEventListener("click",() => {
+        if(isInfo){
+            document.querySelector(".room_id").style.display = "block"
+            isInfo = false
+        } else {
+            document.querySelector(".room_id").style.display = "none"
+            isInfo = true
+        }
+    })
+</script>
+
+
+<!--<div class="ant-row-flex ant-row-flex-space-around ant-row-flex-middle mb-2">
     <div class="ant-col">
         <div class="sc-gisBJw iWsRjj">
             <div class="ant-row-flex ant-row-flex-center">
@@ -169,21 +393,21 @@
                 <div class="chat-num-users"> User(s)</div>
             </div>
             <i class="fa fa-users"></i>
-        </div> <!-- end chat-header -->
+        </div> &lt;!&ndash; end chat-header &ndash;&gt;
 
         <div class="chat-history">
             <ul>
 
             </ul>
-        </div> <!-- end chat-history -->
+        </div> &lt;!&ndash; end chat-history &ndash;&gt;
 
         <div class="chat-message clearfix input-group">
             <input id="input-message" class="form-control mr-1" type="text" name="message" placeholder="Type your message">
             <span class="input-group-btn">
                 <button type="submit" class="btn btn-primary">Send</button>
             </span>
-        </div> <!-- end chat-message -->
-    </div> <!-- end chat -->
+        </div> &lt;!&ndash; end chat-message &ndash;&gt;
+    </div> &lt;!&ndash; end chat &ndash;&gt;
 
     <div class="">
         <div class="right-bar">
@@ -331,7 +555,7 @@
     <button id="muteButton" class="settings" onclick="toggleMute()">Unmuted</button>
     <button id="vidButton" class="settings" onclick="toggleVid()">Video Enabled</button>
     <button id="shareScreen" class="settings" onclick="setScreen()">shareScreen</button>
-</div>
+</div>-->
 
 <%- include('includes/end.ejs')%>
 
