@@ -4,7 +4,7 @@ $("#chat-toggle").click(function () {
 })
 
 'use strict';
-var localStream = null;
+var myStream = null;
 
 
 /**
@@ -69,8 +69,8 @@ const rooms = {
 // enabling the camera at startup
     navigator.mediaDevices.getUserMedia(constraints).then(stream => {
       console.log('Received local stream');
-      localVideo.srcObject = stream;
-      localStream = stream;
+      myVideo.srcObject = stream;
+      myStream = stream;
     }).catch(e => alert(`getusermedia error ${e.name}`))
 
       getHistoryMsg(roomId);
@@ -143,7 +143,7 @@ const rooms = {
       console.log("in addPeer !")
       peers[socket_id] = new SimplePeer({
         initiator: am_initiator,
-        stream: localStream,
+        stream: myStream,
         config: configuration
       })
 
@@ -434,13 +434,13 @@ function switchMedia() {
     constraints.video.facingMode.ideal = 'user'
   }
 
-  const tracks = localStream.getTracks();
+  const tracks = myStream.getTracks();
 
   tracks.forEach(function (track) {
     track.stop()
   })
 
-  localVideo.srcObject = null
+  myVideo.srcObject = null
   navigator.mediaDevices.getUserMedia(constraints).then(stream => {
 
     for (let socket_id in peers) {
@@ -454,8 +454,8 @@ function switchMedia() {
       }
     }
 
-    localStream = stream
-    localVideo.srcObject = stream
+    myStream = stream
+    myVideo.srcObject = stream
 
     updateButtons()
   })
@@ -506,8 +506,8 @@ function setScreen() {
               }
 
             }
-            localStream = stream
-            localVideo.srcObject = localStream
+            myStream = stream
+            myVideo.srcObject = myStream
           }).catch(function (error) {
             console.log(error);
           });
@@ -521,14 +521,14 @@ function setScreen() {
  * Disables and removes the local stream and all the connections to other peers.
  */
 function removeLocalStream() {
-  if (localStream) {
-    const tracks = localStream.getTracks();
+  if (myStream) {
+    const tracks = myStream.getTracks();
 
     tracks.forEach(function (track) {
       track.stop()
     })
 
-    localVideo.srcObject = null
+    myVideo.srcObject = null
   }
 
   for (let socket_id in peers) {
@@ -540,18 +540,18 @@ function removeLocalStream() {
  * Enable/disable microphone
  */
 function toggleMute() {
-  for (let index in localStream.getAudioTracks()) {
-    localStream.getAudioTracks()[index].enabled = !localStream.getAudioTracks()[index].enabled
-    muteButton.innerText = localStream.getAudioTracks()[index].enabled ? "Unmuted" : "Muted"
+  for (let index in myStream.getAudioTracks()) {
+    myStream.getAudioTracks()[index].enabled = !myStream.getAudioTracks()[index].enabled
+    muteButton.innerText = myStream.getAudioTracks()[index].enabled ? "Unmuted" : "Muted"
   }
 }
 /**
  * Enable/disable video
  */
 function toggleVid() {
-  for (let index in localStream.getVideoTracks()) {
-    localStream.getVideoTracks()[index].enabled = !localStream.getVideoTracks()[index].enabled
-    //vidButton.innerText = localStream.getVideoTracks()[index].enabled ? "Video Enabled" : "Video Disabled"
+  for (let index in myStream.getVideoTracks()) {
+    myStream.getVideoTracks()[index].enabled = !myStream.getVideoTracks()[index].enabled
+    //vidButton.innerText = myStream.getVideoTracks()[index].enabled ? "Video Enabled" : "Video Disabled"
   }
 }
 
@@ -559,19 +559,19 @@ function toggleVid() {
  * updating text of buttons
  */
 function updateButtons() {
-  for (let index in localStream.getVideoTracks()) {
-    vidButton.innerText = localStream.getVideoTracks()[index].enabled ? "Video Enabled" : "Video Disabled"
+  for (let index in myStream.getVideoTracks()) {
+    vidButton.innerText = myStream.getVideoTracks()[index].enabled ? "Video Enabled" : "Video Disabled"
   }
-  for (let index in localStream.getAudioTracks()) {
-    muteButton.innerText = localStream.getAudioTracks()[index].enabled ? "Unmuted" : "Muted"
+  for (let index in myStream.getAudioTracks()) {
+    muteButton.innerText = myStream.getAudioTracks()[index].enabled ? "Unmuted" : "Muted"
   }
 }
 
 $('#microphone-mode').on('click', function (e) {
 
-  for (let index in localStream.getAudioTracks()) {
-    localStream.getAudioTracks()[index].enabled = !localStream.getAudioTracks()[index].enabled
-    if (localStream.getAudioTracks()[index].enabled){
+  for (let index in myStream.getAudioTracks()) {
+    myStream.getAudioTracks()[index].enabled = !myStream.getAudioTracks()[index].enabled
+    if (myStream.getAudioTracks()[index].enabled){
       $('#path-micro-off').css('visibility', 'hidden');
       $('#path-micro-on').css('visibility', 'visible');
     }
@@ -584,9 +584,9 @@ $('#microphone-mode').on('click', function (e) {
 
 $('#video-mode').on('click', function (e) {
 
-  for (let index in localStream.getVideoTracks()) {
-    localStream.getVideoTracks()[index].enabled = !localStream.getVideoTracks()[index].enabled
-    if (localStream.getVideoTracks()[index].enabled) {
+  for (let index in myStream.getVideoTracks()) {
+    myStream.getVideoTracks()[index].enabled = !myStream.getVideoTracks()[index].enabled
+    if (myStream.getVideoTracks()[index].enabled) {
       $('#path-camera-off').css('visibility', 'hidden');
       $('#path-camera-on').css('visibility', 'visible');
     } else {
