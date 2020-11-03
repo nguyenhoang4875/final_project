@@ -597,6 +597,23 @@ $('#video-mode').on('click', function (e) {
 
 });
 
+<!-- chat section toggle -->
+  let isChat = true;
+  function handleChat(){
+  let main_right = $(".main__right");
+  if (isChat) {
+    $(".main__right").css('display','none')
+    $(".main__left").css('flex',1) ;
+    isChat = false;
+  } else {
+    $(".main__right").css('display','flex')
+    $(".main__left").css('flex','0.7')
+    $(".chat_count").css('display','none');
+    isChat = true;
+  }
+}
+
+
 
 
 
