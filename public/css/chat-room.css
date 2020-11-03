@@ -224,21 +224,22 @@ video {
     max-width: 70%;
     width: fit-content;
     /* word-wrap: break-word; */
-    padding: 15px;
-    margin: 10px 10px 10px auto;
+    padding:0.5rem;
+    margin: 0.5rem 0.5rem 0.5rem auto;
     /* margin-left: auto; */
     color: white;
     text-align: left;
-    border-radius: 10px;
+    border-radius: 1rem;
 }
 
 .message__other {
     max-width: 70%;
     width: fit-content;
     /* word-wrap: break-word; */
-    margin: 10px 10px 0;
-    padding: 15px;
-    border-radius: 10px;
+    margin: 0.5rem 0.5rem 0;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    color: black;
 }
 
 .message__userCard {

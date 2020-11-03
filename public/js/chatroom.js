@@ -3,9 +3,11 @@ $("#chat-toggle").click(function () {
   $('.chat').slideToggle( "slow" );
 })
 
+let inputMessage = document.getElementById("input_chat_message");
+let ul = document.querySelector("ul")
+
 'use strict';
 var myStream = null;
-
 
 /**
  * Socket.io socket
@@ -174,7 +176,6 @@ const rooms = {
      * @param {HTMLVideoElement} el video element to put in pip mode
      */
     function openPictureMode(el) {
-      console.log('opening pip')
       el.requestPictureInPicture()
     }
 
@@ -200,7 +201,7 @@ const rooms = {
           username: !!mess.sender_id.username ? mess.sender_id.username : 'User',
           date: mess.created
         };
-        app.helpers.addMessage(message);
+        rooms.helpers.addMessage(message);
       }
     }
 
@@ -210,26 +211,24 @@ const rooms = {
       console.log("joined room!")
       init();
       // Whenever the user hits the save button, emit newMessage event.
-      $('.chat-message button').on('click', function (e) {
-        const textareaEle = $("input[name='message']");
-        const messageContent = textareaEle.val().trim();
+      $('.fa-paper-plane').on('click', function (e) {
+        const messageContent = inputMessage.value.trim();
         if (messageContent !== '') {
           const message = {
             content: messageContent,
             username: username,
             date: Date.now(),
           };
-
           socket.emit('newMessage', {roomId, message, userId});
-          textareaEle.val('');
-          app.helpers.addMessage(message);
+          rooms.helpers.addMessage(message);
+          inputMessage.value = '';
         }
       });
 
       // Enter in input send message
-      $('#input-message').keypress(function (e) {
+      $('#input_chat_message').keypress(function (e) {
         if (e.which == 13) {
-          $('.chat-message button').click();
+          $('.fa-paper-plane').click();
         }
       });
 
@@ -237,12 +236,12 @@ const rooms = {
       socket.on('removeUser', function (userId) {
         console.log(userId);
         $('li#user-' + userId).remove();
-        app.helpers.updateNumOfUsers();
+        rooms.helpers.updateNumOfUsers();
       });
 
       // Append a new message
       socket.on('addMessage', function (message) {
-        app.helpers.addMessage(message);
+        rooms.helpers.addMessage(message);
       });
 
       socket.on('remove-user', function ({id}) {
@@ -390,6 +389,7 @@ const rooms = {
     },
 
     // Adding a new message to chat history
+/*
     addMessage: function (message) {
       message.date = (new Date(message.date)).toLocaleString();
       message.username = this.encodeHTML(message.username);
@@ -407,6 +407,38 @@ const rooms = {
       // Keep scroll bar down
       $(".chat-history").animate({scrollTop: $('.chat-history')[0].scrollHeight}, 1000);
     },
+*/
+
+    addMessage: function (messageCome) {
+      console.log('in addMessage method');
+      let message = messageCome.content;
+      let username = messageCome.username;
+      if ($(".main__right").css('display') === "none") {
+        $(".chat_count").css('display','block');
+        $(".chat_count").innerText = ++chat_count;
+      }
+      let li_node = document.createElement("LI");                 // Create a <li> node
+      li_node.innerHTML = `<strong>${username}</strong><br><p>${message}</p>`
+      ul.appendChild(li_node);
+
+      if (username === NAME) {
+        li_node.classList.add("message__user");
+        li_node.classList.add("message__userCard");
+
+      } else {
+        li_node.classList.add("message__other");
+        li_node.classList.add("message__guestCard");
+      }
+
+      $(".main__chat_window").animate({scrollTop: $('.main__chat_window')[0].scrollHeight}, 100);
+
+    },
+
+    scrollToBottom: function (){
+      let d = $('.main__chat_window');
+      d.scrollTop = d.scrollHeight;
+    },
+
 
     // Update number of rooms
     // This method MUST be called after adding a new room

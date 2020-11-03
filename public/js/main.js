@@ -197,25 +197,6 @@ const app = {
             this.updateNumOfUsers();
         },
 
-        // Adding a new message to chat history
-        addMessage: function (message) {
-            message.date = (new Date(message.date)).toLocaleString();
-            message.username = this.encodeHTML(message.username);
-            message.content = this.encodeHTML(message.content);
-
-            const html = `<li>
-                    <div class="message-data">
-                      <span class="message-data-name">${message.username}</span>
-                      <span class="message-data-time">${message.date}</span>
-                    </div>
-                    <div class="message my-message" dir="auto">${message.content}</div>
-                  </li>`;
-            $(html).hide().appendTo('.chat-history ul').slideDown(200);
-
-            // Keep scroll bar down
-            $(".chat-history").animate({scrollTop: $('.chat-history')[0].scrollHeight}, 1000);
-        },
-
         // Update number of rooms
         // This method MUST be called after adding a new room
         updateNumOfRooms: function () {
