@@ -48,18 +48,19 @@ const ioEvents = function (io) {
     // Chatroom namespace
     io.of('/chatroom').on('connection', function (socket) {
 
-        // Join a chatroom
-        socket.on('join', async function ({roomId, userId}) {
-            console.log('join room here abx wwww');
+        socket.on('join-room',async function ({roomId, userId}) {
+
+
+            console.log('roomId is: ', roomId);
+            console.log('userId is: ', userId);
+
             const result = await RoomService.findRoom({id: roomId});
             const room = result.data;
-            // console.log('room :', room);
-
-            console.log('chat room join!!!!');
             if (!result || result.status !== 200) {
                 console.log('fail in check result');
                 socket.emit('updateUsersList', {error: 'Room doesnt exist.'});
-            } else {
+            }
+            else {
                 // Check if user exists in the session
                 if (socket.request.session.passport == null) {
                     console.log('passport session is null');
@@ -67,65 +68,42 @@ const ioEvents = function (io) {
                 }
 
 
-                console.log('a client is connected')
-
-
-                // Initiate the connection process as soon as the client connects
-
-                peers[socket.id] = socket
-
-                // console.log('peers is: ', peers)
-                //  console.log('socket current is: ', socket);
-
-                // Asking all other clients to setup the peer connection receiver
-                for (let id in peers) {
-                    if (id === socket.id) continue
-                    console.log('sending init receive to ' + socket.id)
-                    peers[id].emit('initReceive', socket.id)
-                    console.log('in sending init receive emit :))')
+                if (peers[roomId]) {
+                    peers[roomId][socket.id] = {}
+                } else {
+                    peers[roomId] = {}
+                    peers[roomId][socket.id] = {}
                 }
-                /**
-                 * relay a peerconnection signal to a specific socket
-                 */
+
+                peers[roomId][socket.id] = socket
+
+                for (let id in peers[roomId]) {
+                    if (id === socket.id) continue
+                    peers[roomId][id].emit('initReceive', socket.id)
+                }
+
+
                 socket.on('signal', data => {
-                    console.log('sending signal from ' + socket.id + ' to ', data)
-                    if (!peers[data.socket_id]) return
-                    peers[data.socket_id].emit('signal', {
+                    if (!peers[roomId][data.socket_id]) return
+                    peers[roomId][data.socket_id].emit('signal', {
                         socket_id: socket.id,
                         signal: data.signal
                     })
                 })
 
-                /**
-                 * remove the disconnected peer connection from all other connected clients
-                 */
+
                 socket.on('disconnect', () => {
                     console.log('socket disconnected ' + socket.id)
                     socket.broadcast.emit('removePeer', socket.id)
-                    delete peers[socket.id]
+                    delete peers[roomId][socket.id]
                 })
 
-                /**
-                 * Send message to client to initiate a connection
-                 * The sender has already setup a peer connection receiver
-                 */
+
                 socket.on('initSend', init_socket_id => {
-                    console.log('INIT SEND by ' + socket.id + ' for ' + init_socket_id)
-                    peers[init_socket_id].emit('initSend', socket.id)
+                    peers[roomId][init_socket_id].emit('initSend', socket.id)
                 })
 
-
-
-
-                socket.join(room._id);
-                socket.chatRoomId = room._id;
-                socket.userId = userId;
-                //  users.push(socket.id);
-                //    console.log('socket id: ', socket.id);
-                //   console.log('users : ', users);
-                socket.broadcast.to(room._id).emit('add-users', {
-                    users: [socket.id],
-                });
+                socket.join(roomId)
 
                 const connect = await ConnectService.newConnect({roomId, userId});
 
@@ -136,9 +114,7 @@ const ioEvents = function (io) {
                 }
 
             }
-
-        });
-
+        })
 
         // When a socket exits
         socket.on('disconnect', async function () {
@@ -180,26 +156,6 @@ const ioEvents = function (io) {
             await ChatService.createMsg({roomId, message: message.content, userId});
             socket.broadcast.to(roomId).emit('addMessage', message);
         });
-
-        /*socket.broadcast.emit('add-users', {
-                users: [socket.id]
-            });*/
-
-        socket.on('make-offer', function (data) {
-            socket.to(data.to).emit('offer-made', {
-                offer: data.offer,
-                socket: socket.id,
-            });
-        });
-
-        socket.on('make-answer', function (data) {
-            socket.to(data.to).emit('answer-made', {
-                socket: socket.id,
-                answer: data.answer,
-            });
-        });
-
-
     });
 
     // User namespace
