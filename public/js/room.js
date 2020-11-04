@@ -78,7 +78,7 @@ axios.get('/users/')
 toogleModal = () => {
     $("#submit_room").attr("disabled", false).html('Submit');
     $("input[name='topic']").val('');
-    $("input[name='quantity']").val('');
+    $("#selectMaxPeople").val('');
     $("input[name='level']").val('');
     $("input[name='room_id']").val('');
 };
@@ -95,7 +95,7 @@ showEditModal = function (id) {
             const room = res.data.data;
             let users = room.users;
             $("input[name='topic']").val(room.name);
-            $("input[name='quantity']").val(room.quantity);
+            $("#selectMaxPeople").val(room.quantity);
             $("input[name='level']").val(room.level);
             $("input[name='room_id']").val(room._id);
             if (!!users && !!users[0]) {
@@ -123,10 +123,10 @@ searchEvent = () => {
 };
 
 axios.get('/utils/max-peoples').then(res => {
-    console.log(res);
     let maxPeoples = res.data;
-    maxPeoples.forEach(x => $("#selectMaxPeople").append(new Option(x, x)));
+    maxPeoples.forEach(x => $("#selectMaxPeople").append(new Option(x,x)));
     })
     .catch(err => {
         console.log(err);
-    });
+    }
+);

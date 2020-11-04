@@ -34,7 +34,7 @@ const app = {
                 e.preventDefault();
                 let roomId = $("input[name='room_id']").val();
                 let name = $("input[name='topic']").val().trim();
-                let quantity = $("input[name='quantity']").val().trim();
+                let quantity = $("#selectMaxPeople").val();
                 let level = $("input[name='level']").val().trim();
 
                 let local = localStorage.getItem('user');
