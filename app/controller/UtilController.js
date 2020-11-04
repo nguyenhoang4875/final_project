@@ -11,6 +11,10 @@ class UtilController {
         res.status(200).json(maxPeoples);
     }
 
+    async getLevels(req, res) {
+        let levels = await this.utilService.getLevels();
+        res.status(200).json(levels);
+    }
 }
 
 module.exports = new UtilController;

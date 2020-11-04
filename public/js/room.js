@@ -79,7 +79,7 @@ toogleModal = () => {
     $("#submit_room").attr("disabled", false).html('Submit');
     $("input[name='topic']").val('');
     $("#selectMaxPeople").val('');
-    $("input[name='level']").val('');
+    $("#selectLevels").val('Any Level');
     $("input[name='room_id']").val('');
 };
 
@@ -96,7 +96,7 @@ showEditModal = function (id) {
             let users = room.users;
             $("input[name='topic']").val(room.name);
             $("#selectMaxPeople").val(room.quantity);
-            $("input[name='level']").val(room.level);
+            $("#selectLevels").val(room.level);
             $("input[name='room_id']").val(room._id);
             if (!!users && !!users[0]) {
                 let emails = users.map(user => user.email + "");
@@ -130,3 +130,13 @@ axios.get('/utils/max-peoples').then(res => {
         console.log(err);
     }
 );
+
+axios.get('/utils/levels').then(res => {
+    console.log(res);
+    let levels = res.data;
+    levels.forEach(x => $("#selectLevels").append(new Option(x,x)));
+})
+    .catch(err => {
+            console.log(err);
+        }
+    );

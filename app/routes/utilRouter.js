@@ -15,5 +15,6 @@ router.use((req, res, next) => {
 });
 // Utils
 router.get('/max-peoples', (req, res) => UtilController.getListMaxPeoples(req, res));
+router.get('/levels', (req, res) => UtilController.getLevels(req, res));
 
 module.exports = router;
