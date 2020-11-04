@@ -9,9 +9,7 @@ router.use((req, res, next) => {
     if(req.isAuthenticated()){
         return next();
     }else{
-        //return res.redirect('/');
-        return next();
-
+        return res.redirect('/');
     }
 });
 // Rooms

@@ -5,6 +5,7 @@ const authRouter = require('./authRouter');
 const roomRouter = require('./roomRouter');
 const userRouter = require('./userRouter');
 const chatRouter = require('./chatRouter');
+const utilRouter = require('./utilRouter');
 // Home page
 router.get('/', function(req, res, next) {
 	// If user is already logged in, then redirect to rooms page
@@ -24,5 +25,6 @@ router.use('/auth', authRouter);
 router.use('/rooms', roomRouter);
 router.use('/users', userRouter);
 router.use('/chat', chatRouter);
+router.use('/utils', utilRouter);
 
 module.exports = router;

@@ -2,6 +2,7 @@ let options = [];
 let select;
 axios.get('/users/me')
     .then(res => {
+        console.log('xxx', res);
         localStorage.setItem('user', JSON.stringify(res.data));
     })
     .catch(err => {
@@ -76,7 +77,7 @@ axios.get('/users/')
     });
 toogleModal = () => {
     $("#submit_room").attr("disabled", false).html('Submit');
-    $("input[name='title']").val('');
+    $("input[name='topic']").val('');
     $("input[name='quantity']").val('');
     $("input[name='level']").val('');
     $("input[name='room_id']").val('');
@@ -120,3 +121,12 @@ searchEvent = () => {
     let search = $("#search_room_input").val();
     $("#search_room_button").attr('href', '?search=' + search);
 };
+
+axios.get('/utils/max-peoples').then(res => {
+    console.log(res);
+    let maxPeoples = res.data;
+    maxPeoples.forEach(x => $("#selectMaxPeople").append(new Option(x, x)));
+    })
+    .catch(err => {
+        console.log(err);
+    });
