@@ -7,15 +7,11 @@ let inputMessage = document.getElementById("input_chat_message");
 let ul = document.querySelector("ul")
 
 'use strict';
-var myStream = null;
 
-/**
- * Socket.io socket
- */
-// let socket;
 /**
  * The stream object used to send media
  */
+var myStream = null;
 /**
  * All peer connections
  */
@@ -24,7 +20,6 @@ let peers = {}
 // redirect if not https
 if(location.href.substr(0,5) !== 'https')
   location.href = 'https' + location.href.substr(4, location.href.length - 4)
-
 
 //////////// CONFIGURATION //////////////////
 
@@ -53,20 +48,14 @@ let constraints = {
   video: true
 }
 
-/////////////////////////////////////////////////////////
-
 constraints.video.facingMode = {
   ideal: "user"
 }
-
-
 
 const rooms = {
   chat: function (roomId, username, userId) {
     let socket = io('/chatroom', {transports: ['websocket']});
     let answersFrom = {}, offer;
-
-
 
 // enabling the camera at startup
     navigator.mediaDevices.getUserMedia(constraints).then(stream => {
@@ -74,12 +63,12 @@ const rooms = {
       myVideo.srcObject = stream;
       myStream = stream;
     }).catch(e => alert(`getusermedia error ${e.name}`))
-
       getHistoryMsg(roomId);
+
       /**
        * initialize the socket connections
        */
-      function init() {
+      function joinRoom() {
 
       socket.emit('join-room', {roomId, userId})
       socket.on('initReceive', socket_id => {
@@ -142,7 +131,6 @@ const rooms = {
      *                  Set to false if the peer receives the connection.
      */
     function addPeer(socket_id, am_initiator) {
-      console.log("in addPeer !")
       peers[socket_id] = new SimplePeer({
         initiator: am_initiator,
         stream: myStream,
@@ -150,7 +138,6 @@ const rooms = {
       })
 
       peers[socket_id].on('signal', data => {
-        console.log('peer in signal')
         socket.emit('signal', {
           signal: data,
           socket_id: socket_id
@@ -158,7 +145,6 @@ const rooms = {
       })
 
       peers[socket_id].on('stream', stream => {
-        console.log('peer in stream')
         let newVid = document.createElement('video')
         newVid.srcObject = stream
         newVid.id = socket_id
@@ -205,11 +191,9 @@ const rooms = {
       }
     }
 
-
     // When socket connects, join the current chatroom
     socket.on('connect', function () {
-      console.log("joined room!")
-      init();
+      joinRoom();
       // Whenever the user hits the save button, emit newMessage event.
       $('.fa-paper-plane').on('click', function (e) {
         const messageContent = inputMessage.value.trim();
@@ -346,7 +330,6 @@ const rooms = {
             }
             break;
           }
-
         }
 
         this.updateNumOfRooms();
@@ -388,27 +371,6 @@ const rooms = {
       this.updateNumOfUsers();
     },
 
-    // Adding a new message to chat history
-/*
-    addMessage: function (message) {
-      message.date = (new Date(message.date)).toLocaleString();
-      message.username = this.encodeHTML(message.username);
-      message.content = this.encodeHTML(message.content);
-
-      const html = `<li>
-                    <div class="message-data">
-                      <span class="message-data-name">${message.username}</span>
-                      <span class="message-data-time">${message.date}</span>
-                    </div>
-                    <div class="message my-message" dir="auto">${message.content}</div>
-                  </li>`;
-      $(html).hide().appendTo('.chat-history ul').slideDown(200);
-
-      // Keep scroll bar down
-      $(".chat-history").animate({scrollTop: $('.chat-history')[0].scrollHeight}, 1000);
-    },
-*/
-
     addMessage: function (messageCome) {
       console.log('in addMessage method');
       let message = messageCome.content;
@@ -438,7 +400,6 @@ const rooms = {
       let d = $('.main__chat_window');
       d.scrollTop = d.scrollHeight;
     },
-
 
     // Update number of rooms
     // This method MUST be called after adding a new room
@@ -517,10 +478,7 @@ function setScreen() {
               }
             }
           }
-
         }
-
-
 
         screenTrack.onended = function () {
           console.log("ended")
@@ -536,16 +494,13 @@ function setScreen() {
                   }
                 }
               }
-
             }
             myStream = stream
             myVideo.srcObject = myStream
           }).catch(function (error) {
             console.log(error);
           });
-
         }
-
       })
 }
 
@@ -626,7 +581,6 @@ $('#video-mode').on('click', function (e) {
       $('#path-camera-on').css('visibility', 'hidden');
     }
   }
-
 });
 
 <!-- chat section toggle -->
@@ -644,13 +598,3 @@ $('#video-mode').on('click', function (e) {
     isChat = true;
   }
 }
-
-
-
-
-
-
-
-
-
-

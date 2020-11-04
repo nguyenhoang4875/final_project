@@ -50,10 +50,6 @@ const ioEvents = function (io) {
 
         socket.on('join-room',async function ({roomId, userId}) {
 
-
-            console.log('roomId is: ', roomId);
-            console.log('userId is: ', userId);
-
             const result = await RoomService.findRoom({id: roomId});
             const room = result.data;
             if (!result || result.status !== 200) {
@@ -66,7 +62,6 @@ const ioEvents = function (io) {
                     console.log('passport session is null');
                     return;
                 }
-
 
                 if (peers[roomId]) {
                     peers[roomId][socket.id] = {}
@@ -82,7 +77,6 @@ const ioEvents = function (io) {
                     peers[roomId][id].emit('initReceive', socket.id)
                 }
 
-
                 socket.on('signal', data => {
                     if (!peers[roomId][data.socket_id]) return
                     peers[roomId][data.socket_id].emit('signal', {
@@ -91,13 +85,11 @@ const ioEvents = function (io) {
                     })
                 })
 
-
                 socket.on('disconnect', () => {
                     console.log('socket disconnected ' + socket.id)
                     socket.broadcast.emit('removePeer', socket.id)
                     delete peers[roomId][socket.id]
                 })
-
 
                 socket.on('initSend', init_socket_id => {
                     peers[roomId][init_socket_id].emit('initSend', socket.id)
@@ -112,7 +104,6 @@ const ioEvents = function (io) {
                     socket.emit('updateUsersList', users, true, userConnected);
                     socket.broadcast.to(room._id).emit('updateUsersList', users, true, userConnected);
                 }
-
             }
         })
 
@@ -219,16 +210,15 @@ const init = function (app) {
     const server = https.createServer(options, app);
 
     const io = require('socket.io')(server);
-    //  require('../controller/socketController')(io)
 
+    /*
+        const mongoAdapter = require('socket.io-adapter-mongo');
+        // Force Socket.io to ONLY use "websockets"; No Long Polling.
+        //io.set('transports', ['websocket']);
 
-    const mongoAdapter = require('socket.io-adapter-mongo');
+        io.adapter(mongoAdapter('mongodb://localhost:27017'));
 
-    // Force Socket.io to ONLY use "websockets"; No Long Polling.
-    //io.set('transports', ['websocket']);
-
-    io.adapter(mongoAdapter('mongodb://localhost:27017'));
-
+    */
     // Allow sockets to access session data
     io.use((socket, next) => {
         require('../session')(socket.request, {}, next);
