@@ -151,6 +151,7 @@ const rooms = {
         newVid.playsinline = false
         newVid.autoplay = true
         newVid.className = "vid"
+        newVid.controls = true
         newVid.onclick = () => openPictureMode(newVid)
         newVid.ontouchstart = (e) => openPictureMode(newVid)
         videos.appendChild(newVid)
