@@ -16,7 +16,9 @@
     background-color: #7FBFBF ;
     margin: 1rem;
     width: 18rem;
-    height: 12rem;
+    height: 14rem;
+    font-family: 'Ubuntu', sans-serif;
+;
 }
 
 .list {
@@ -53,6 +55,33 @@
     display: flex;
     justify-content: space-between;
 }
+
+.room-title__active {
+    color: green;
+    text-align: center;
+    border: 1px dashed;
+    border-radius: 0.5rem;
+}
+.room-title__active:hover {
+    color: forestgreen;
+    text-align: center;
+    border: 2px dashed;
+    font-weight: bolder;
+    border-radius: 0.5rem;
+}
+
+.room-title__full {
+    color: red;
+    text-align: center;
+    border: 1px dashed;
+    font-weight: bold;
+    border-radius: 0.5rem;
+}
+
+
+
+
+
 
 
 @media only screen and(max-width: 900px) {

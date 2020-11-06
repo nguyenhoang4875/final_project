@@ -79,11 +79,22 @@
 
                         <p class="card-text">Max people: <%= room.quantity %></p>
                         <p class="card-text">Level: <%= room.level %></p>
+                        <p class="card-text">Status: <%= room.status%></p>
                     </div>
                     <footer>
+                        <% if (room.status === 'active' ) {%>
                         <a class="card-link" href="/chat/<%= room.id %>">
-                            <p class="card-text text-center">Join and talk now</p>
+                            <p class="card-text room-title__active">
+                                <i class="fa fa-phone" aria-hidden="true"></i>
+                                Join and talk now
+                            </p>
                         </a>
+                        <%} else if (room.status === 'full') {%>
+                            <p class="card-text room-title__full">
+                                <i class="fa fa-ban" aria-hidden="true"></i>
+                                This room is full
+                            </p>
+                        <% }%>
                     </footer>
                 </div>
             </div>

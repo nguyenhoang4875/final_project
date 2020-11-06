@@ -13,6 +13,8 @@ const UserService = require('../services/UserService');
 const users = [];
 const peers = {}
 
+const { STATUS_ROOM } = require('../config/constant');
+
 
 /**
  * Encapsulates all code for emitting and listening to socket events
@@ -99,6 +101,12 @@ const ioEvents = function (io) {
                     socket.broadcast.to(room._id).emit('updateUsersList', users, true, userConnected);
                 }
 
+                const checkCanJoinRoomByLimitPeople = await ConnectService.checkLimitPeopleInRoom({roomId});
+                if (!checkCanJoinRoomByLimitPeople){
+                    const roomSetFull = await RoomService.setStatusRoom(roomId,STATUS_ROOM.FULL);
+                    console.log('this room was ',roomSetFull.room.status);
+                    return;
+                }
 
                 socket.on('disconnect', () => {
                     console.log('socket disconnected ' + socket.id)
@@ -149,10 +157,13 @@ const ioEvents = function (io) {
             }
 
             const conn = await ConnectService.removeConnect({roomId, userId});
-
-            console.log('conn in disconnect', conn);
+            const checkCanJoinRoomByLimitPeople = await ConnectService.checkLimitPeopleInRoom({roomId});
 
             if (conn.status === 200) {
+                if (checkCanJoinRoomByLimitPeople){
+                    console.log('set room to active');
+                    await RoomService.setStatusRoom(roomId,STATUS_ROOM.ACTIVE);
+                }
                 console.log('disconnect room');
                 const userConnected = conn.conn.users;
                 socket.leave(roomId);

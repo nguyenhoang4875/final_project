@@ -56,7 +56,7 @@ class RoomService {
     async getListAll(req) {
         try {
             const {userId} = req;
-            let rooms = await this.roomModel.find({status: 'active'}).populate('').exec();
+            let rooms = await this.roomModel.find().populate('').exec();
             return {
                 message: 'Get all list room success',
                 data: rooms
@@ -131,37 +131,45 @@ class RoomService {
         }
     }
 
+    async setStatusRoom(roomId, status){
+        try {
+            await this.roomModel.updateOne({_id: roomId},{status: status}).exec();
+            let result = await this.roomModel.findOne({_id: roomId}).exec();
+            return {
+                status: 200,
+                message: 'Update data success!',
+                room: result
+            }
+        } catch (error) {
+            return {
+                status: 500,
+                message: 'Update data failed',
+                data: error
+            }
+        }
+    }
+
     async update({ name, level, quantity, id, roomId }){
         try {
-            //let img = image ? await CommonService.uploadImage(image) : old_img;
-            const role = await this.checkRole(id, roomId);
-            if (role.status !== 200) {
-                return {
-                    status: 400,
-                    message: role.message,
-                    data: null
-                }
-            }
-         //   let room = await this.roomModel.findOne({ _id: roomId }).exec();
 
             await this.roomModel.update({_id: roomId},{name, level,quantity}).exec();
 
-/*
-            if (role.role === ROLES.ROOM_MASTER) {
-                const admins = await UserModel.find({ role: ROLES.ADMIN }).select('-password -mail_token').exec();
-                await admins.map( async admin => {
-                    await this.roomModel.update({_id: room._id},{ $push: { users: admin }}).exec()
-                });
-            }
+            /*
+                        if (role.role === ROLES.ROOM_MASTER) {
+                            const admins = await UserModel.find({ role: ROLES.ADMIN }).select('-password -mail_token').exec();
+                            await admins.map( async admin => {
+                                await this.roomModel.update({_id: room._id},{ $push: { users: admin }}).exec()
+                            });
+                        }
 
-            await Promise.all(
-                members.map(email =>
-                    this.userModel.findOne({ email }).select('-password -mail_token').exec()))
-                .then(async users => {
-                        await this.roomModel.update({_id: roomId}, {$push: {users}}).exec();
-                    }
-                );
-*/
+                        await Promise.all(
+                            members.map(email =>
+                                this.userModel.findOne({ email }).select('-password -mail_token').exec()))
+                            .then(async users => {
+                                    await this.roomModel.update({_id: roomId}, {$push: {users}}).exec();
+                                }
+                            );
+            */
             let result = await this.roomModel.findOne({_id: roomId}).exec();
             return {
                 status: 200,

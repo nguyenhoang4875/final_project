@@ -16,6 +16,13 @@ const TYPES = {
     UPDATE: 'UPDATE'
 };
 
+const STATUS_ROOM = {
+    'ACTIVE': 'active',
+    'FULL': 'full',
+    'LOOKED': 'looked',
+};
+
+
 const MAX_PEOPLES = ['Unlimited',1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const LEVELS = ["Any Level", "Beginner", "Upper Beginner", "Intermediate", "Upper Intermediate", "Advanced", "Upper Advanced"];
-module.exports = { ROLES, STATUS_USER, TYPES, MAX_PEOPLES, LEVELS };
+module.exports = { ROLES, STATUS_USER, TYPES, MAX_PEOPLES, LEVELS, STATUS_ROOM };
