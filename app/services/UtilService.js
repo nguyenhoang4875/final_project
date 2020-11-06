@@ -1,11 +1,12 @@
+const { MAX_PEOPLES, LEVELS} = require('../config/constant');
+
 class UtilService {
     constructor() {
     }
 
     async getListMaxPeoples() {
         try {
-            const maxPeoples = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-            return maxPeoples;
+            return MAX_PEOPLES;
         } catch (error) {
             console.log(error);
         }
@@ -13,8 +14,7 @@ class UtilService {
 
     async getLevels() {
         try {
-            const levels = ["Any Level", "Beginner", "Upper Beginner", "Intermediate", "Upper Intermediate", "Advanced", "Upper Advanced"];
-            return levels;
+            return LEVELS;
         } catch (error) {
             console.log(error);
         }

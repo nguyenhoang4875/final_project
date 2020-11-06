@@ -78,7 +78,7 @@ axios.get('/users/')
 toogleModal = () => {
     $("#submit_room").attr("disabled", false).html('Submit');
     $("input[name='topic']").val('');
-    $("#selectMaxPeople").val('');
+    $("#selectMaxPeople").val('Unlimited');
     $("#selectLevels").val('Any Level');
     $("input[name='room_id']").val('');
 };
