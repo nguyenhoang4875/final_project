@@ -52,6 +52,14 @@ const ioEvents = function (io) {
 
             const result = await RoomService.findRoom({id: roomId});
             const room = result.data;
+
+            const checkCanJoinRoomByLimitPeople = await ConnectService.checkLimitPeopleInRoom({roomId});
+            if (!checkCanJoinRoomByLimitPeople){
+                console.log('this room was full!');
+                return;
+            }
+
+
             if (!result || result.status !== 200) {
                 console.log('fail in check result');
                 socket.emit('updateUsersList', {error: 'Room doesnt exist.'});
@@ -62,6 +70,9 @@ const ioEvents = function (io) {
                     console.log('passport session is null');
                     return;
                 }
+
+                socket.roomId = roomId;
+                socket.userId = userId;
 
                 if (peers[roomId]) {
                     peers[roomId][socket.id] = {}
@@ -77,23 +88,6 @@ const ioEvents = function (io) {
                     peers[roomId][id].emit('initReceive', socket.id)
                 }
 
-                socket.on('signal', data => {
-                    if (!peers[roomId][data.socket_id]) return
-                    peers[roomId][data.socket_id].emit('signal', {
-                        socket_id: socket.id,
-                        signal: data.signal
-                    })
-                })
-
-                socket.on('disconnect', () => {
-                    console.log('socket disconnected ' + socket.id)
-                    socket.broadcast.emit('removePeer', socket.id)
-                    delete peers[roomId][socket.id]
-                })
-
-                socket.on('initSend', init_socket_id => {
-                    peers[roomId][init_socket_id].emit('initSend', socket.id)
-                })
 
                 socket.join(roomId)
 
@@ -104,16 +98,47 @@ const ioEvents = function (io) {
                     socket.emit('updateUsersList', users, true, userConnected);
                     socket.broadcast.to(room._id).emit('updateUsersList', users, true, userConnected);
                 }
+
+
+                socket.on('disconnect', () => {
+                    console.log('socket disconnected ' + socket.id)
+                    socket.broadcast.emit('removePeer', socket.id)
+                    delete peers[roomId][socket.id]
+                })
             }
         })
 
+
+        socket.on('signal', data => {
+            if (!peers[socket.roomId][data.socket_id]) return
+            peers[socket.roomId][data.socket_id].emit('signal', {
+                socket_id: socket.id,
+                signal: data.signal
+            })
+        })
+
+/*
+        socket.on('disconnect', () => {
+            console.log('socket disconnected ' + socket.id)
+            socket.broadcast.emit('removePeer', socket.id)
+            delete peers[roomId][socket.id]
+        })
+*/
+
+        socket.on('initSend', init_socket_id => {
+            peers[socket.roomId][init_socket_id].emit('initSend', socket.id)
+        })
+
+
         // When a socket exits
         socket.on('disconnect', async function () {
-            console.log('DISCONNECTED', socket.chatRoomId);
-            let roomId = socket.chatRoomId;
+            let roomId = socket.roomId;
             let userId = socket.userId;
-            console.log('users in disconnect: ', users);
-            users.splice(users.indexOf(socket.id), 1);
+
+            /*console.log('socket disconnected ' + socket.id)
+            socket.broadcast.emit('removePeer', socket.id)
+            delete peers[roomId][socket.id]*/
+
 
             socket.emit('remove-user', socket.id);
             socket.broadcast.to(roomId).emit('remove-user', {id: socket.id});
@@ -124,6 +149,8 @@ const ioEvents = function (io) {
             }
 
             const conn = await ConnectService.removeConnect({roomId, userId});
+
+            console.log('conn in disconnect', conn);
 
             if (conn.status === 200) {
                 console.log('disconnect room');
@@ -148,6 +175,7 @@ const ioEvents = function (io) {
             socket.broadcast.to(roomId).emit('addMessage', message);
         });
     });
+
 
     // User namespace
     io.of('/users').on('connection', function (socket) {

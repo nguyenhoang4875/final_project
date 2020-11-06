@@ -31,8 +31,54 @@ class ConnectionService {
         }
     }
 
+    async getNumberCurrentConnections({ roomId }) {
+        try {
+            let conn = await this.connectModel.findOne({roomId}).exec();
+            let numbers = 0;
+            if (!conn){
+                numbers = conn.users.length;
+            }
+            return numbers;
+        } catch (e) {
+            console.log(e);
+            return {
+                status: 400,
+                data: null
+            }
+        }
+    }
+
+    async checkLimitPeopleInRoom({ roomId }) {
+        try {
+            let conn = await this.connectModel.findOne({roomId}).exec();
+            let room = await this.roomModel.findOne({ _id: roomId }).exec();
+            let quantityRoom = room.quantity;
+            if (quantityRoom === 'Unlimited'){
+                return true;
+            }
+
+            let numbers = 0;
+            if (conn){
+                numbers = conn.users.length;
+            }
+
+            console.log('quantity room is : ',room.quantity);
+            console.log('number of connections : ',numbers);
+
+            return parseInt(quantityRoom) > numbers;
+        } catch (e) {
+            console.log(e);
+            return {
+                status: 400,
+                data: 'error when check limit people in room'
+            }
+        }
+    }
+
+
     async removeConnect({ roomId, userId }) {
         try {
+            console.log('remove connections in room');
             let conn = await this.connectModel.findOne({roomId}).exec();
             let room = await this.roomModel.findOne({ _id: roomId }).exec();
             if (!conn) {

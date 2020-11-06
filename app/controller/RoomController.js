@@ -1,5 +1,6 @@
 const RoomService = require('../services/RoomService');
 const UserService = require('../services/UserService');
+const ConnectionService= require('../services/ConnectionService');
 const {validationResult} = require('express-validator');
 const {ROLES} = require('../config/constant');
 
@@ -7,6 +8,7 @@ class RoomController {
     constructor() {
         this.roomService = RoomService;
         this.userService = UserService;
+        this.connectionService = ConnectionService;
     }
 
     async findRoom(req, res) {
@@ -107,6 +109,17 @@ class RoomController {
             res.status(500);
         }
     }
+
+    async checkValidQuantity(req, res) {
+        try {
+            const {id} = req.params;
+            let result = await this.connectionService.checkLimitPeopleInRoom({id});
+            res.status(200).json(result);
+        } catch (error) {
+            res.status(400);
+        }
+    }
+
 }
 
 module.exports = new RoomController;

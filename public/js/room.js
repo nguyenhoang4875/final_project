@@ -2,7 +2,6 @@ let options = [];
 let select;
 axios.get('/users/me')
     .then(res => {
-        console.log('xxx', res);
         localStorage.setItem('user', JSON.stringify(res.data));
     })
     .catch(err => {
@@ -132,7 +131,6 @@ axios.get('/utils/max-peoples').then(res => {
 );
 
 axios.get('/utils/levels').then(res => {
-    console.log(res);
     let levels = res.data;
     levels.forEach(x => $("#selectLevels").append(new Option(x,x)));
 })
