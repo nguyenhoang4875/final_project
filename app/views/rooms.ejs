@@ -18,7 +18,7 @@
         </div>
         <% if (user != null ) { %>
             <div>
-                <a href="/auth/logout" class="logout-btn">Logout</a>
+                <a href="/auth/logout" class="btn btn-danger">Logout</a>
             </div>
         <% } %>
     </div>
@@ -28,8 +28,8 @@
     <!-- end room-header -->
     <% if (user.role > 0) { %>
         <div class="clearfix">
-            <button class="btn btn-success btn-create-room" onclick="showCreateModal()"><i class="fa fa-plus"
-                                                                                           aria-hidden="true"></i>
+            <button class="btn btn-success btn-create-room" onclick="showCreateModal()">
+                <i class="fa fa-plus" aria-hidden="true"></i>
                 Create a new room
             </button>
         </div>
@@ -79,7 +79,6 @@
 
                         <p class="card-text">Max people: <%= room.quantity %></p>
                         <p class="card-text">Level: <%= room.level %></p>
-                        <p class="card-text">Status: <%= room.status%></p>
                     </div>
                     <footer>
                         <% if (room.status === 'active' ) {%>
@@ -101,7 +100,7 @@
 
         <% }); %>
         <% } else { if (user.role > 0) { %>
-            <p class="message" style="text-align: center; padding: 0; margin: 0">
+            <p class="message-create-first-room" style="text-align: center; padding: 0; margin: 0">
                 Create first room!
             </p>
         <% } %>
@@ -184,6 +183,10 @@
 <!-- end container -->
 <%- include('includes/end.ejs')%>
 
+<script>
+    var listRoom = '<%= rooms %>'
+    var userXXX = '<%= user %>'
+</script>
 <script src="/js/main.js"></script>
 <script>
     $(function () {

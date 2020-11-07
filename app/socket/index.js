@@ -24,26 +24,29 @@ const ioEvents = function (io) {
     // Rooms namespace
     io.of('/rooms').on('connection', function (socket) {
         // Create a new room
-        socket.on('createRoom', async function ({name, level, quantity, id}) {
-            const newRoom = await RoomService.create({name, level, quantity, id});
+        socket.on('createRoom', async function ({name, level, quantity, userId}) {
+            const newRoom = await RoomService.create({name, level, quantity, userId});
             console.log('NEW ROOM: ', newRoom);
             const users = await UserService.getUser();
-            socket.emit('updateRoomsList', {room: newRoom, creator: id, users: users});
-            socket.broadcast.emit('updateRoomsList', {room: newRoom, creator: id, users: users});
+            socket.emit('updateRoomsList', {room: newRoom, creator: userId, users: users});
+            socket.broadcast.emit('updateRoomsList', {room: newRoom, creator: userId, users: users});
         });
 
         // Edit a room
-        socket.on('editRoom', async function ({name, level, quantity, id, roomId}) {
-            const room = await RoomService.update({name, level, quantity, id, roomId});
-            socket.emit('updateRoomsList', {room, creator: id});
-            socket.broadcast.emit('updateRoomsList', {room, creator: id});
+        socket.on('editRoom', async function ({name, level, quantity, userId, roomId}) {
+            const room = await RoomService.update({name, level, quantity,userId, roomId});
+            const users = await UserService.getUser();
+            socket.emit('updateRoomsList', {room: room, creator: userId, users: users});
+            socket.broadcast.emit('updateRoomsList', {room: room, creator: userId, users: users});
         });
 
         // Delete a room
         socket.on('deleteRoom', async function ({roomId, userId}) {
             const room = await RoomService.delete({id: roomId});
-            socket.emit('updateRoomsList', {room, creator: userId});
-            socket.broadcast.emit('updateRoomsList', {room, creator: userId});
+            const users = await UserService.getUser();
+            socket.emit('updateRoomsList', {room: room, creator: userId, users: users});
+            socket.broadcast.emit('updateRoomsList', {room: room, creator: userId, users: users});
+
         });
     });
 

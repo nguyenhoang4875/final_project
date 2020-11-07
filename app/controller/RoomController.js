@@ -30,8 +30,10 @@ class RoomController {
                 isAdmin = true;
             }*/
             let rooms = await this.roomService.getListAll(req);
+            console.log(rooms)
+            console.log('data:', rooms.data);
             console.log('rooms length: ', rooms.data.length)
-            res.render('rooms', {rooms: rooms.data, user});
+            res.render('rooms', {rooms: rooms.data, user: user});
         } catch (error) {
             req.flash('error', 'Get list rooms failed');
             res.status(500).json({

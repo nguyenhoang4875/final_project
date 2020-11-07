@@ -14,7 +14,7 @@ const app = {
                 console.log('room: in socket updateRoomList: ', room);
                 console.log('create: in socket updateRoomList: ', creator);
                 // Display an error message upon a user error(i.e. creating a room with an existing title)
-                $('.room-create p.message').remove();
+                $('.message-create-first-room').remove();
                 if (room.status !== 200) {
                     if (userId === creator) {
                         toastr.error(room.message);
@@ -39,19 +39,19 @@ const app = {
 
                 let local = localStorage.getItem('user');
                 local = !!local ? JSON.parse(local) : null;
-                let id = local._id;
+                let userId = local._id;
 
                 if (name === '') {
                     toastr.error("Room's name and members is required !.");
                 } else {
-                    if (id) {
+                    if (userId) {
                         if (roomId) {
                             $(this).attr("disabled", true).html('Updating ...');
                             $("#delete_room").attr("style", "margin-right: 43%");
-                            socket.emit('editRoom', {name, level, quantity, id, roomId});
+                            socket.emit('editRoom', {name, level, quantity, userId, roomId});
                         } else {
                             $(this).attr("disabled", true).html('Creating ...');
-                            socket.emit('createRoom', {name, level, quantity, id});
+                            socket.emit('createRoom', {name, level, quantity, userId});
                         }
                     }
                 }
@@ -75,11 +75,13 @@ const app = {
         },
 
         // Update rooms list
-        updateRoomsList: function (newRoom, users) {
-            if (newRoom.status === 200) {
-                let room = newRoom.room;
+        updateRoomsList: function (manageRoom, users) {
+            if (manageRoom.status === 200) {
+                let room = manageRoom.room;
+                console.log('room in updateRoomsList', room);
 
-                if (room.isDelete) {
+                if (manageRoom.isDelete) {
+                    console.log('deleting room ne');
                     if ($(".room-list").length > 0) {
                         let id = room._id;
                         let query = $("#" + id);
@@ -87,7 +89,16 @@ const app = {
                             query.remove();
                         }
                     }
-                } else {
+                } else if(manageRoom.isUpdate){
+                    console.log('is updating ..........');
+
+                   // console.log('list room', rooms);
+                 //   const index = rooms.findIndex((x) => x.id === room.id);
+                   // rooms[index] = room;
+                }
+
+
+                else {
                     room.name = this.encodeHTML(room.name);
                     room.name = room.name.length > 25 ? room.name.substr(0, 25) + '...' : room.name;
                     let html = ` <div class="card card-room" id="${room.id}">
@@ -100,10 +111,13 @@ const app = {
                                         <p class="card-text">Level: ${room.level}</p>
                                       </div>
                                       <footer>
-                                        <a class="card-link" href="/chat/${room._id}">
-                                          <p class="card-text text-center">Join and talk now</p>
+                                        <a class="card-link" href="/chat/<%= room.id %>">
+                                            <p class="card-text room-title__active">
+                                                <i class="fa fa-phone" aria-hidden="true"></i>
+                                                Join and talk now
+                                            </p>
                                         </a>
-                                      </footer>
+                                    </footer>
                                     </div>
                                   </div>`
 
@@ -125,10 +139,13 @@ const app = {
                                 <p class="card-text">Level: ${room.level}</p>
                               </div>
                               <footer>
-                                <a class="card-link" href="/chat/${room._id}">
-                                  <p class="card-text text-center">Join and talk now</p>
+                                <a class="card-link" href="/chat/<%= room.id %>">
+                                    <p class="card-text room-title__active">
+                                        <i class="fa fa-phone" aria-hidden="true"></i>
+                                        Join and talk now
+                                    </p>
                                 </a>
-                              </footer>
+                            </footer>
                             </div>
                         </div>
 
@@ -160,7 +177,7 @@ const app = {
 
                 this.updateNumOfRooms();
             } else {
-                toastr.error(newRoom.message)
+                toastr.error(manageRoom.message)
             }
         },
 

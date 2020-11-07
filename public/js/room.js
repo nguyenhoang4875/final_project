@@ -92,20 +92,14 @@ showEditModal = function (id) {
     axios.get('/rooms/' + id)
         .then(res => {
             const room = res.data.data;
-            let users = room.users;
             $("input[name='topic']").val(room.name);
             $("#selectMaxPeople").val(room.quantity);
             $("#selectLevels").val(room.level);
             $("input[name='room_id']").val(room._id);
-            if (!!users && !!users[0]) {
-                let emails = users.map(user => user.email + "");
-                $('#list_members').data('selectize').setValue(emails);
-            }
         })
         .catch(err => {
             console.log(err);
         });
-
 };
 
 showCreateModal = function () {

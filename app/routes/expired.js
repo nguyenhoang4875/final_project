@@ -111,7 +111,7 @@ router.get('/auth/twitter/callback', passport.authenticate('twitter', {
 router.get('/rooms', [User.isAuthenticated, function(req, res, next) {
 	Room.find(function(err, rooms){
 		if(err) throw err;
-		res.render('rooms', { rooms });
+		res.render('rooms', { rooms: rooms , user: req.user});
 	});
 }]);
 
