@@ -30,8 +30,6 @@ class RoomController {
                 isAdmin = true;
             }*/
             let rooms = await this.roomService.getListAll(req);
-            console.log(rooms)
-            console.log('data:', rooms.data);
             console.log('rooms length: ', rooms.data.length)
             res.render('rooms', {rooms: rooms.data, user: user});
         } catch (error) {
@@ -96,7 +94,8 @@ class RoomController {
 
     async deleteRoom(req, res) {
         try {
-            let result = await this.roomService.delete(req);
+            const {id} = req.params;
+            let result = await this.roomService.delete({id});
             res.status(result.status).json(result);
         } catch (error) {
             res.status(500);
@@ -120,6 +119,12 @@ class RoomController {
         } catch (error) {
             res.status(400);
         }
+    }
+
+    async checkValidRoomPassword(req, res){
+        console.log('abc xxxx');
+        console.log('request: ', req.body.room_password);
+        console.log('request: ', req.body_roomId);
     }
 
 }

@@ -1,6 +1,6 @@
 const RoomModel = require('../models/RoomModel');
 const UserModel = require('../models/UserModel');
-const { ROLES } = require('../config/constant');
+const {ROLES, STATUS_ROOM} = require('../config/constant');
 
 class RoomService {
     constructor() {
@@ -8,7 +8,7 @@ class RoomService {
         this.userModel = UserModel;
     }
 
-    async getListByMe({ id, search = '', isAdmin = false }) {
+    async getListByMe({id, search = '', isAdmin = false}) {
         try {
             let userId;
             userId = id;
@@ -18,9 +18,9 @@ class RoomService {
                     rooms = await this.roomModel.find(
                         {
                             $or: [
-                                { status: 'active', name: new RegExp(search, 'i') },
-                                { status: 'active', "users.username":  new RegExp(search, 'i') },
-                                { status: 'active', "users.email":   new RegExp(search, 'i') }]
+                                {status: 'active', name: new RegExp(search, 'i')},
+                                {status: 'active', "users.username": new RegExp(search, 'i')},
+                                {status: 'active', "users.email": new RegExp(search, 'i')}]
                         }).sort({updated: -1})
                         .exec();
                 } else {
@@ -28,12 +28,20 @@ class RoomService {
                 }
             } else {
                 if (!!search) {
-                    console.log('SEARCH:' , search);
+                    console.log('SEARCH:', search);
                     rooms = await this.roomModel.find({
                         $or: [
-                            { status: 'active', "users._id": {$in: [userId]}, name: new RegExp('^'+search+'$', "i") },
-                            { status: 'active', "users._id": {$in: [userId]}, "users.username": new RegExp('^'+search+'$', "i") },
-                            { status: 'active', "users._id": {$in: [userId]}, "users.email": new RegExp('^'+search+'$', "i") },
+                            {status: 'active', "users._id": {$in: [userId]}, name: new RegExp('^' + search + '$', "i")},
+                            {
+                                status: 'active',
+                                "users._id": {$in: [userId]},
+                                "users.username": new RegExp('^' + search + '$', "i")
+                            },
+                            {
+                                status: 'active',
+                                "users._id": {$in: [userId]},
+                                "users.email": new RegExp('^' + search + '$', "i")
+                            },
                         ]
                     }).sort({updated: -1}).exec();
                 } else {
@@ -55,8 +63,7 @@ class RoomService {
 
     async getListAll(req) {
         try {
-            const {userId} = req;
-            let rooms = await this.roomModel.find().populate('').exec();
+            let rooms = await this.roomModel.find().sort('updated').exec();
             return {
                 message: 'Get all list room success',
                 data: rooms
@@ -66,9 +73,9 @@ class RoomService {
         }
     }
 
-    async checkRole( userId, roomId) {
-        const creator = await this.userModel.findOne({ _id: userId }).exec();
-        const room = await this.roomModel.findOne({ _id: roomId}).exec();
+    async checkRole(userId, roomId) {
+        const creator = await this.userModel.findOne({_id: userId}).exec();
+        const room = await this.roomModel.findOne({_id: roomId}).exec();
         if (creator.role !== ROLES.ADMIN && userId.toString() !== room.creator.toString()) {
             return {
                 status: 400,
@@ -76,16 +83,27 @@ class RoomService {
                 message: 'Unauthorized'
             }
         }
-        return { status: 200, role: creator.role };
+        return {status: 200, role: creator.role};
     };
 
-    async create({ name ,level, quantity, userId }){
+    async create({name, level, quantity, userId, roomPwd}) {
         try {
+            let statusRoom = STATUS_ROOM.ACTIVE;
+            if (roomPwd.trim() != '') {
+                statusRoom = STATUS_ROOM.AUTH
+            }
 
-            let room = await this.roomModel.create({name:name, quantity: quantity , level: level, creator: userId});
-            const admins = await UserModel.find({ role: ROLES.ADMIN }).select('-password -mail_token').exec();
-            await admins.map( async admin => {
-                await this.roomModel.update({_id: room._id},{ $push: { users: admin }}).exec()
+            let room = await this.roomModel.create({
+                name: name,
+                quantity: quantity,
+                level: level,
+                creator: userId,
+                password: roomPwd,
+                status: statusRoom
+            });
+            const admins = await UserModel.find({role: ROLES.ADMIN}).select('-password -mail_token').exec();
+            await admins.map(async admin => {
+                await this.roomModel.update({_id: room._id}, {$push: {users: admin}}).exec()
             });
             room = await this.roomModel.findOne({_id: room._id}).exec();
             return {
@@ -103,7 +121,7 @@ class RoomService {
     }
 
 
-    async edit(req){
+    async edit(req) {
         try {
             const {id} = req.params;
             const {userId} = req;
@@ -122,9 +140,9 @@ class RoomService {
         }
     }
 
-    async setStatusRoom(roomId, status){
+    async setStatusRoom(roomId, status) {
         try {
-            await this.roomModel.updateOne({_id: roomId},{status: status}).exec();
+            await this.roomModel.updateOne({_id: roomId}, {status: status}).exec();
             let result = await this.roomModel.findOne({_id: roomId}).exec();
             return {
                 status: 200,
@@ -140,10 +158,16 @@ class RoomService {
         }
     }
 
-    async update({ name, level, quantity, userId, roomId }){
+    async update({name, level, quantity, userId, roomId, roomPwd}) {
         try {
 
-            await this.roomModel.update({_id: roomId},{name:name, quantity: quantity , level: level, creator: userId}).exec();
+            await this.roomModel.update({_id: roomId}, {
+                name: name,
+                quantity: quantity,
+                level: level,
+                creator: userId,
+                password: roomPwd
+            }).exec();
 
             let result = await this.roomModel.findOne({_id: roomId}).exec();
             return {
@@ -161,9 +185,10 @@ class RoomService {
         }
     }
 
-    async delete({ id }){
+    async delete({id}) {
         try {
-            let room = await this.roomModel.deleteOne({ _id: id }).exec();
+            let room = await this.roomModel.deleteOne({_id: id}).exec();
+            console.log('in delete Room Service id:', id);
             return {
                 status: room.deletedCount ? 200 : 400,
                 message: room.deletedCount ? 'Delete data success!' : 'Room is not exist',
@@ -184,10 +209,10 @@ class RoomService {
         }
     }
 
-    async findRoom({ id }) {
+    async findRoom({id}) {
         try {
             let room = await this.roomModel.findOne({_id: id}).exec();
-            if(!room){
+            if (!room) {
                 return {
                     status: 400,
                     message: 'Room is not exist',
@@ -212,7 +237,7 @@ class RoomService {
     async joinRoom(req) {
         try {
             const {room_id, user} = req.body;
-            let result = await this.roomModel.updateOne({_id: room_id, "users.user_id": {$nin: [ user.id ] }}, {
+            let result = await this.roomModel.updateOne({_id: room_id, "users.user_id": {$nin: [user.id]}}, {
                 $push: {
                     users: {
                         user_id: user.id,
@@ -231,6 +256,34 @@ class RoomService {
                 message: 'Join fail',
                 status: 400,
                 data: null
+            }
+        }
+    }
+
+    async checkValidRoomPassword({roomId, roomPwd}) {
+        try {
+
+            let room = await this.roomModel.findOne({_id: roomId}).exec();
+            if (room.password === roomPwd) {
+                return {
+                    status: 200,
+                    message: 'Valid room password',
+                    data: true
+                }
+            }
+            else {
+                return {
+                    status: 400,
+                    message: 'Invalid room password',
+                    data: false
+                }
+            }
+        } catch (error) {
+            console.log(error);
+            return {
+                status: 400,
+                message: 'Room is not exist',
+                data: false
             }
         }
     }

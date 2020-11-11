@@ -24,8 +24,8 @@ const ioEvents = function (io) {
     // Rooms namespace
     io.of('/rooms').on('connection', function (socket) {
         // Create a new room
-        socket.on('createRoom', async function ({name, level, quantity, userId}) {
-            const newRoom = await RoomService.create({name, level, quantity, userId});
+        socket.on('createRoom', async function ({name, level, quantity, userId, roomPwd}) {
+            const newRoom = await RoomService.create({name, level, quantity, userId, roomPwd});
             console.log('NEW ROOM: ', newRoom);
             const users = await UserService.getUser();
             socket.emit('updateRoomsList', {room: newRoom, creator: userId, users: users});
@@ -33,8 +33,8 @@ const ioEvents = function (io) {
         });
 
         // Edit a room
-        socket.on('editRoom', async function ({name, level, quantity, userId, roomId}) {
-            const room = await RoomService.update({name, level, quantity,userId, roomId});
+        socket.on('editRoom', async function ({name, level, quantity, userId, roomId, roomPwd}) {
+            const room = await RoomService.update({name, level, quantity,userId, roomId, roomPwd});
             const users = await UserService.getUser();
             socket.emit('updateRoomsList', {room: room, creator: userId, users: users});
             socket.broadcast.emit('updateRoomsList', {room: room, creator: userId, users: users});
@@ -48,6 +48,19 @@ const ioEvents = function (io) {
             socket.broadcast.emit('updateRoomsList', {room: room, creator: userId, users: users});
 
         });
+        socket.on('joinRoomAuth', async function ({roomId, roomPwd, userId}) {
+            const RoomPassword = await RoomService.checkValidRoomPassword({roomId, roomPwd});
+            if (RoomPassword.data){
+                console.log('valid password');
+                socket.emit('join-room',{roomId, userId});
+            }
+            else {
+                console.log('invalid password');
+            }
+        });
+
+
+
     });
 
     // Chatroom namespace

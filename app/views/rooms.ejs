@@ -93,6 +93,11 @@
                                 <i class="fa fa-ban" aria-hidden="true"></i>
                                 This room is full
                             </p>
+                        <% } else if (room.status === 'auth') {%>
+                            <p class="card-text room-title__active" onclick="showEnterPasswordModal('<%= room.id %>')">
+                                <i class="fa fa-lock" aria-hidden="true"></i>
+                                Enter password and join
+                            </p>
                         <% }%>
                     </footer>
                 </div>
@@ -149,6 +154,10 @@
                         <select class="form-control" id="selectLevels" name="level">
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="text" class="form-control" name="password" placeholder=""/>
+                    </div>
                     <input type="hidden" name="room_id"/>
                 </div>
 
@@ -178,7 +187,58 @@
         </div>
     </div>
 </div>
+
 <!-- Modal edit -->
+
+
+<!-- Modal enter password and join room -->
+<div
+        class="modal fade"
+        id="form_join_room"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+>
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-0">
+                <h5 class="modal-title" id="modalHeader">Enter password to join room</h5>
+                <button
+                        type="button"
+                        id="closeBtnJoin"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                >
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="text" class="form-control" name="room_password" placeholder="" required/>
+                </div>
+                <input type="hidden" name="join_room_id"/>
+            </div>
+            <div class="modal-footer border-top-0 d-flex">
+                <div class="justify-content-end">
+                    <button type="submit" class="btn btn-success" id="submit_join_room">Join</button>
+                    <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                            id="cancel_join_room"
+                    >
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </div>
 <!-- end container -->
 <%- include('includes/end.ejs')%>

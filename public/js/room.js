@@ -74,16 +74,17 @@ axios.get('/users/')
     .finally(function () {
         // always executed
     });
-toogleModal = () => {
+toggleModal = () => {
     $("#submit_room").attr("disabled", false).html('Submit');
     $("input[name='topic']").val('');
     $("#selectMaxPeople").val('Unlimited');
     $("#selectLevels").val('Any Level');
     $("input[name='room_id']").val('');
+    $("input[name='passowrd']").val('');
 };
 
 showEditModal = function (id) {
-    toogleModal();
+    toggleModal();
     $('#modalHeader').html('Edit Room');
     $('#form_room').modal('toggle').attr('action', '/rooms/'+id+'/edit');
     $(".submitForm").attr("id","edit_room");
@@ -96,6 +97,7 @@ showEditModal = function (id) {
             $("#selectMaxPeople").val(room.quantity);
             $("#selectLevels").val(room.level);
             $("input[name='room_id']").val(room._id);
+            $("input[name='passowrd']").val(room.password);
         })
         .catch(err => {
             console.log(err);
@@ -103,7 +105,7 @@ showEditModal = function (id) {
 };
 
 showCreateModal = function () {
-    toogleModal();
+    toggleModal();
     $('#modalHeader').html('Create Room');
     $('#form_room').modal('toggle').attr('action', '/rooms/create');
     $(".submitForm").attr("id","create_room");
@@ -131,4 +133,17 @@ axios.get('/utils/levels').then(res => {
     .catch(err => {
             console.log(err);
         }
-    );
+);
+
+showEnterPasswordModal = function (roomId) {
+    toggleEnterPasswordModal(roomId);
+
+}
+
+toggleEnterPasswordModal = (roomId) => {
+    $('#form_join_room').modal('toggle');
+    $("input[name='join_room_id']").val(roomId);
+};
+
+// Whenever the user hits the create button, emit createRoom event.
+

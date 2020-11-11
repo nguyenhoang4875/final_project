@@ -20,6 +20,7 @@ const STATUS_ROOM = {
     'ACTIVE': 'active',
     'FULL': 'full',
     'LOOKED': 'looked',
+    'AUTH': 'auth',
 };
 
 
