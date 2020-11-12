@@ -1,8 +1,10 @@
 const ChatService = require('../services/ChatService');
+const RoomService= require('../services/RoomService');
 const { validationResult } = require('express-validator');
 class ChatController {
     constructor() {
         this.chatService = ChatService;
+        this.roomService = RoomService;
     }
 
     async getMsgNotRender(req, res) {
@@ -56,9 +58,11 @@ class ChatController {
         try {
             const { user } = req;
             const roomId = req.query.join_room_id;
+            const roomPwd= req.query.room_password;
             let response = await this.chatService.getMsgs({ roomId: roomId, userId: user._id });
+            let validPassword = await  RoomService.checkValidRoomPassword({roomId,roomPwd});
 
-            if (response.status === 200) {
+            if (response.status === 200 && validPassword.data) {
                 console.log('join ne');
                 res.render('chatroom', {
                     user,
@@ -66,12 +70,11 @@ class ChatController {
                     message: response.message,
                 });
             } else {
-                req.flash('error', response.message);
+                req.flash('error', validPassword.message);
                 res.redirect('/')
             }
         } catch (error) {
             console.log(error);
-            req.flash('error', 'Get all messages failed!');
             res.redirect('/')
         }
     }
