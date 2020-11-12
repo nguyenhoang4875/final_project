@@ -64,7 +64,6 @@ class UserService {
 
     async getUser(){
         const users = await this.userModel.find();
-        console.log('users in service: ', users);
         return users;
     }
 

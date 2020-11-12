@@ -50,6 +50,31 @@ class ChatController {
             res.redirect('/')
         }
     }
+
+
+    async getMsgByRoomIdAuth(req, res) {
+        try {
+            const { user } = req;
+            const roomId = req.query.join_room_id;
+            let response = await this.chatService.getMsgs({ roomId: roomId, userId: user._id });
+
+            if (response.status === 200) {
+                console.log('join ne');
+                res.render('chatroom', {
+                    user,
+                    room: response.room,
+                    message: response.message,
+                });
+            } else {
+                req.flash('error', response.message);
+                res.redirect('/')
+            }
+        } catch (error) {
+            console.log(error);
+            req.flash('error', 'Get all messages failed!');
+            res.redirect('/')
+        }
+    }
     
     async createMsg(req, res) {
        try {

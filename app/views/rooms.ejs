@@ -1,14 +1,14 @@
-<%- include('includes/header.ejs')%>
+<%- include('includes/header.ejs') %>
 
-    <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.min.css"
-    />
-    <link rel="stylesheet" href="/css/selectize.default.css"/>
-    <link rel="stylesheet" href="/library/toastr/build/toastr.css"/>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
-    <link rel="stylesheet" href="/css/style.css"/>
-    <link rel="stylesheet" href="/css/rooms.css"/>
+<link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.min.css"
+/>
+<link rel="stylesheet" href="/css/selectize.default.css"/>
+<link rel="stylesheet" href="/library/toastr/build/toastr.css"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+<link rel="stylesheet" href="/css/style.css"/>
+<link rel="stylesheet" href="/css/rooms.css"/>
 </head>
 <body>
 <div class="container clearfix align-self-center">
@@ -81,24 +81,24 @@
                         <p class="card-text">Level: <%= room.level %></p>
                     </div>
                     <footer>
-                        <% if (room.status === 'active' ) {%>
-                        <a class="card-link" href="/chat/<%= room.id %>">
-                            <p class="card-text room-title__active">
-                                <i class="fa fa-phone" aria-hidden="true"></i>
-                                Join and talk now
-                            </p>
-                        </a>
-                        <%} else if (room.status === 'full') {%>
+                        <% if (room.status === 'active' ) { %>
+                            <a class="card-link" href="/chat/<%= room.id %>">
+                                <p class="card-text room-title__active">
+                                    <i class="fa fa-phone" aria-hidden="true"></i>
+                                    Join and talk now
+                                </p>
+                            </a>
+                        <% } else if (room.status === 'full') { %>
                             <p class="card-text room-title__full">
                                 <i class="fa fa-ban" aria-hidden="true"></i>
                                 This room is full
                             </p>
-                        <% } else if (room.status === 'auth') {%>
+                        <% } else if (room.status === 'auth') { %>
                             <p class="card-text room-title__active" onclick="showEnterPasswordModal('<%= room.id %>')">
                                 <i class="fa fa-lock" aria-hidden="true"></i>
                                 Enter password and join
                             </p>
-                        <% }%>
+                        <% } %>
                     </footer>
                 </div>
             </div>
@@ -214,34 +214,36 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="text" class="form-control" name="room_password" placeholder="" required/>
+            <form method="get" action="/chat/join">
+                <div class="modal-body">
+                    <input type="hidden" name="join_room_id"/>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="text" class="form-control" name="room_password" placeholder="" required/>
+                    </div>
                 </div>
-                <input type="hidden" name="join_room_id"/>
-            </div>
-            <div class="modal-footer border-top-0 d-flex">
-                <div class="justify-content-end">
-                    <button type="submit" class="btn btn-success" id="submit_join_room">Join</button>
-                    <button
-                            type="button"
-                            class="btn btn-secondary"
-                            data-dismiss="modal"
-                            aria-label="Close"
-                            id="cancel_join_room"
-                    >
-                        Close
-                    </button>
+                <div class="modal-footer border-top-0 d-flex">
+                    <div class="justify-content-end">
+                        <button type="submit" class="btn btn-success" id="submit_join_room">Join</button>
+                        <button
+                                type="button"
+                                class="btn btn-secondary"
+                                data-dismiss="modal"
+                                aria-label="Close"
+                                id="cancel_join_room"
+                        >
+                            Close
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>
 
 </div>
 <!-- end container -->
-<%- include('includes/end.ejs')%>
+<%- include('includes/end.ejs') %>
 
 <script>
     var listRoom = '<%= rooms %>'

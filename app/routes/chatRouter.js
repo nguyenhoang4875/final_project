@@ -11,6 +11,7 @@ router.use((req, res, next) => {
     }
 });
 
+router.get('/join', (req, res) => ChatController.getMsgByRoomIdAuth(req, res));
 router.get('/:id', (req, res) => ChatController.getMsgByRoomId(req, res)); // Get all messes and render
 router.get('/:id/messages', (req, res) => ChatController.getMsgNotRender(req, res)); // Get all room's messages but not return render
 router.post('/:id/msg/new', (req, res) => ChatController.createMsg(req, res)); // Create mess

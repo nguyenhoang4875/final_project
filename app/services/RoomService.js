@@ -63,7 +63,7 @@ class RoomService {
 
     async getListAll(req) {
         try {
-            let rooms = await this.roomModel.find().sort('updated').exec();
+            let rooms = await this.roomModel.find().sort('created').exec();
             return {
                 message: 'Get all list room success',
                 data: rooms
@@ -147,7 +147,7 @@ class RoomService {
             return {
                 status: 200,
                 message: 'Update data success!',
-                room: result
+                data: result
             }
         } catch (error) {
             return {
@@ -158,15 +158,35 @@ class RoomService {
         }
     }
 
+    async getRoomStatus(roomId){
+        try {
+            let result = await this.roomModel.findOne({_id: roomId}).exec();
+            return  result.status;
+        } catch (error) {
+            return {
+                status: 500,
+                message: 'get room status fail',
+                data: error
+            }
+        }
+
+    }
+
     async update({name, level, quantity, userId, roomId, roomPwd}) {
         try {
+            console.log('in update room ')
+            let statusRoom = STATUS_ROOM.ACTIVE;
+            if (roomPwd.trim() != '') {
+                statusRoom = STATUS_ROOM.AUTH
+            };
 
             await this.roomModel.update({_id: roomId}, {
                 name: name,
                 quantity: quantity,
                 level: level,
                 creator: userId,
-                password: roomPwd
+                password: roomPwd,
+                status: statusRoom
             }).exec();
 
             let result = await this.roomModel.findOne({_id: roomId}).exec();
@@ -262,7 +282,6 @@ class RoomService {
 
     async checkValidRoomPassword({roomId, roomPwd}) {
         try {
-
             let room = await this.roomModel.findOne({_id: roomId}).exec();
             if (room.password === roomPwd) {
                 return {

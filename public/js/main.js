@@ -111,11 +111,51 @@ const app = {
                         }
                     }
                 } else if(manageRoom.isUpdate){
-                    console.log('is updating ..........');
+                    let id = room._id;
+                    let room_main = `<div class="card card-room" id="${id}">
+                            <div class="card-body">
+                              <div class="card-title">
+                                <div class="room-topic">
+                                 <p>
+                                    Topic: ${room.name}
+                                 </p>
+                                <i class="fa fa-cog "
+                                   aria-hidden="true"
+                                   onclick="showEditModal('${room._id}')"
+                                   style="color:#495c68;cursor:pointer">
+                                </i>
+                                </div>
+                                <p class="card-text">Max people: ${room.quantity}</p>
+                                <p class="card-text">Level: ${room.level}</p>
+                              </div>`
+                    let room_join =
+                             ` <footer>
+                                <a class="card-link" href="/chat/<%= room.id %>">
+                                    <p class="card-text room-title__active">
+                                        <i class="fa fa-phone" aria-hidden="true"></i>
+                                        Join and talk now
+                                    </p>
+                                </a>
+                            </footer>
+                            </div>
+                        </div>`
+                    let room_auth =
+                        `<footer>
+                            <p class="card-text room-title__active" onclick="showEnterPasswordModal('<%= room.id %>')">
+                                <i class="fa fa-lock" aria-hidden="true"></i>
+                                Enter password and join
+                            </p>
+                        </footer>
+                    </div>
+                    </div>`
+                    if (room.password != ''){
+                        room_main = room_main + room_auth;
+                    }
+                    else {
 
-                   // console.log('list room', rooms);
-                 //   const index = rooms.findIndex((x) => x.id === room.id);
-                   // rooms[index] = room;
+                        room_main = room_main + room_join;
+                    }
+                $(room_main).replaceAll("#"+id);
                 }
 
 
@@ -130,17 +170,7 @@ const app = {
                                         </div>
                                         <p class="card-text">Max people: ${room.quantity}</p>
                                         <p class="card-text">Level: ${room.level}</p>
-                                      </div>
-                                      <footer>
-                                        <a class="card-link" href="/chat/<%= room.id %>">
-                                            <p class="card-text room-title__active">
-                                                <i class="fa fa-phone" aria-hidden="true"></i>
-                                                Join and talk now
-                                            </p>
-                                        </a>
-                                    </footer>
-                                    </div>
-                                  </div>`
+                                      </div>`
 
                     let htmlEdit = `
                         <div class="card card-room" id="${room.id}">
@@ -158,8 +188,10 @@ const app = {
                                 </div>
                                 <p class="card-text">Max people: ${room.quantity}</p>
                                 <p class="card-text">Level: ${room.level}</p>
-                              </div>
-                              <footer>
+                              </div> `;
+
+                    let room_join =
+                        ` <footer>
                                 <a class="card-link" href="/chat/<%= room.id %>">
                                     <p class="card-text room-title__active">
                                         <i class="fa fa-phone" aria-hidden="true"></i>
@@ -168,13 +200,17 @@ const app = {
                                 </a>
                             </footer>
                             </div>
-                        </div>
+                        </div>`
+                    let room_auth =
+                        `<footer>
+                            <p class="card-text room-title__active" onclick="showEnterPasswordModal('<%= room.id %>')">
+                                <i class="fa fa-lock" aria-hidden="true"></i>
+                                Enter password and join
+                            </p>
+                        </footer>
+                    </div>
+                    </div>`
 
-                        `;
-
-                    if (html === '') {
-                        return;
-                    }
 
                     //let users = room.users;
                     let local = localStorage.getItem('user');
@@ -187,8 +223,10 @@ const app = {
 
                     for (let user of users) {
                         if (user._id === userId) {
+                            htmlEdit = room.password ===''? htmlEdit+ room_join: htmlEdit + room_auth;
                             $('.room-list').prepend(htmlEdit);
                         } else {
+                            html = room.password ===''? html+ room_join: html + room_auth;
                             $('.room-list').prepend(html);
                         }
                         break;

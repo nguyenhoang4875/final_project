@@ -145,5 +145,3 @@ toggleEnterPasswordModal = (roomId) => {
     $("input[name='join_room_id']").val(roomId);
 };
 
-// Whenever the user hits the create button, emit createRoom event.
-

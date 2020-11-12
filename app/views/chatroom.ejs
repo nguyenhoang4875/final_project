@@ -190,20 +190,6 @@
     </div>
 </div>
 
-<!-- room id display -->
-<script>
-    var isInfo = true
-    document.querySelector(".fa-info-circle").addEventListener("click",() => {
-        if(isInfo){
-            document.querySelector(".room_id").style.display = "block"
-            isInfo = false
-        } else {
-            document.querySelector(".room_id").style.display = "none"
-            isInfo = true
-        }
-    })
-</script>
-
 <script>
     const NAME = "<%= user.username %>"
     const ROOM_ID = "<%= room.id %>"

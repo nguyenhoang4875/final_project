@@ -174,9 +174,10 @@ const ioEvents = function (io) {
 
             const conn = await ConnectService.removeConnect({roomId, userId});
             const checkCanJoinRoomByLimitPeople = await ConnectService.checkLimitPeopleInRoom({roomId});
-
+            const roomStatus = await  RoomService.getRoomStatus(roomId);
+            console.log('room status: ', roomStatus);
             if (conn.status === 200) {
-                if (checkCanJoinRoomByLimitPeople){
+                if (checkCanJoinRoomByLimitPeople && roomStatus != STATUS_ROOM.AUTH){
                     console.log('set room to active');
                     await RoomService.setStatusRoom(roomId,STATUS_ROOM.ACTIVE);
                 }
