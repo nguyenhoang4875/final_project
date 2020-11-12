@@ -6,7 +6,7 @@ const app = {
     rooms: function (userId) {
         const socket = io('/rooms', {transports: ['websocket']});
 
-        // When socket connects, get a list of chatrooms
+        // When socket connects, get a list of chat rooms
         socket.on('connect', function () {
 
             // Update rooms list upon emitting updateRoomsList event
@@ -130,7 +130,7 @@ const app = {
                               </div>`
                     let room_join =
                              ` <footer>
-                                <a class="card-link" href="/chat/<%= room.id %>">
+                                <a class="card-link" href="/chat/${room._id}">
                                     <p class="card-text room-title__active">
                                         <i class="fa fa-phone" aria-hidden="true"></i>
                                         Join and talk now
@@ -141,7 +141,7 @@ const app = {
                         </div>`
                     let room_auth =
                         `<footer>
-                            <p class="card-text room-title__active" onclick="showEnterPasswordModal('<%= room.id %>')">
+                            <p class="card-text room-title__active" onclick="showEnterPasswordModal(${room._id})">
                                 <i class="fa fa-lock" aria-hidden="true"></i>
                                 Enter password and join
                             </p>
@@ -162,7 +162,7 @@ const app = {
                 else {
                     room.name = this.encodeHTML(room.name);
                     room.name = room.name.length > 25 ? room.name.substr(0, 25) + '...' : room.name;
-                    let html = ` <div class="card card-room" id="${room.id}">
+                    let html = ` <div class="card card-room" id="${room._id}">
                                     <div class="card-body">
                                       <div class="card-title">
                                         <div class="room-topic">
@@ -192,7 +192,7 @@ const app = {
 
                     let room_join =
                         ` <footer>
-                                <a class="card-link" href="/chat/<%= room.id %>">
+                                <a class="card-link" href="/chat/${room._id}">
                                     <p class="card-text room-title__active">
                                         <i class="fa fa-phone" aria-hidden="true"></i>
                                         Join and talk now
