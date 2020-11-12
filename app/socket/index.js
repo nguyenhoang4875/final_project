@@ -58,16 +58,11 @@ const ioEvents = function (io) {
                 console.log('invalid password');
             }
         });
-
-
-
     });
 
     // Chatroom namespace
     io.of('/chatroom').on('connection', function (socket) {
-
         socket.on('join-room',async function ({roomId, userId}) {
-
             const result = await RoomService.findRoom({id: roomId});
             const room = result.data;
 
@@ -76,7 +71,6 @@ const ioEvents = function (io) {
                 console.log('this room was full!');
                 return;
             }
-
 
             if (!result || result.status !== 200) {
                 console.log('fail in check result');
@@ -106,7 +100,6 @@ const ioEvents = function (io) {
                     peers[roomId][id].emit('initReceive', socket.id)
                 }
 
-
                 socket.join(roomId)
 
                 const connect = await ConnectService.newConnect({roomId, userId});
@@ -124,6 +117,18 @@ const ioEvents = function (io) {
                     return;
                 }
 
+                socket.on('signal', data => {
+                    if (!peers[socket.roomId][data.socket_id]) return
+                    peers[socket.roomId][data.socket_id].emit('signal', {
+                        socket_id: socket.id,
+                        signal: data.signal
+                    })
+                })
+
+                socket.on('initSend', init_socket_id => {
+                    peers[socket.roomId][init_socket_id].emit('initSend', socket.id)
+                })
+
                 socket.on('disconnect', () => {
                     console.log('socket disconnected ' + socket.id)
                     socket.broadcast.emit('removePeer', socket.id)
@@ -132,37 +137,10 @@ const ioEvents = function (io) {
             }
         })
 
-
-        socket.on('signal', data => {
-            if (!peers[socket.roomId][data.socket_id]) return
-            peers[socket.roomId][data.socket_id].emit('signal', {
-                socket_id: socket.id,
-                signal: data.signal
-            })
-        })
-
-/*
-        socket.on('disconnect', () => {
-            console.log('socket disconnected ' + socket.id)
-            socket.broadcast.emit('removePeer', socket.id)
-            delete peers[roomId][socket.id]
-        })
-*/
-
-        socket.on('initSend', init_socket_id => {
-            peers[socket.roomId][init_socket_id].emit('initSend', socket.id)
-        })
-
-
         // When a socket exits
         socket.on('disconnect', async function () {
             let roomId = socket.roomId;
             let userId = socket.userId;
-
-            /*console.log('socket disconnected ' + socket.id)
-            socket.broadcast.emit('removePeer', socket.id)
-            delete peers[roomId][socket.id]*/
-
 
             socket.emit('remove-user', socket.id);
             socket.broadcast.to(roomId).emit('remove-user', {id: socket.id});

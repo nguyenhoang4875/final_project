@@ -62,6 +62,7 @@ const rooms = {
       console.log('Received local stream');
       myVideo.srcObject = stream;
       myStream = stream;
+      joinRoom();
     }).catch(e => alert(`getusermedia error ${e.name}`))
       getHistoryMsg(roomId);
 
@@ -194,7 +195,6 @@ const rooms = {
 
     // When socket connects, join the current chatroom
     socket.on('connect', function () {
-      joinRoom();
       // Whenever the user hits the save button, emit newMessage event.
       $('.fa-paper-plane').on('click', function (e) {
         const messageContent = inputMessage.value.trim();
