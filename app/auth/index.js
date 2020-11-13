@@ -36,7 +36,7 @@ const init = function () {
 				}
 
 				if (!user) {
-					return done(null, false, {message: 'User dose not exist or has been deleted !'});
+					return done(null, false, {message: 'User does not exist or has been deleted !'});
 				}
 
 				user.validatePassword(password, function (err, isMatch) {

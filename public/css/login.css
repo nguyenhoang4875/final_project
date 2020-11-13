@@ -1,0 +1,235 @@
+body {
+    background-image: url("../img/bg-01.jpg");
+    background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.container__login {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    font-weight: 400;
+}
+
+.login__main {
+    width: 40rem;
+    background: #ffffff;
+    border-radius: 0.5rem;
+    padding: 2rem 6rem;
+    position: relative;
+    margin: auto;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+
+
+.login__form__title {
+    width: 100%;
+    display: block;
+    color: #555;
+    line-height: 1.2;
+    text-align: center;
+    padding-bottom: 2rem;
+    font-size: 2.5rem;
+
+}
+
+.btn-face:hover {
+    background: linear-gradient(45deg,#00dbde,#fc00ff);
+}
+.btn-google:hover {
+    background: linear-gradient(45deg,#00dbde,#fc00ff);
+}
+
+.btn-face {
+    color: #fff;
+    background-color: #3b5998;
+    margin-right: 0.5rem;
+
+}
+
+.btn-google {
+    color: #555;
+    background-color: #fff;
+    margin-left: 0.5rem;
+}
+
+.btn-face, .btn-google {
+    font-size: 1.5rem;
+    line-height: 1.2;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: calc((100% - 2rem)/2);
+    height: 4rem;
+    -webkit-box-shadow: 0 1px 5px 0 rgba(0,0,0,.2);
+    position: relative;
+    z-index: 1;
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+.btn-face img, .btn-google img {
+    margin-right: 0.5rem;
+}
+
+a:hover {
+    text-decoration: none;
+    color: white;
+}
+
+.login__info {
+    padding-bottom: 0.5rem;
+    padding-top: 1rem;
+}
+
+.login__info__txt {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.5;
+    font-weight: bold;
+}
+
+.validate-input {
+    position: relative;
+}
+.login__input {
+    width: 100%;
+    position: relative;
+
+}
+
+
+.input__info {
+    background-color: #f7f7f7;
+    border: 1px solid #e6e6e6;
+    border-radius: 0.5rem;
+    line-height: 1.5;
+    color: #333;
+    display: block;
+    width: 100%;
+    height: 3rem;
+    padding: 0 20px;
+}
+
+.input__info:hover:focus {
+    border: 1px solid #fc00ff;
+}
+
+.focus__input {
+    position: absolute;
+    display: block;
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
+    top: -1px;
+    left: -1px;
+    pointer-events: none;
+    border: 1px solid #fc00ff;
+    border-radius: 10px;
+    visibility: hidden;
+    opacity: 0;
+    -webkit-transition: all .4s;
+    -o-transition: all .4s;
+    -moz-transition: all .4s;
+    transition: all .4s;
+    -webkit-transform: scaleX(1.1) scaleY(1.3);
+    -moz-transform: scaleX(1.1) scaleY(1.3);
+    -ms-transform: scaleX(1.1) scaleY(1.3);
+    -o-transform: scaleX(1.1) scaleY(1.3);
+    transform: scaleX(1.1) scaleY(1.3);
+}
+
+.login__form {
+}
+
+.login__form input {
+    box-sizing: border-box;
+    font-size: 1rem;
+
+}
+
+.login__form__btn {
+    width: 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+}
+
+.login__btn {
+    align-items: center;
+    width: 100%;
+    margin-top: 1rem;
+    height: 3.5rem;
+    background-color: #333;
+    border-radius: 10px;
+    font-size: 16px;
+    color: #fff;
+    line-height: 1.2;
+    position: relative;
+    z-index: 1;
+}
+
+
+.login__form button:hover,.login__form button:active,.login__form button:focus {
+    background: linear-gradient(45deg,#00dbde,#fc00ff);
+}
+
+.sign-in__sign-up {
+    text-align: center;
+    font-size: 1rem;
+}
+
+.login__form .message, .message {
+    margin: 15px 0 0;
+    color: #333;
+    font-size: 1rem;
+}
+
+.login__form .message a {
+    color: forestgreen;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.login__form .register-form {
+    display: none;
+}
+
+.message__error {
+    color: red;
+}
+
+.message__success {
+    color: green;
+}
+
+@media (max-width: 640px) {
+    .login__main{
+        width: 100%;
+        padding: 2rem 0.5rem;
+        height: 100%;
+    }
+    .btn-face, .btn-google{
+        height: 3rem;
+        font-size: 1rem;
+    }
+
+}

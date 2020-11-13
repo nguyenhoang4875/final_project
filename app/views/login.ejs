@@ -1,53 +1,101 @@
 <%- include('includes/header.ejs')%>
 
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/login.css">
   </head>
   <body>
-    <div class="login-page">
-      <div class="form">
-        <div class="social-buttons">
-          <div><span>Login</span> via</div>
-          <a href="/auth/facebook">
-            <img class="loginBtn" src="img/facebookLoginBtn.png" alt="Sign-In with Facebook">
+  <div class="container__login">
+    <div class="login__main">
+      <div class="login__form">
+          <span class="login__form__title">
+              Sign In With
+          </span>
+          <a href="/auth/facebook" class="btn-face">
+              <img src="img/icon-facebook.png" alt="FACEBOOK"  />
+              Facebook
           </a>
-
-          <a href="/auth/twitter">
-            <img class="loginBtn" src="img/twitterLoginBtn.png" alt="Sign-In with Twitter">
+          <a href="#" class="btn-google">
+              <img src="img/icon-google.png" alt="GOOGLE"  />
+              Google
           </a>
-        </div>
-
-        <div class="form-line"></div>
 
         <div style="margin-top: 18px;">
             <form action="/auth/register" class="register-form" method="post" >
-              <input type="text" name="username" placeholder="username"/>
-              <input type="email" name="email" placeholder="email"/>
-              <input type="password" name="password" placeholder="password"/>
-              <input type="password" name="cfpassword" placeholder="password confirm"/>
-              <button type="submit">create</button>
-              <p class="message">Already registered? <a href="#">Sign In</a></p>
-              <% if (errors != null && showRegisterForm != null && showRegisterForm === true) { %>
-                <% errors.forEach(function(err){ %>
-                  <p class="message error"><%= err %></p>
-                <% }); %>
-              <% } %>
+
+                <div class="login__info">
+                    <span class="login__info__txt"> Username </span>
+                </div>
+                <div class="login__input validate-input" data-validate="Username is required!">
+                    <input type="text" class="input__info" name="username" required>
+                </div>
+
+                <div class="login__info">
+                    <span class="login__info__txt"> Email </span>
+                </div>
+                <div class="login__input validate-input" data-validate="Password is required!">
+                    <input type="email" class="input__info" name="email" required>
+                </div>
+
+                <div class="login__info">
+                    <span class="login__info__txt"> Password </span>
+                </div>
+                <div class="login__input validate-input" data-validate="Password is required!">
+                    <input type="password" class="input__info" name="password" required>
+                </div>
+
+                <div class="login__info">
+                    <span class="login__info__txt"> Confirm password </span>
+                </div>
+                <div class="login__input validate-input" data-validate="Confirm password is required!">
+                    <input type="password" class="input__info" name="cfpassword" required>
+                </div>
+
+              <button type="submit" class="login__btn">Sign up</button>
+              <div class="sign-in__sign-up">
+                  <p class="message">Already registered? <a href="#">Sign In</a></p>
+                  <% if (errors != null && showRegisterForm != null && showRegisterForm === true) { %>
+                    <% errors.forEach(function(err){ %>
+                      <p class="message__error"><%= err %></p>
+                    <% }); %>
+                  <% } %>
+              </div>
+
             </form>
             <form action="/auth/login" class="login-form" method="post">
-              <input type="text" name="username" placeholder="username"/>
-              <input type="password" name="password" placeholder="password"/>
-              <button type="submit">login</button>
-              <p class="message">Not registered? <a href="#">Create an account</a></p>
-              <% if (errors != null && showRegisterForm == null) { %>
-                <% errors.forEach(function(err){ %>
-                  <p class="message error"><%= err %></p>
-                <% }); %>
-              <% } if (success != null && showRegisterForm == null) { %>
-                <p class="message success"><%= success %></p>
-              <% } %>
+                <div class="login__info">
+                    <span class="login__info__txt"> Username </span>
+                </div>
+                <div class="login__input validate-input" data-validate="Username is required!">
+                    <input type="text" class="input__info" name="username" required>
+                </div>
+
+                <div class="login__info">
+                    <span class="login__info__txt"> Password </span>
+                </div>
+                <div class="login__input validate-input" data-validate="Password is required!">
+                    <input type="password" class="input__info" name="password" required>
+                </div>
+
+
+                <div class="login__form__btn">
+                    <button type="submit" class="login__btn">Sign In</button>
+                </div>
+                <div class="sign-in__sign-up">
+                    <p class="message">Not registered? <a href="#">Create an account</a></p>
+                  <% if (errors != null && showRegisterForm == null) { %>
+                    <% errors.forEach(function(err){ %>
+                      <p class="message__error"><%= err %></p>
+                    <% }); %>
+                  <% } if (success != null && showRegisterForm == null) { %>
+                    <p class="message__success"><%= success %></p>
+                  <% } %>
+                </div>
             </form>
         </div>
     </div> <!-- end form -->
     </div> <!-- end login container -->
+  </div>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
     <% if(showRegisterForm != null && showRegisterForm === true) { %>
         <script>
