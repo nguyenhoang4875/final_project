@@ -95,7 +95,7 @@ body {
   font-size: 16px;
 }
 
-.chat .chat-header .chat-num-users, .room .room-header .room-num-rooms {
+.chat .chat-header .chat-num-users, .room .room-header {
   color: #92959E;
 }
 

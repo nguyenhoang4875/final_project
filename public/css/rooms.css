@@ -10,9 +10,33 @@ body {
 }
 
 .btn-create-room {
-    height: 2rem;
-    margin-bottom: 0.5rem;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    margin-left: 1rem;
 }
+
+.btn-create-room i {
+    padding-top: 0.25rem;
+    margin-right: 0.25rem;
+}
+
+.btn-create-room:hover {
+    background: linear-gradient(45deg,#00dbde,#fc00ff);
+}
+
+.room-num-rooms {
+    margin-left: 1rem;
+    color: darkgray;
+    margin-top: 0.125rem;
+}
+
 
 .card-room {
     background-color: #7FBFBF ;
@@ -36,6 +60,9 @@ body {
 .main-title {
     font-size: 2rem;
     text-align: center;
+    color: white;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: bold;
 }
 
 .header-user {
@@ -44,6 +71,8 @@ body {
 
 .room-search {
     width: 100%;
+    margin-left: 1rem;
+    margin-right: 1rem;
 }
 
 .room-list {
@@ -69,6 +98,7 @@ body {
     border: 2px dashed;
     font-weight: bolder;
     border-radius: 0.5rem;
+    background: linear-gradient(45deg,#00dbde,#fc00ff);
 }
 
 .room-title__full {

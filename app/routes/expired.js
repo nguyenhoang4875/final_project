@@ -67,7 +67,7 @@ router.post('/register', async function(req, res, next) {
 		function(err, user){
 			if(err) throw err;
 			if(user){
-				req.flash('error', 'Emai already exists.');
+				req.flash('error', 'Email already exists.');
 				req.flash('showRegisterForm', true);
 				return res.redirect('/');
 			}
@@ -75,7 +75,7 @@ router.post('/register', async function(req, res, next) {
 
 		// Check confirm password is same password
 		if ( credentials.cfpassword !== credentials.password ) {
-			req.flash('error', 'Comfirm password invalid !.');
+			req.flash('error', 'Confirm password invalid !.');
 			req.flash('showRegisterForm', true);
 			return res.redirect('/');
 		}
