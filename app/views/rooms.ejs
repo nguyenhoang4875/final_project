@@ -11,236 +11,239 @@
 <link rel="stylesheet" href="/css/rooms.css"/>
 </head>
 <body>
-<div class="container clearfix align-self-center">
-    <div class="header-main">
-        <div class="logo-image">
-            <img class="logo-image" src="/img/mariana_200x200.png"/>
-        </div>
-        <% if (user != null ) { %>
-            <div>
-                <a href="/auth/logout" class="btn btn-danger">Logout</a>
+<div class="container__room">
+    <div class="container clearfix align-self-center">
+        <div class="header-main">
+            <div class="logo-image">
+                <img class="logo-image" src="/img/mariana_200x200.png"/>
             </div>
-        <% } %>
-    </div>
-    <div>
-        <p class="main-title">Leaning Taking Community</p>
-    </div>
-    <!-- end room-header -->
-    <% if (user.role > 0) { %>
-        <div class="clearfix">
-            <button class="btn btn-success btn-create-room" onclick="showCreateModal()">
-                <i class="fa fa-plus" aria-hidden="true"></i>
-                Create a new room
-            </button>
+            <% if (user != null ) { %>
+                <div>
+                    <a href="/auth/logout" class="btn btn-danger">Logout</a>
+                </div>
+            <% } %>
         </div>
-        <!-- end room-create -->
-    <% } %>
-    <div class="input-group room-search">
-        <input
-                type="text"
-                onchange="searchEvent()"
-                id="search_room_input"
-                class="form-control"
-                placeholder="Search room"
-                aria-label="Recipient's username"
-                aria-describedby="basic-addon2"
-        />
-        <a
-                href="?search"
-                id="search_room_button"
-                class="input-group-append"
-                style="height: fit-content; color: transparent"
-        >
+        <div>
+            <p class="main-title">Leaning Taking Community</p>
+        </div>
+        <!-- end room-header -->
+        <% if (user.role > 0) { %>
+            <div class="clearfix">
+                <button class="btn btn-success btn-create-room" onclick="showCreateModal()">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    Create a new room
+                </button>
+            </div>
+            <!-- end room-create -->
+        <% } %>
+        <div class="input-group room-search">
+            <input
+                    type="text"
+                    onchange="searchEvent()"
+                    id="search_room_input"
+                    class="form-control"
+                    placeholder="Search room"
+                    aria-label="Recipient's username"
+                    aria-describedby="basic-addon2"
+            />
+            <a
+                    href="?search"
+                    id="search_room_button"
+                    class="input-group-append"
+                    style="height: fit-content; color: transparent"
+            >
             <span class="input-group-text red lighten-3" id="basic-text1">
               <i class="material-icons text-grey" style="cursor: pointer">search</i>
             </span>
-        </a>
-    </div>
-    <div class="room-num-rooms"><%= rooms.length %> Room(s)</div>
+            </a>
+        </div>
+        <div class="room-num-rooms"><%= rooms.length %> Room(s)</div>
 
-    <div class="col-xs-12 room-list">
-        <% if(rooms.length > 0) { %> <% rooms.forEach(function(room) { %>
-            <div class="card card-room" id="<%= room.id %>">
-                <div class="card-body">
-                    <div class="card-title">
-                        <div class="room-topic">
-                            <p>
-                                Topic:
-                                <%= (room.name.length > 25 ? room.name.substr(0, 25) + '...' : room.name) %>
-                                <% if(room.creator.toString() === user._id.toString())  { %>
-                            </p>
-                            <i class="fa fa-cog "
-                               aria-hidden="true"
-                               onclick="showEditModal('<%= room.id %>')"
-                               style="color:#495c68;cursor:pointer">
-                            </i>
-                            <% } %>
-                        </div>
-
-                        <p class="card-text">Max people: <%= room.quantity %></p>
-                        <p class="card-text">Level: <%= room.level %></p>
-                    </div>
-                    <footer>
-                        <% if (room.status === 'active' ) { %>
-                            <a class="card-link" href="/chat/<%= room.id %>">
-                                <p class="card-text room-title__active">
-                                    <i class="fa fa-phone" aria-hidden="true"></i>
-                                    Join and talk now
+        <div class="col-xs-12 room-list">
+            <% if(rooms.length > 0) { %> <% rooms.forEach(function(room) { %>
+                <div class="card card-room" id="<%= room.id %>">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <div class="room-topic">
+                                <p>
+                                    Topic:
+                                    <%= (room.name.length > 25 ? room.name.substr(0, 25) + '...' : room.name) %>
+                                    <% if(room.creator.toString() === user._id.toString())  { %>
                                 </p>
-                            </a>
-                        <% } else if (room.status === 'full') { %>
-                            <p class="card-text room-title__full">
-                                <i class="fa fa-ban" aria-hidden="true"></i>
-                                This room is full
-                            </p>
-                        <% } else if (room.status === 'auth') { %>
-                            <p class="card-text room-title__active" onclick="showEnterPasswordModal('<%= room.id %>')">
-                                <i class="fa fa-lock" aria-hidden="true"></i>
-                                Enter password and join
-                            </p>
-                        <% } %>
-                    </footer>
-                </div>
-            </div>
+                                <i class="fa fa-cog "
+                                   aria-hidden="true"
+                                   onclick="showEditModal('<%= room.id %>')"
+                                   style="color:#495c68;cursor:pointer">
+                                </i>
+                                <% } %>
+                            </div>
 
-        <% }); %>
-        <% } else { if (user.role > 0) { %>
-            <p class="message-create-first-room" style="text-align: center; padding: 0; margin: 0">
-                Create first room!
-            </p>
-        <% } %>
-        <% } %>
+                            <p class="card-text">Max people: <%= room.quantity %></p>
+                            <p class="card-text">Level: <%= room.level %></p>
+                        </div>
+                        <footer>
+                            <% if (room.status === 'active' ) { %>
+                                <a class="card-link" href="/chat/<%= room.id %>">
+                                    <p class="card-text room-title__active">
+                                        <i class="fa fa-phone" aria-hidden="true"></i>
+                                        Join and talk now
+                                    </p>
+                                </a>
+                            <% } else if (room.status === 'full') { %>
+                                <p class="card-text room-title__full">
+                                    <i class="fa fa-ban" aria-hidden="true"></i>
+                                    This room is full
+                                </p>
+                            <% } else if (room.status === 'auth') { %>
+                                <p class="card-text room-title__active"
+                                   onclick="showEnterPasswordModal('<%= room.id %>')">
+                                    <i class="fa fa-lock" aria-hidden="true"></i>
+                                    Enter password and join
+                                </p>
+                            <% } %>
+                        </footer>
+                    </div>
+                </div>
+
+            <% }); %>
+            <% } else { if (user.role > 0) { %>
+                <p class="message-create-first-room" style="text-align: center; padding: 0; margin: 0">
+                    Create first room!
+                </p>
+            <% } %>
+            <% } %>
+        </div>
+        <!-- end room-list -->
     </div>
-    <!-- end room-list -->
-</div>
-<!-- end room -->
+    <!-- end room -->
 
-<!-- Modal edit and create -->
-<div
-        class="modal fade"
-        id="form_room"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
->
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header border-bottom-0">
-                <h5 class="modal-title" id="modalHeader">Create Account</h5>
-                <button
-                        type="button"
-                        id="closeBtn"
-                        class="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                >
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form method="post">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="topic">Topic</label>
-                        <input type="text" class="form-control" name="topic" placeholder="Any topic"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="selectMaxPeople">Maximum peoples</label>
-                        <select class="form-control" id="selectMaxPeople" name="quantity">
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="selectLevels">Level</label>
-                        <select class="form-control" id="selectLevels" name="level">
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="text" class="form-control" name="password" placeholder=""/>
-                    </div>
-                    <input type="hidden" name="room_id"/>
-                </div>
-
-                <div class="modal-footer border-top-0 d-flex">
+    <!-- Modal edit and create -->
+    <div
+            class="modal fade"
+            id="form_room"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+    >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header border-bottom-0">
+                    <h5 class="modal-title" id="modalHeader">Create Account</h5>
                     <button
                             type="button"
-                            class="btn btn-danger"
-                            style="margin-right: 52%"
-                            id="delete_room"
+                            id="closeBtn"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
                     >
-                        Delete
+                        <span aria-hidden="true">&times;</span>
                     </button>
-                    <div class="justify-content-end">
-                        <button type="submit" class="btn btn-success" id="submit_room">Submit</button>
+                </div>
+                <form method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="topic">Topic</label>
+                            <input type="text" class="form-control" name="topic" placeholder="Any topic"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="selectMaxPeople">Maximum peoples</label>
+                            <select class="form-control" id="selectMaxPeople" name="quantity">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="selectLevels">Level</label>
+                            <select class="form-control" id="selectLevels" name="level">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="text" class="form-control" name="password" placeholder=""/>
+                        </div>
+                        <input type="hidden" name="room_id"/>
+                    </div>
+
+                    <div class="modal-footer border-top-0 d-flex">
                         <button
                                 type="button"
-                                class="btn btn-secondary"
-                                data-dismiss="modal"
-                                aria-label="Close"
-                                id="cancel_room"
+                                class="btn btn-danger"
+                                style="margin-right: 52%"
+                                id="delete_room"
                         >
-                            Close
+                            Delete
                         </button>
+                        <div class="justify-content-end">
+                            <button type="submit" class="btn btn-success" id="submit_room">Submit</button>
+                            <button
+                                    type="button"
+                                    class="btn btn-secondary"
+                                    data-dismiss="modal"
+                                    aria-label="Close"
+                                    id="cancel_room"
+                            >
+                                Close
+                            </button>
+                        </div>
                     </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Modal edit -->
-
-
-<!-- Modal enter password and join room -->
-<div
-        class="modal fade"
-        id="form_join_room"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
->
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header border-bottom-0">
-                <h5 class="modal-title" id="modalHeader">Enter password to join room</h5>
-                <button
-                        type="button"
-                        id="closeBtnJoin"
-                        class="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                >
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                </form>
             </div>
-            <form method="get" action="/chat/join">
-                <div class="modal-body">
-                    <input type="hidden" name="join_room_id"/>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="text" class="form-control" name="room_password" placeholder="" required/>
-                    </div>
-                </div>
-                <div class="modal-footer border-top-0 d-flex">
-                    <div class="justify-content-end">
-                        <button type="submit" class="btn btn-success" id="submit_join_room">Join</button>
-                        <button
-                                type="button"
-                                class="btn btn-secondary"
-                                data-dismiss="modal"
-                                aria-label="Close"
-                                id="cancel_join_room"
-                        >
-                            Close
-                        </button>
-                    </div>
-                </div>
-            </form>
         </div>
     </div>
-</div>
 
+    <!-- Modal edit -->
+
+
+    <!-- Modal enter password and join room -->
+    <div
+            class="modal fade"
+            id="form_join_room"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+    >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header border-bottom-0">
+                    <h5 class="modal-title" id="modalHeader">Enter password to join room</h5>
+                    <button
+                            type="button"
+                            id="closeBtnJoin"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                    >
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="get" action="/chat/join">
+                    <div class="modal-body">
+                        <input type="hidden" name="join_room_id"/>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="text" class="form-control" name="room_password" placeholder="" required/>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-top-0 d-flex">
+                        <div class="justify-content-end">
+                            <button type="submit" class="btn btn-success" id="submit_join_room">Join</button>
+                            <button
+                                    type="button"
+                                    class="btn btn-secondary"
+                                    data-dismiss="modal"
+                                    aria-label="Close"
+                                    id="cancel_join_room"
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
 </div>
 <!-- end container -->
 <%- include('includes/end.ejs') %>

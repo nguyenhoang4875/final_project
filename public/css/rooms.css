@@ -1,5 +1,7 @@
-.test-css {
-    color: red;
+
+body {
+    background-image: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%,rgba(0,0,0,0.95) 100%), url("../img/pattern-12.svg");
+    z-index: -1;
 }
 
 .logo-image {
@@ -18,7 +20,6 @@
     width: 18rem;
     height: 14rem;
     font-family: 'Ubuntu', sans-serif;
-;
 }
 
 .list {
@@ -77,11 +78,6 @@
     font-weight: bold;
     border-radius: 0.5rem;
 }
-
-
-
-
-
 
 
 @media only screen and(max-width: 900px) {
