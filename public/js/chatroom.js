@@ -385,7 +385,7 @@ const rooms = {
         $(".chat_count").innerText = ++chat_count;
       }
       let li_node = document.createElement("LI");                 // Create a <li> node
-      li_node.innerHTML = `<strong>${username}</strong><br><p>${message}</p>`
+      li_node.innerHTML = `<strong>${username}</strong><br><p class="p-message">${message}</p>`
       ul.appendChild(li_node);
 
       if (username === NAME) {

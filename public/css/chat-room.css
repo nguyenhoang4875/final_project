@@ -177,9 +177,9 @@ video {
 }
 
 .main__header__title{
-    margin-top: 0.5rem;
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
+    margin-top: 0rem;
+    font-size: 1rem;
+    margin-bottom: 0rem;
 }
 .main__message_container {
     height: 3rem;
@@ -229,8 +229,7 @@ video {
     max-width: 70%;
     width: fit-content;
     /* word-wrap: break-word; */
-    padding:0.5rem;
-    margin: 0.5rem 0.5rem 0.5rem auto;
+    margin: 0.125em 1rem 0.125rem auto;
     /* margin-left: auto; */
     color: white;
     text-align: left;
@@ -241,18 +240,30 @@ video {
     max-width: 70%;
     width: fit-content;
     /* word-wrap: break-word; */
-    margin: 0.5rem 0.5rem 0;
-    padding: 0.5rem;
+    margin: 0.1rem 1rem 0;
     border-radius: 1rem;
     color: black;
 }
 
 .message__userCard {
     background-color: #4487ce;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-bottom: 0.1rem;
+    line-height: 1.34;
 }
 
 .message__guestCard {
     background-color: #adadb8;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-bottom: 0.1rem;
+    line-height: 1.34;
+}
+
+.p-message {
+    padding-bottom: 0.1rem;
+    margin-bottom: 0.1rem;
 }
 
 .screen_sharing {
