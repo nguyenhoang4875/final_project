@@ -171,11 +171,16 @@ video {
 }
 
 .main__header {
-    padding: 15px;
+    padding: 0.5rem;
     color: #06ebf6e3;
     text-align: center;
 }
 
+.main__header__title{
+    margin-top: 0.5rem;
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
 .main__message_container {
     height: 3rem;
     padding: 0.5rem;
