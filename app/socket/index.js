@@ -10,6 +10,8 @@ const RoomService = require('../services/RoomService');
 const ChatService = require('../services/ChatService');
 const ConnectService = require('../services/ConnectionService');
 const UserService = require('../services/UserService');
+const { TWILIO } = require('../config/constant');
+const client = require('twilio')(TWILIO.ACCOUNT_SID, TWILIO.AUTH_TOKEN);
 const users = [];
 const peers = {}
 
@@ -62,6 +64,13 @@ const ioEvents = function (io) {
 
     // Chatroom namespace
     io.of('/chatroom').on('connection', function (socket) {
+
+        socket.on('getIceServer', async function (){
+            await client.tokens.create().then(token => {
+                socket.emit('returnIceServer',token.iceServers);
+            });
+        });
+
         socket.on('join-room',async function ({roomId, userId}) {
             const result = await RoomService.findRoom({id: roomId});
             const room = result.data;

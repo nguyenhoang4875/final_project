@@ -11,7 +11,7 @@ let ul = document.querySelector("ul")
 /**
  * The stream object used to send media
  */
-var myStream = null;
+let myStream = null;
 /**
  * All peer connections
  */
@@ -26,7 +26,7 @@ if(location.href.substr(0,5) !== 'https')
 /**
  * RTCPeerConnection configuration
  */
-const configuration = {
+let configuration = {
   "iceServers": [{
     "urls": "stun:stun.l.google.com:19302"
   },
@@ -53,17 +53,21 @@ constraints.video.facingMode = {
 }
 
 const rooms = {
-  chat: function (roomId, username, userId) {
+  chat: async function (roomId, username, userId) {
     let socket = io('/chatroom', {transports: ['websocket']});
     let answersFrom = {}, offer;
-
-// enabling the camera at startup
-    navigator.mediaDevices.getUserMedia(constraints).then(stream => {
-      console.log('Received local stream');
-      myVideo.srcObject = stream;
-      myStream = stream;
-      joinRoom();
-    }).catch(e => alert(`getusermedia error ${e.name}`))
+    await socket.emit('getIceServer');
+    await socket.on('returnIceServer', function (iceServer){
+      configuration.iceServers = iceServer;
+      console.log('ice server in returnIceServers ', configuration);
+      // enabling the camera at startup
+      navigator.mediaDevices.getUserMedia(constraints).then(stream => {
+        console.log('Received local stream');
+        myVideo.srcObject = stream;
+        myStream = stream;
+        joinRoom();
+      }).catch(e => alert(`getUserMedia error ${e.name}`))
+    });
       getHistoryMsg(roomId);
 
       /**
