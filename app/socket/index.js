@@ -160,6 +160,7 @@ const ioEvents = function (io) {
             }
 
             const conn = await ConnectService.removeConnect({roomId, userId});
+            console.log('roomId in disconnect:', roomId);
             const checkCanJoinRoomByLimitPeople = await ConnectService.checkLimitPeopleInRoom({roomId});
             const roomStatus = await  RoomService.getRoomStatus(roomId);
             console.log('room status: ', roomStatus);
