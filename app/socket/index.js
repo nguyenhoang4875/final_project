@@ -123,7 +123,6 @@ const ioEvents = function (io) {
                 if (!checkCanJoinRoomByLimitPeople){
                     const roomSetFull = await RoomService.setStatusRoom(roomId,STATUS_ROOM.FULL);
                     console.log('this room was ',roomSetFull.room.status);
-                    return;
                 }
 
                 socket.on('signal', data => {
@@ -136,12 +135,6 @@ const ioEvents = function (io) {
 
                 socket.on('initSend', init_socket_id => {
                     peers[socket.roomId][init_socket_id].emit('initSend', socket.id)
-                })
-
-                socket.on('disconnect', () => {
-                    console.log('socket disconnected ' + socket.id)
-                    socket.broadcast.emit('removePeer', socket.id)
-                    delete peers[roomId][socket.id]
                 })
             }
         })
@@ -158,23 +151,33 @@ const ioEvents = function (io) {
             if (socket.request.session.passport == null) {
                 return;
             }
-
             const conn = await ConnectService.removeConnect({roomId, userId});
             console.log('roomId in disconnect:', roomId);
-            const checkCanJoinRoomByLimitPeople = await ConnectService.checkLimitPeopleInRoom({roomId});
+            const checkCanChangeRoomStatus = await ConnectService.canChangeRoomStatus({roomId});
             const roomStatus = await  RoomService.getRoomStatus(roomId);
+            const room= await RoomService.findRoom({id: roomId});
+            console.log('get room by id in disconnect: ', room);
             console.log('room status: ', roomStatus);
             if (conn.status === 200) {
-                if (checkCanJoinRoomByLimitPeople && roomStatus != STATUS_ROOM.AUTH){
-                    console.log('set room to active');
-                    await RoomService.setStatusRoom(roomId,STATUS_ROOM.ACTIVE);
+                if (checkCanChangeRoomStatus){
+                    console.log('change status room');
+                    if (room.data.password ===''){
+                        await RoomService.setStatusRoom(roomId,STATUS_ROOM.ACTIVE);
+                    }
+                    else {
+                        await RoomService.setStatusRoom(roomId,STATUS_ROOM.AUTH);
+                    }
+
+                    const roomStatus = await RoomService.getRoomStatus(roomId);
                 }
                 console.log('disconnect room');
                 const userConnected = conn.conn.users;
                 socket.leave(roomId);
                 socket.broadcast.to(roomId).emit('remove-user', {id: socket.id});
                 socket.broadcast.to(roomId).emit('updateUsersList', conn.usersInRoom, true, userConnected);
-                //socket.broadcast.to(roomId).emit('removeUser', userId);
+                console.log('socket disconnected ' + socket.id)
+                socket.broadcast.emit('removePeer', socket.id)
+                delete peers[roomId][socket.id];
             }
         });
 

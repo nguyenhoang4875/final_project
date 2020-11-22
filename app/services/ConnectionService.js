@@ -75,6 +75,30 @@ class ConnectionService {
         }
     }
 
+    async canChangeRoomStatus({roomId}){
+
+        try {
+            let conn = await this.connectModel.findOne({roomId}).exec();
+            let room = await this.roomModel.findOne({ _id: roomId }).exec();
+            let quantityRoom = room.quantity;
+            if (quantityRoom === 'Unlimited'){
+                return false;
+            }
+            let numbers = 0;
+            if (conn){
+                numbers = conn.users.length;
+            }
+
+            return (parseInt(quantityRoom)) - numbers == 1;
+        } catch (e) {
+            console.log(e);
+            return {
+                status: 400,
+                data: 'error when check can change room status'
+            }
+        }
+    }
+
 
     async removeConnect({ roomId, userId }) {
         try {

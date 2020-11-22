@@ -143,11 +143,11 @@ class RoomService {
     async setStatusRoom(roomId, status) {
         try {
             await this.roomModel.updateOne({_id: roomId}, {status: status}).exec();
-            let result = await this.roomModel.findOne({_id: roomId}).exec();
+            let room = await this.roomModel.findOne({_id: roomId}).exec();
             return {
                 status: 200,
                 message: 'Update data success!',
-                data: result
+                room: room
             }
         } catch (error) {
             return {
