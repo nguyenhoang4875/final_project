@@ -63,7 +63,7 @@ class RoomService {
 
     async getListAll(req) {
         try {
-            let rooms = await this.roomModel.find().sort('created').exec();
+            let rooms = await this.roomModel.find().sort({created: -1}).exec();
             return {
                 message: 'Get all list room success',
                 data: rooms
