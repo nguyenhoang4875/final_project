@@ -83,23 +83,29 @@
                         </div>
                         <footer>
                             <% if (room.status === 'active' ) { %>
+                            <div class="card-room-status">
                                 <a class="card-link" href="/chat/<%= room.id %>">
                                     <p class="card-text room-title__active">
                                         <i class="fa fa-phone" aria-hidden="true"></i>
                                         Join and talk now
                                     </p>
                                 </a>
+                            </div>
                             <% } else if (room.status === 'full') { %>
+                                <div class="card-room-status">
                                 <p class="card-text room-title__full">
                                     <i class="fa fa-ban" aria-hidden="true"></i>
                                     This room is full
                                 </p>
+                                </div>
                             <% } else if (room.status === 'auth') { %>
+                                <div class="card-room-status">
                                 <p class="card-text room-title__active"
                                    onclick="showEnterPasswordModal('<%= room.id %>')">
                                     <i class="fa fa-lock" aria-hidden="true"></i>
                                     Enter password and join
                                 </p>
+                                </div>
                             <% } %>
                         </footer>
                     </div>

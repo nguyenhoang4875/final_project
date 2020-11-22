@@ -119,11 +119,6 @@ const ioEvents = function (io) {
                     socket.broadcast.to(room._id).emit('updateUsersList', users, true, userConnected);
                 }
 
-                const checkCanJoinRoomByLimitPeople = await ConnectService.checkLimitPeopleInRoom({roomId});
-                if (!checkCanJoinRoomByLimitPeople){
-                    const roomSetFull = await RoomService.setStatusRoom(roomId,STATUS_ROOM.FULL);
-                    console.log('this room was ',roomSetFull.room.status);
-                }
 
                 socket.on('signal', data => {
                     if (!peers[socket.roomId][data.socket_id]) return
@@ -136,6 +131,16 @@ const ioEvents = function (io) {
                 socket.on('initSend', init_socket_id => {
                     peers[socket.roomId][init_socket_id].emit('initSend', socket.id)
                 })
+
+                const checkCanJoinRoomByLimitPeople = await ConnectService.checkLimitPeopleInRoom({roomId});
+                if (!checkCanJoinRoomByLimitPeople) {
+                    const roomSetFull = await RoomService.setStatusRoom(roomId,STATUS_ROOM.FULL);
+                    let roomStatus = roomSetFull.room.status;
+                    io.of('/rooms').on('connection', function (socket_temp) {
+                        socket_temp.emit('change-room-status-join', {roomId,roomStatus});
+                        socket_temp.broadcast.emit('change-room-status-join', {roomId,roomStatus});
+                    });
+                }
             }
         })
 
@@ -156,11 +161,9 @@ const ioEvents = function (io) {
             const checkCanChangeRoomStatus = await ConnectService.canChangeRoomStatus({roomId});
             const roomStatus = await  RoomService.getRoomStatus(roomId);
             const room= await RoomService.findRoom({id: roomId});
-            console.log('get room by id in disconnect: ', room);
             console.log('room status: ', roomStatus);
             if (conn.status === 200) {
                 if (checkCanChangeRoomStatus){
-                    console.log('change status room');
                     if (room.data.password ===''){
                         await RoomService.setStatusRoom(roomId,STATUS_ROOM.ACTIVE);
                     }
@@ -169,6 +172,12 @@ const ioEvents = function (io) {
                     }
 
                     const roomStatus = await RoomService.getRoomStatus(roomId);
+                    io.of('/rooms').on('connection', function (socket_temp) {
+                        console.log('change room status in disconnect room');
+                        socket_temp.emit('change-room-status', {roomId,roomStatus});
+                        socket_temp.broadcast.emit('change-room-status', {roomId,roomStatus});
+                    })
+                    //socket.to.emit('change-room-status', roomStatus);
                 }
                 console.log('disconnect room');
                 const userConnected = conn.conn.users;
