@@ -85,7 +85,6 @@ const app = {
                     }
                 }
             });
-
         });
     },
 
@@ -101,6 +100,11 @@ const app = {
                 let room = manageRoom.room;
                 console.log('room in updateRoomsList', room);
 
+                //let users = room.users;
+                let local = localStorage.getItem('user');
+                local = !!local ? JSON.parse(local) : null;
+                let userId = local._id;
+
                 if (manageRoom.isDelete) {
                     console.log('deleting room ne');
                     if ($(".room-list").length > 0) {
@@ -112,7 +116,17 @@ const app = {
                     }
                 } else if(manageRoom.isUpdate){
                     let id = room._id;
-                    let room_main = `<div class="card card-room" id="${id}">
+                    let room_main = ` <div class="card card-room" id="${room._id}">
+                                    <div class="card-body">
+                                      <div class="card-title">
+                                        <div class="room-topic">
+                                         <p> Topic: ${room.name} </p>
+                                        </div>
+                                        <p class="card-text">Max people: ${room.quantity}</p>
+                                        <p class="card-text">Level: ${room.level}</p>
+                                      </div>`
+
+                    let room_main_edit = `<div class="card card-room" id="${id}">
                             <div class="card-body">
                               <div class="card-title">
                                 <div class="room-topic">
@@ -139,41 +153,44 @@ const app = {
                             </footer>
                             </div>
                         </div>`
+
                     let room_auth =
                         `<footer>
-                            <p class="card-text room-title__active" onclick="showEnterPasswordModal(${room._id})">
+                            <p class="card-text room-title__active" onclick="showEnterPasswordModal('${room._id}')">
                                 <i class="fa fa-lock" aria-hidden="true"></i>
                                 Enter password and join
                             </p>
                         </footer>
                     </div>
                     </div>`
-                    if (room.password != ''){
-                        room_main = room_main + room_auth;
-                    }
-                    else {
 
-                        room_main = room_main + room_join;
+                    for (let user of users) {
+                        if (user._id === userId) {
+                            room_main_edit = room.password ==='' ? room_main_edit + room_join : room_main_edit + room_auth;
+                            $(room_main_edit).replaceAll("#"+id);
+                        } else {
+                            room_main = room.password ==='' ? room_main + room_join : room_main + room_auth;
+                            $(room_main).replaceAll("#"+id);
+                        }
+                        break;
                     }
-                $(room_main).replaceAll("#"+id);
                 }
-
 
                 else {
                     room.name = this.encodeHTML(room.name);
                     room.name = room.name.length > 25 ? room.name.substr(0, 25) + '...' : room.name;
-                    let html = ` <div class="card card-room" id="${room._id}">
-                                    <div class="card-body">
-                                      <div class="card-title">
-                                        <div class="room-topic">
-                                         <p> Topic: ${room.name} </p>
-                                        </div>
-                                        <p class="card-text">Max people: ${room.quantity}</p>
-                                        <p class="card-text">Level: ${room.level}</p>
-                                      </div>`
+                    let room_main= ` <div class="card card-room" id="${room._id}">
+                                       <div class="card-body">
+                                          <div class="card-title">
+                                            <div class="room-topic">
+                                              <p> Topic: ${room.name} </p>
+                                            </div>
+                                            <p class="card-text">Max people: ${room.quantity}</p>
+                                            <p class="card-text">Level: ${room.level}</p>
+                                        </div>`;
 
-                    let htmlEdit = `
-                        <div class="card card-room" id="${room.id}">
+                    let room_main_edit =
+                        `<div class="card card-room" id="${room._id}">
                             <div class="card-body">
                               <div class="card-title">
                                 <div class="room-topic">
@@ -200,34 +217,29 @@ const app = {
                                 </a>
                             </footer>
                             </div>
-                        </div>`
+                        </div>`;
                     let room_auth =
                         `<footer>
-                            <p class="card-text room-title__active" onclick="showEnterPasswordModal('<%= room.id %>')">
+                            <p class="card-text room-title__active" onclick="showEnterPasswordModal('${room._id}')">
                                 <i class="fa fa-lock" aria-hidden="true"></i>
                                 Enter password and join
                             </p>
                         </footer>
                     </div>
-                    </div>`
-
-
-                    //let users = room.users;
-                    let local = localStorage.getItem('user');
-                    local = !!local ? JSON.parse(local) : null;
-                    let userId = local._id;
+                    </div>`;
 
                     if ($(".room-list").length === 0) {
                         $('.room-list').html('');
                     }
 
                     for (let user of users) {
+                        console.log('userId: ', user._id);
                         if (user._id === userId) {
-                            htmlEdit = room.password ===''? htmlEdit+ room_join: htmlEdit + room_auth;
-                            $('.room-list').prepend(htmlEdit);
+                            room_main_edit = room.password ==='' ? room_main_edit + room_join : room_main_edit + room_auth;
+                            $('.room-list').prepend(room_main_edit);
                         } else {
-                            html = room.password ===''? html+ room_join: html + room_auth;
-                            $('.room-list').prepend(html);
+                            room_main = room.password ==='' ? room_main + room_join : room_main + room_auth;
+                            $('.room-list').prepend(room_main);
                         }
                         break;
                     }

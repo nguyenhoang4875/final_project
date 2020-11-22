@@ -80,7 +80,7 @@ toggleModal = () => {
     $("#selectMaxPeople").val('Unlimited');
     $("#selectLevels").val('Any Level');
     $("input[name='room_id']").val('');
-    $("input[name='passowrd']").val('');
+    $("input[name='password']").val('');
 };
 
 showEditModal = function (id) {
@@ -97,7 +97,7 @@ showEditModal = function (id) {
             $("#selectMaxPeople").val(room.quantity);
             $("#selectLevels").val(room.level);
             $("input[name='room_id']").val(room._id);
-            $("input[name='passowrd']").val(room.password);
+            $("input[name='password']").val(room.password);
         })
         .catch(err => {
             console.log(err);
