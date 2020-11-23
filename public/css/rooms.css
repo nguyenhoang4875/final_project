@@ -134,27 +134,19 @@ body {
     padding-left: 0;
 }
 
-/*
-*
-* ==========================================
-* FOR DEMO PURPOSE
-* ==========================================
-*
-*/
-
-body {
-    background: #ffd89b;
-    background: -webkit-linear-gradient(to right, #ffd89b, #19547b);
-    background: linear-gradient(to right, #ffd89b, #19547b);
-    min-height: 100vh;
+.a-search {
+    margin-left: -2rem;
+    padding-top: 0.75rem;
+    text-decoration: none;
 }
 
-.form-control::placeholder {
-    font-size: 0.95rem;
-    color: #aaa;
-    font-style: italic;
+.input__search {
+    border-radius: 1rem;
 }
 
+.for__search{
+    padding: 0;
+}
 
 @media screen and (min-width: 992px) and (max-width: 1200px) {
     .card-room {
