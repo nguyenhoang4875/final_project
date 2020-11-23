@@ -36,26 +36,58 @@
             </div>
             <!-- end room-create -->
         <% } %>
-        <div class="input-group room-search">
-            <input
-                    type="text"
-                    onchange="searchEvent()"
-                    id="search_room_input"
-                    class="form-control"
-                    placeholder="Search room"
-                    aria-label="Recipient's username"
-                    aria-describedby="basic-addon2"
-            />
-            <a
-                    href="?search"
-                    id="search_room_button"
-                    class="input-group-append mr-5"
-                    style="height: fit-content; color: transparent"
-            >
-            <span class="input-group-text red lighten-3" id="basic-text1">
-              <i class="material-icons text-grey" style="cursor: pointer">search</i>
-            </span>
-            </a>
+
+        <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
+            <div class="input-group">
+                <input type="search"
+                       onchange="searchEvent()"
+                       id="search_room_input"
+                       placeholder="Search room"
+                       class="form-control border-0 bg-light">
+                <div class="input-group-append">
+                    <button id="button-addon1" type="submit" class="btn btn-link text-primary"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-group room-search row">
+            <div class="for-search col-6">
+                <div class="d-flex">
+                <input
+                        type="text"
+                        onchange="searchEvent()"
+                        id="search_room_input"
+                        class="form-control"
+                        placeholder="Search room"
+                        aria-label="Recipient's username"
+                        aria-describedby="basic-addon2"
+                />
+                <a
+                        href="?search"
+                        id="search_room_button"
+                        class="input-group-append mr-5"
+                        style="height: fit-content; color: transparent"
+                >
+                <span class="input-group-text red lighten-3" id="basic-text1">
+                  <i class="material-icons text-grey" style="cursor: pointer">search</i>
+                </span>
+                </a></div>
+            </div>
+            <div class="search-filter col-6">
+                <div class="row">
+                <div class="form-group d-inline-flex col-6">
+                    <label for="quantity">Maximum peoples: </label>
+                    <select class="form-control" id="selectMaxPeople" name="quantity">
+                    </select>
+                </div>
+                <div class="form-group d-inline-flex col-6">
+                    <label for="level">Level: </label>
+                    <select class="form-control" id="selectLevels" name="level">
+                    </select>
+                </div>
+                </div>
+
+            </div>
         </div>
         <div class="room-num-rooms"><%= rooms.length %> Room(s)</div>
 
@@ -112,17 +144,11 @@
                 </div>
 
             <% }); %>
-            <% } else { if (user.role > 0) { %>
-                <p class="message-create-first-room" style="text-align: center; padding: 0; margin: 0">
-                    Create first room!
-                </p>
-            <% } %>
             <% } %>
         </div>
         <!-- end room-list -->
     </div>
     <!-- end room -->
-
     <!-- Modal edit and create -->
     <div
             class="modal fade"
@@ -195,10 +221,7 @@
             </div>
         </div>
     </div>
-
     <!-- Modal edit -->
-
-
     <!-- Modal enter password and join room -->
     <div
             class="modal fade"

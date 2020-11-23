@@ -53,7 +53,6 @@ const app = {
                 console.log('room: in socket updateRoomList: ', room);
                 console.log('create: in socket updateRoomList: ', creator);
                 // Display an error message upon a user error(i.e. creating a room with an existing title)
-                $('.message-create-first-room').remove();
                 if (room.status !== 200) {
                     if (userId === creator) {
                         toastr.error(room.message);

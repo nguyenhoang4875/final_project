@@ -29,7 +29,9 @@ class RoomController {
             if (user.role === ROLES.ADMIN) {
                 isAdmin = true;
             }*/
-            let rooms = await this.roomService.getListAll(req);
+            console.log('request:', req.query.search);
+            const search = req.query.search;
+            let rooms = await this.roomService.getListByMe(search);
             console.log('rooms length: ', rooms.data.length)
             res.render('rooms', {rooms: rooms.data, user: user});
         } catch (error) {

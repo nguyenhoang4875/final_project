@@ -117,6 +117,20 @@ searchEvent = () => {
     $("#search_room_button").attr('href', '?search=' + search);
 };
 
+$("#search_room_input").on('keyup', function (e) {
+    let search = $("#search_room_input").val();
+    $("#search_room_button").attr('href', '?search=' + search);
+    if (e.key === 'Enter' || e.key === 13){
+        if (search.trim() === ''){
+            window.location.href = '/rooms/me';
+        }
+        else {
+        window.location.href = '?search=' + search;
+        }
+    }
+})
+
+
 axios.get('/utils/max-peoples').then(res => {
     let maxPeoples = res.data;
     maxPeoples.forEach(x => $("#selectMaxPeople").append(new Option(x,x)));

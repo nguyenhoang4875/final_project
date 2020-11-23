@@ -8,50 +8,17 @@ class RoomService {
         this.userModel = UserModel;
     }
 
-    async getListByMe({id, search = '', isAdmin = false}) {
+    async getListByMe(search = '') {
         try {
-            let userId;
-            userId = id;
             let rooms;
-            if (isAdmin) {
                 if (!!search) {
                     rooms = await this.roomModel.find(
                         {
-                            $or: [
-                                {status: 'active', name: new RegExp(search, 'i')},
-                                {status: 'active', "users.username": new RegExp(search, 'i')},
-                                {status: 'active', "users.email": new RegExp(search, 'i')}]
-                        }).sort({updated: -1})
-                        .exec();
+                            $or: [ { name: new RegExp(search, 'i')} ]
+                        }).sort({updated: -1}) .exec();
                 } else {
-                    rooms = await this.roomModel.find({status: 'active'}).sort({updated: -1}).exec();
+                    rooms = await this.roomModel.find().sort({updated: -1}).exec();
                 }
-            } else {
-                if (!!search) {
-                    console.log('SEARCH:', search);
-                    rooms = await this.roomModel.find({
-                        $or: [
-                            {status: 'active', "users._id": {$in: [userId]}, name: new RegExp('^' + search + '$', "i")},
-                            {
-                                status: 'active',
-                                "users._id": {$in: [userId]},
-                                "users.username": new RegExp('^' + search + '$', "i")
-                            },
-                            {
-                                status: 'active',
-                                "users._id": {$in: [userId]},
-                                "users.email": new RegExp('^' + search + '$', "i")
-                            },
-                        ]
-                    }).sort({updated: -1}).exec();
-                } else {
-                    rooms = await this.roomModel.find({
-                        status: 'active',
-                        "users._id": {$all: [userId]}
-                    }).sort({updated: -1}).exec();
-                }
-            }
-
             return {
                 message: 'Get list room success',
                 data: rooms
