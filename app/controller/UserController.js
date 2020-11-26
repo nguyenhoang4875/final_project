@@ -40,6 +40,17 @@ class UserController {
         }
     }
 
+    async getCurrentUserById({ req, res }) {
+        try {
+            const id = req.user._id;
+            console.log('userId in current: ', id);
+            const user = await UserService.getUserById(id);
+            return res.render('user-info', {user:user});
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     async updateProfile(req, res) {
         try {
             const errors = validationResult(req);

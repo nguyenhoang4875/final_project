@@ -1,0 +1,31 @@
+body {
+    background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%), url("../img/bg-01.jpg");
+    background-repeat: no-repeat;
+    z-index: -1;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.main__user__info {
+    margin-top: 2rem;
+    justify-content: center;
+    text-align: center;
+    display: flex;
+    background: white;
+    padding: 1rem;
+    max-width: 50rem;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 1rem;
+}
+
+.avatar__user__info {
+    text-align: center;
+    width: 10rem;
+    height: 10rem;
+    border-radius: 50%;
+    margin-bottom: 2rem;
+}
