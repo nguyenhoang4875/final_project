@@ -15,6 +15,42 @@ body {
     height: 4.5rem;
 }
 
+.user__avatar {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    margin-top: 0.5rem;
+}
+
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu-user {
+    position: absolute;
+    top: 2.5rem;
+    right: 0rem;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 10rem;
+    padding: 0.5rem;
+    margin: .125rem 0 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
+}
+
+.is-active {
+    display: block;
+}
+
 .btn-create-room {
     display: -webkit-box;
     display: -webkit-flex;
@@ -29,7 +65,6 @@ body {
 }
 
 .btn-create-room i {
-    padding-top: 0.25rem;
     margin-right: 0.25rem;
 }
 
@@ -115,13 +150,6 @@ body {
     border-radius: 0.5rem;
 }
 
-/*
-*
-* ==========================================
-* CUSTOM UTIL CLASSES
-* ==========================================
-*
-*/
 
 .form-control:focus {
     box-shadow: none;
@@ -147,6 +175,8 @@ body {
 .for__search{
     padding: 0;
 }
+
+
 
 @media screen and (min-width: 992px) and (max-width: 1200px) {
     .card-room {

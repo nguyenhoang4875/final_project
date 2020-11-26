@@ -159,3 +159,18 @@ toggleEnterPasswordModal = (roomId) => {
     $("input[name='join_room_id']").val(roomId);
 };
 
+const $dropdown_menu_user = $('.dropdown-menu-user');
+
+$(document).mouseup(e => {
+    $dropdown_menu_user.removeClass('is-active');
+});
+
+$('.user__avatar').on('click', function () {
+    if (($dropdown_menu_user.hasClass("is-active")) == false){
+        $dropdown_menu_user.addClass("is-active")
+    }
+    else {
+        $dropdown_menu_user.removeClass("is-active")
+    }
+});
+
