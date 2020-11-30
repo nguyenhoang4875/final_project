@@ -120,9 +120,18 @@ const app = {
                         console.log('room Id', roomId);
                         console.log('userId', userId);
                         socket.emit('joinRoomAuth', {roomId, roomPwd, userId});
+                        socket.on('invalid-room-password', function (inValid){
+                            toastr.error("Room password is invalid");
+                        })
                     }
                 }
             });
+
+            socket.on('update-user-in-room' ,function (currentUsersInRoom) {
+                console.log('^_^');
+                console.log(currentUsersInRoom);
+                console.log('^_^');
+            })
         });
     },
 

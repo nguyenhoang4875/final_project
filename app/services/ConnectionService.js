@@ -1,10 +1,13 @@
 const ConnectionModel = require('../models/ConnectionModel');
 const RoomModel = require('../models/RoomModel');
+const UserModel = require('../models/UserModel');
 
 class ConnectionService {
     constructor() {
         this.connectModel = ConnectionModel;
         this.roomModel = RoomModel;
+        this.userModel = UserModel;
+
     }
 
     async newConnect({ roomId, userId }) {
@@ -128,6 +131,108 @@ class ConnectionService {
 
         } catch (e) {
             console.log(e);
+        }
+    }
+
+    async getUsersInConnection( roomId ) {
+        try {
+            let conn = await this.connectModel.findOne({roomId}).exec();
+            let listUserId = conn.users;
+            let listUserAvatarInConnection = [];
+            for (const x of listUserId) {
+               let avatarUrl = await this.userModel.findOne({_id: x}, {avatar: 1}).exec();
+                listUserAvatarInConnection.push(avatarUrl);
+            }
+            console.log('list user avatar', listUserAvatarInConnection);
+            return {
+                status: 200,
+                usersInRoom: listUserAvatarInConnection
+            }
+        } catch (e) {
+            console.log(e);
+            return {
+                status: 400,
+                data: null
+            }
+        }
+    }
+
+    async getUsersInConnectionByRoomId(roomId) {
+        try {
+            let conn = await this.connectModel.aggregate([
+                {
+                    $lookup:{
+                        from: "users",       // other table name
+                        localField: "users",   // name of users table field
+                        foreignField: "_id", // name of userinfo table field
+                        as: "connections_users"         // alias for userinfo table
+                    }
+                },
+
+                {
+                    $unwind:"$connections_users"
+                },
+                {
+                    $project:{
+                        "_id":1,
+                        "user_id" :"$connections_users._id",
+                        "avatar" :"$connections_users.avatar"
+                    }
+                }
+            ]).exec();
+
+
+            // let listUserId = conn.users;
+            // let listUserAvatarInConnection = [];
+            // for (const x of listUserId) {
+            //     let avatarUrl = await this.userModel.findOne({_id: x}, {avatar: 1}).exec();
+            //     listUserAvatarInConnection.push(avatarUrl);
+            // }
+            console.log('get list avatar in room', conn);
+            return {
+                status: 200,
+                data: conn
+                // usersInRoom: listUserAvatarInConnection
+            }
+        } catch (e) {
+            console.log(e);
+            return {
+                status: 400,
+                data: null
+            }
+        }
+    }
+
+    async getAvatarUsersInRoom(roomId) {
+        try {
+            let conn = await this.connectModel.aggregate([
+                {
+                    $lookup:
+                        {
+                            from: "user",
+                            localField: "users",
+                            foreignField: "_id",
+                            as: "user_in_room"
+                        }
+                }
+            ]).exec();
+            // let listUserId = conn.users;
+            // let listUserAvatarInConnection = [];
+            // for (const x of listUserId) {
+            //     let avatarUrl = await this.userModel.findOne({_id: x}, {avatar: 1}).exec();
+            //     listUserAvatarInConnection.push(avatarUrl);
+            // }
+            console.log('print conn', conn);
+            return {
+                status: 200,
+                // usersInRoom: listUserAvatarInConnection
+            }
+        } catch (e) {
+            console.log(e);
+            return {
+                status: 400,
+                data: null
+            }
         }
     }
 }

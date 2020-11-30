@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ConnectionModel = new Schema({
-    roomId: String,
-    users: [],
+    roomId: { type: mongoose.Schema.ObjectId},
+    users: [{ type: mongoose.Schema.ObjectId}],
     created: {
         type: Date,
         default: Date.now()

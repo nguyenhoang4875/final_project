@@ -109,9 +109,13 @@
                                 </i>
                                 <% } %>
                             </div>
+                            <div class="list-user-avatar">
+                                <div class="card-user__avatar">
+                                    <img src="<%= user.avatar%>" class="user__avatar_in_card">
+                                </div>
 
-                            <p class="card-text">Max people: <%= room.quantity %></p>
-                            <p class="card-text">Level: <%= room.level %></p>
+                            </div>
+
                         </div>
                         <footer>
                             <% if (room.status === 'active' ) { %>
