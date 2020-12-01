@@ -227,8 +227,9 @@ video {
 .message__user {
     max-width: 70%;
     width: fit-content;
+    display: flex;
     /* word-wrap: break-word; */
-    margin: 0.125em 1rem 0.125rem auto;
+    margin: 0.125em 0.25rem 0.125rem auto;
     /* margin-left: auto; */
     color: white;
     text-align: left;
@@ -238,31 +239,49 @@ video {
 .message__other {
     max-width: 70%;
     width: fit-content;
+    display: flex;
     /* word-wrap: break-word; */
-    margin: 0.1rem 1rem 0;
+    margin: 0.1rem 0.25rem 0;
     border-radius: 1rem;
     color: black;
 }
 
-.message__userCard {
+.message__userCard p {
     background-color: #4487ce;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    padding-bottom: 0.1rem;
+    border-radius: 1rem;
+    margin-right: 0.5rem;
+}
+
+.message__guestCard p {
+    background-color: #adadb8;
+    border-radius: 1rem;
+    margin-left: 0.5rem;
+}
+
+
+.message__userCard {
+    padding: 0rem 0.5rem;
     line-height: 1.34;
 }
 
 .message__guestCard {
-    background-color: #adadb8;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    padding-bottom: 0.1rem;
+    padding: 0rem 0.5rem;
     line-height: 1.34;
 }
 
+.message__userCard img {
+    display: flex;
+    justify-content: flex-end;
+}
+
+
 .p-message {
-    padding-bottom: 0.1rem;
+    height: 2rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.3rem;
     margin-bottom: 0.1rem;
+    line-height: 1.34;
 }
 
 .screen_sharing {
@@ -323,4 +342,10 @@ video {
 .menu__top {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
+}
+
+.user__avatar_in_chat {
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 50%;
 }

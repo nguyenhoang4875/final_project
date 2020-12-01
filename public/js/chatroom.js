@@ -179,6 +179,7 @@ const rooms = {
     function getHistoryMsg(roomId) {
       axios.get('/chat/' + roomId + '/messages')
           .then(res => {
+            console.log('get list messages: ', res);
             showHistoryMsg(res.data);
           })
           .catch(err => {
@@ -191,7 +192,8 @@ const rooms = {
         let message = {
           content: mess.message,
           username: !!mess.sender_id.username ? mess.sender_id.username : 'User',
-          date: mess.created
+          date: mess.created,
+          avatar: mess.sender_id.avatar,
         };
         rooms.helpers.addMessage(message);
       }
@@ -207,6 +209,7 @@ const rooms = {
             content: messageContent,
             username: username,
             date: Date.now(),
+            avatar: AVATAR,
           };
           socket.emit('newMessage', {roomId, message, userId});
           rooms.helpers.addMessage(message);
@@ -377,25 +380,32 @@ const rooms = {
     },
 
     addMessage: function (messageCome) {
-      console.log('in addMessage method');
+      console.log('in addMessage method: ', messageCome);
       let message = messageCome.content;
       let username = messageCome.username;
+      let avatar = messageCome.avatar;
       if ($(".main__right").css('display') === "none") {
         $(".chat_count").css('display','block');
         $(".chat_count").innerText = ++chat_count;
       }
       let li_node = document.createElement("LI");                 // Create a <li> node
-      li_node.innerHTML = `<strong>${username}</strong><br><p class="p-message">${message}</p>`
-      ul.appendChild(li_node);
+
+
 
       if (username === NAME) {
+        li_node.innerHTML = ` <p class="p-message">${message}</p>
+                            <img src=${avatar} class="user__avatar_in_chat">`
         li_node.classList.add("message__user");
         li_node.classList.add("message__userCard");
 
       } else {
+        li_node.innerHTML = `<img src=${avatar} class="user__avatar_in_chat">
+                             <p class="p-message">${message}</p>`
         li_node.classList.add("message__other");
         li_node.classList.add("message__guestCard");
       }
+
+      ul.appendChild(li_node);
 
       $(".main__chat_window").animate({scrollTop: $('.main__chat_window')[0].scrollHeight}, 100);
 
