@@ -15,9 +15,9 @@ class RoomService {
                     rooms = await this.roomModel.find(
                         {
                             $or: [ { name: new RegExp(search, 'i')} ]
-                        }).sort({updated: -1}) .exec();
+                        }).sort({created: -1}) .exec();
                 } else {
-                    rooms = await this.roomModel.find().sort({updated: -1}).exec();
+                    rooms = await this.roomModel.find().sort({created: -1}).exec();
                 }
             return {
                 message: 'Get list room success',
