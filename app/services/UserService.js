@@ -150,7 +150,7 @@ class UserService {
      * @param userId
      * @returns {Promise<{data: null, type: string, message: string, status: number}|{message: string, type: string, user: *, status: number}>}
      */
-    async updateUser({ username, email, id, role, oldPassword, newPassword, userId }){
+    async updateUser({ username, email, id, role, oldPassword, newPassword, userId,avatar }){
         try {
             let user = await this.userModel.findOne({_id: userId}).exec();
 
@@ -185,10 +185,13 @@ class UserService {
                         data: null
                     }
                 }
+
+                let image = avatar ? await CommonService.uploadImage(avatar) : user.avatar;
                 await this.userModel.update({ _id: userId }, {
                     username ,
                     email,
-                    role
+                    role,
+                    avatar: image
                 }).exec();
 
                 if( oldPassword && newPassword ){

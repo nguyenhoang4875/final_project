@@ -8,7 +8,7 @@ class CommonService {
     */
     static async uploadImage(base64String){
         // Init
-        const root_folder = __dirname.split('training/App/Services')[0];
+        const root_folder = __dirname.split('/app/services')[0];
         const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_';
 
         // Process
@@ -20,20 +20,11 @@ class CommonService {
         }
         file_name = file_name + new Date().getTime();
         if(base64String){
-            // base64String = base64String.split(';base64,').pop();
-            let resource = `${root_folder}training`;
-            let dest = `${root_folder}chat-nuxt/static/images`;
-            let dest_2 = `${root_folder}chat-nuxt/dist/images`;
-            fs.writeFile(`${file_name}.png`, base64String, {encoding: 'base64'}, function(err) {
-                if(fs.existsSync(dest)){
-                    fs.createReadStream(`${resource}/${file_name}.png`).pipe(fs.createWriteStream(`${dest}/${file_name}.png`));   
-                }
-                if(fs.existsSync(dest_2)){
-                    fs.createReadStream(`${resource}/${file_name}.png`).pipe(fs.createWriteStream(`${dest_2}/${file_name}.png`));   
-                }
-                fs.unlink(`${resource}/${file_name}.png`, (err) => {});
-            });
-            return `images/${file_name}.png`;
+            console.log('root folder', root_folder);
+             base64String = base64String.split(';base64,').pop();
+            let dest = `${root_folder}/public/upload_images`;
+            fs.writeFile(`${dest}/${file_name}.png`, base64String, {encoding: 'base64'}, function(err) {});
+            return `/upload_images/${file_name}.png`;
         }else{
             return false;
         }

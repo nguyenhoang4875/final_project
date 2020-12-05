@@ -226,6 +226,7 @@ const ioEvents = function (io) {
                                                   oldPassword,
                                                   newPassword,
                                                   userId,
+                                                  avatar
                                               }) {
             const data = await UserService.updateUser({
                 username: name,
@@ -235,6 +236,7 @@ const ioEvents = function (io) {
                 oldPassword,
                 newPassword,
                 userId,
+                avatar
             });
             socket.emit('updateUsersList', data, id);
             socket.broadcast.emit('updateUsersList', data, id);

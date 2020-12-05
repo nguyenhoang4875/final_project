@@ -87,6 +87,8 @@ socket.on('connect', function () {
     $('#submit_user').on('click', function (e) {
         e.preventDefault();
         let userId = $("input[name='user_id']").val();
+        let avatar = $("input[name='avatar']").val();
+        console.log('avatar ne', avatar);
         let name = $("input[name='name']").val().trim();
         let email = $("input[name='email']").val().trim();
         let role = $("#role").val();
@@ -101,7 +103,7 @@ socket.on('connect', function () {
                 if (!!name && !!email && !!role) {
                     $("#submit_user").attr("disabled", true).html('Updating ...');
                     $("#delete_user").attr("style", "margin-right: 43%");
-                    socket.emit('editUser', {name, email, id, role, oldPassword, newPassword, userId});
+                    socket.emit('editUser', {name, email, id, role, oldPassword, newPassword, userId,avatar});
                 } else {
                     toastr.error('Username, email are required !')
                 }
@@ -117,3 +119,20 @@ socket.on('connect', function () {
     });
 
 });
+
+function readFile() {
+
+    if (this.files && this.files[0]) {
+
+        var FR= new FileReader();
+
+        FR.addEventListener("load", function(e) {
+            $("input[name='avatar']").val(e.target.result);
+        });
+
+        FR.readAsDataURL( this.files[0] );
+    }
+
+}
+
+document.getElementById("inp").addEventListener("change", readFile);
