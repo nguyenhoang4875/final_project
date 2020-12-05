@@ -156,23 +156,30 @@
         <div id="videos" class="video_section">
             <video  controls id="myVideo" class="vid" autoplay muted></video>
         </div>
-
-        <div class="video_options">
-            <div class="video_share" onclick="setScreen()">
-                <i class="fas fa-share-square fa-2x" ></i>
-            </div>
-            <div class="video_chat" onclick="handleChat()">
-                <i class="fas fa-comment-alt fa-2x">
-                    <span class="chat_count"></span>
+    </div>
+    <div class="main__center">
+        <div class="video_options flex-row align-content-center">
+            <div class="parent-icon-2" onclick="handleChat()">
+                <i class="fas fa-comment-alt-dots menu-icon">
+                    <span class="chat_count menu-icon"></span>
                 </i>
             </div>
+            <div class="parent-icon-2" onclick="setScreen()">
+                <i class="fas fa-share-square menu-icon"  ></i>
+            </div>
         </div>
-
     </div>
-
     <div class="main__right" >
-        <div class="main__header">
+        <div class="main__header d-flex justify-content-between">
             <p class="main__header__title"><%=room.name%></p>
+            <div class="d-flex flex-row">
+                <div class="parent-icon" onclick="setScreen()">
+                    <i class="fas fa-share-square ve menu-icon-2"  ></i>
+                </div>
+                <div class="parent-icon" onclick="handleChat()">
+                    <i class="fas fa-sign-out menu-icon-2"  ></i>
+                </div>
+            </div>
         </div>
 
         <div  class="main__chat_window">

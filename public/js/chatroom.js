@@ -605,11 +605,23 @@ $('#video-mode').on('click', function (e) {
   if (isChat) {
     $(".main__right").css('display','none')
     $(".main__left").css('flex',1) ;
+    $(".main__left").css('display', "flex") ;
+    $(".main__center").css('display','flex')
+    if($(window).width() < 600){
+    }
     isChat = false;
   } else {
     $(".main__right").css('display','flex')
-    $(".main__left").css('flex','0.7')
+    $(".main__left").css('display','flex')
+    $(".main__left").css('flex','0.75')
+    $(".main__right").css('flex','0.25')
     $(".chat_count").css('display','none');
+    $(".main__center").css('display','none')
     isChat = true;
+    console.log($(window).width())
+    if($(window).width() < 600){
+      $(".main__left").css('display','none')
+      $(".main__right").css('flex',1)
+    }
   }
 }

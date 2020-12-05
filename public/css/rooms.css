@@ -1,6 +1,6 @@
 
-body {
-    background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%), url("../img/bg-01.jpg");
+.container__room {
+    background-image: url("https://cutewallpaper.org/21/space-background-dark/videoblocks-black-empty-space-with-stars-dark-science-.png");
     background-repeat: no-repeat;
     z-index: -1;
     -webkit-background-size: cover;
@@ -16,10 +16,21 @@ body {
 }
 
 .user__avatar {
-    width: 2rem;
-    height: 2rem;
+    width: 2.5rem;
+    height: 2.5rem;
     border-radius: 50%;
-    margin-top: 0.5rem;
+}
+
+.user_avatar_parent{
+    border: 1px  solid white;
+    border-radius: 1.25rem;
+    height: 2.5rem;
+    margin-top: 1rem;
+    padding-right: 0.75rem;
+}
+
+.user_avatar_parent p{
+    color: white;
 }
 
 
@@ -29,7 +40,7 @@ body {
 
 .dropdown-menu-user {
     position: absolute;
-    top: 2.5rem;
+    top: 3.5rem;
     right: 0rem;
     z-index: 1000;
     display: none;
@@ -45,7 +56,30 @@ body {
     background-clip: padding-box;
     border: 1px solid rgba(0,0,0,.15);
     border-radius: .25rem;
+    background-color: #172027;
 }
+
+.ant-dropdown-menu-item{
+    padding: 0.2rem;
+    color: white;
+    border-bottom: 1px solid transparent;
+}
+
+.ant-dropdown-menu-item a{
+    color: white;
+}
+
+.form-control{
+    border: none;
+}
+.ant-dropdown-menu-item a:hover{
+    text-decoration: none;
+}
+
+.ant-dropdown-menu-item:hover{
+    border-bottom: 1px solid white;
+}
+
 
 .is-active {
     display: block;
@@ -69,7 +103,9 @@ body {
 }
 
 .btn-create-room:hover {
-    background: linear-gradient(45deg,#00dbde,#fc00ff);
+   /*
+   // background: linear-gradient(45deg,#00dbde,#fc00ff);
+   */
 }
 
 .room-num-rooms {
@@ -80,7 +116,7 @@ body {
 
 
 .card-room {
-    background-color: #f7eded ;
+    background-color: white ;
     margin: 1rem;
     width: 20rem;
     height: 14rem;
@@ -112,7 +148,7 @@ body {
 }
 
 .main-title {
-    font-size: 2rem;
+    font-size: 2.5rem;
     text-align: center;
     color: white;
     font-family: 'Ubuntu', sans-serif;
@@ -140,20 +176,28 @@ body {
     justify-content: space-between;
 }
 
+.room-topic p {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 0px;
+}
+
 .room-title__active {
-    color: green;
+    padding: 0.2rem;
+    color: seagreen;
     text-align: center;
-    border: 1px dashed;
+    border: 1.5px dashed;
     border-radius: 0.5rem;
 }
 .room-title__active:hover {
-    color: forestgreen;
+    padding: 0.2rem;
+    color: darkgreen;
     text-align: center;
-    border: 2px dashed;
-    font-weight: bolder;
+    border: 1.5px dashed;
     border-radius: 0.5rem;
-    background: linear-gradient(45deg,#00dbde,#fc00ff);
 }
+
+
 
 .room-title__full {
     color: red;
