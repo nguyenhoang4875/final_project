@@ -165,7 +165,7 @@ $(document).mouseup(e => {
     $dropdown_menu_user.removeClass('is-active');
 });
 
-$('.user__avatar').on('click', function () {
+$('.user_avatar_parent').on('click', function () {
     if (($dropdown_menu_user.hasClass("is-active")) == false){
         $dropdown_menu_user.addClass("is-active")
     }
