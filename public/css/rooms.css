@@ -87,10 +87,23 @@ body {
     font-family: 'Ubuntu', sans-serif;
 }
 
+.card-room-status {
+    position: absolute;
+    bottom: 1rem;
+    text-align: center;
+    width: 85%;
+}
+
 .list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.user__avatar_in_card {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
 }
 
 .header-main {
