@@ -168,27 +168,22 @@ class ConnectionService {
                         as: "connections_users"         // alias for userinfo table
                     }
                 },
+                {
+                    $match: {
+                        $and: [{"roomId": roomId}]
+                    }
+                },
 
                 {
                     $unwind:"$connections_users"
                 },
                 {
                     $project:{
-                        "_id":1,
-                        "user_id" :"$connections_users._id",
+                        "_id":0,
                         "avatar" :"$connections_users.avatar"
                     }
                 }
             ]).exec();
-
-
-            // let listUserId = conn.users;
-            // let listUserAvatarInConnection = [];
-            // for (const x of listUserId) {
-            //     let avatarUrl = await this.userModel.findOne({_id: x}, {avatar: 1}).exec();
-            //     listUserAvatarInConnection.push(avatarUrl);
-            // }
-            console.log('get list avatar in room', conn);
             return {
                 status: 200,
                 data: conn

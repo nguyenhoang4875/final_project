@@ -1,14 +1,30 @@
 const RoomModel = require('../models/RoomModel');
 const UserModel = require('../models/UserModel');
+const ConnectionService = require('../services/ConnectionService');
 const {ROLES, STATUS_ROOM} = require('../config/constant');
+
+class RoomRes {
+    status;
+    created;
+    updated;
+    password;
+    _id;
+    name;
+    quantity;
+    level;
+    creator;
+    avatars;
+}
 
 class RoomService {
     constructor() {
         this.roomModel = RoomModel;
         this.userModel = UserModel;
+        this.connectionService = ConnectionService;
     }
 
-    async getListByMe(search = '') {
+
+async getListByMe(search = '') {
         try {
             let rooms;
                 if (!!search) {
@@ -19,6 +35,32 @@ class RoomService {
                 } else {
                     rooms = await this.roomModel.find().sort({created: -1}).exec();
                 }
+                let result = new Array();
+            for (let i = 0; i < rooms.length ; i++) {
+                let temp = new RoomRes();
+                temp.status = rooms[i].status;
+                temp._id = rooms[i]._id;
+                temp.created = rooms[i].created;
+                temp.updated = rooms[i].updated;
+                temp.name = rooms[i].name;
+                temp.password = rooms[i].password;
+                temp.quantity = rooms[i].quantity;
+                temp.level = rooms[i].level;
+                temp.creator = rooms[i].creator;
+                let listAvatarUsers = [];
+                temp.avatars = [];
+                listAvatarUsers = await this.connectionService.getUsersInConnectionByRoomId(rooms[i]._id);
+                if (listAvatarUsers.data.length > 0) {
+                    for (let i=0; i< listAvatarUsers.data.length ; i++){
+                       temp.avatars.push(listAvatarUsers.data[i].avatar);
+                    }
+                }
+                result.push(temp);
+
+            }
+
+            rooms = result;
+            console.log('room in room service', rooms);
             return {
                 message: 'Get list room success',
                 data: rooms
