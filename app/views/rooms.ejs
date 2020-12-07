@@ -104,11 +104,12 @@
                                 </p>
                                 <i class="fa fa-cog "
                                    aria-hidden="true"
-                                   onclick="showEditModal('<%= room._id %>')"
+                                   onclick="showEditModal('<%=room._id %>')"
                                    style="color:#495c68;cursor:pointer">
                                 </i>
                                 <% } %>
                             </div>
+                            <p class="card-text">Level: <%= room.level %></p>
                             <div class="list-user-avatar">
                                 <div class="card-user__avatar">
                                     <% if (room.avatars.length > 0) { room.avatars.forEach(avatar => {%>

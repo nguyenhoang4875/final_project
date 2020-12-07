@@ -169,11 +169,13 @@ const app = {
                                         <div class="room-topic">
                                          <p> Topic: ${room.name} </p>
                                         </div>
-                                        <p class="card-text">Max people: ${room.quantity}</p>
                                         <p class="card-text">Level: ${room.level}</p>
+                                         <div class="list-user-avatar">
+                                           
+                                           </div>
                                       </div>`
 
-                    let room_main_edit = `<div class="card card-room" id="${id}">
+                    let room_main_edit = `<div class="card card-room" id="${room._id}">
                             <div class="card-body">
                               <div class="card-title">
                                 <div class="room-topic">
@@ -186,27 +188,34 @@ const app = {
                                    style="color:#495c68;cursor:pointer">
                                 </i>
                                 </div>
-                                <p class="card-text">Max people: ${room.quantity}</p>
                                 <p class="card-text">Level: ${room.level}</p>
+                                 <div class="list-user-avatar">
+                                   
+                                   </div>
                               </div>`
+
                     let room_join =
                              ` <footer>
-                                <a class="card-link" href="/chat/${room._id}">
-                                    <p class="card-text room-title__active">
-                                        <i class="fa fa-phone" aria-hidden="true"></i>
-                                        Join and talk now
-                                    </p>
-                                </a>
+                                <div class="card-room-status">
+                                    <a class="card-link" href="/chat/${room._id}">
+                                        <p class="card-text room-title__active">
+                                            <i class="fa fa-phone" aria-hidden="true"></i>
+                                            Join and talk now
+                                        </p>
+                                    </a>
+                                </div>
                             </footer>
                             </div>
                         </div>`
 
                     let room_auth =
                         `<footer>
-                            <p class="card-text room-title__active" onclick="showEnterPasswordModal('${room._id}')">
-                                <i class="fa fa-lock" aria-hidden="true"></i>
-                                Enter password and join
-                            </p>
+                            <div class="card-room-status">
+                                <p class="card-text room-title__active" onclick="showEnterPasswordModal('${room._id}')">
+                                    <i class="fa fa-lock" aria-hidden="true"></i>
+                                    Enter password and join
+                                </p>
+                            </div>
                         </footer>
                     </div>
                     </div>`

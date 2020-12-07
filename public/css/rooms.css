@@ -1,5 +1,5 @@
 
-.container__room {
+body{
     background-image: url("https://cutewallpaper.org/21/space-background-dark/videoblocks-black-empty-space-with-stars-dark-science-.png");
     background-repeat: no-repeat;
     z-index: -1;
@@ -22,7 +22,7 @@
 }
 
 .user_avatar_parent{
-    border: 2px  solid white;
+    border: 1px solid dimgray;
     border-radius: 1.25rem;
     height: 2.2rem;
     margin-top: 1rem;
@@ -123,6 +123,11 @@
     font-family: 'Ubuntu', sans-serif;
 }
 
+.card-text {
+    font-family: 'Playfair Display', serif;;
+}
+
+
 .card-room-status {
     position: absolute;
     bottom: 1rem;
@@ -180,6 +185,7 @@
     font-weight: bold;
     font-size: 18px;
     margin-bottom: 0px;
+    font-family: 'Playfair Display', serif;
 }
 
 .room-title__active {

@@ -58,9 +58,7 @@ async getListByMe(search = '') {
                 result.push(temp);
 
             }
-
             rooms = result;
-            console.log('room in room service', rooms);
             return {
                 message: 'Get list room success',
                 data: rooms
