@@ -5,15 +5,13 @@ const Mongoose = require('mongoose');
 const logger = require('../logger');
 const dotenv = require('dotenv');
 const { DB_HOST_CHAT, DB_NAME_CHAT } = process.env;
-const dbURI = `mongodb+srv://mariana:mariana@cluster0.h8dsg.mongodb.net/mariana?retryWrites=true&w=majority`;
-/*
+//const dbURI = `mongodb+srv://mariana:mariana@cluster0.h8dsg.mongodb.net/mariana?retryWrites=true&w=majority`;
 const dbURI = "mongodb://" +
 	encodeURIComponent(config.db.username) + ":" +
 	encodeURIComponent(config.db.password) + "@" +
 	config.db.host + ":" +
 	config.db.port + "/" +
 	config.db.name;
-*/
 
 console.log('dbURI ', dbURI);
 

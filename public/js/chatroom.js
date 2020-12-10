@@ -380,7 +380,6 @@ const rooms = {
     },
 
     addMessage: function (messageCome) {
-      console.log('in addMessage method: ', messageCome);
       let message = messageCome.content;
       let username = messageCome.username;
       let avatar = messageCome.avatar;
@@ -623,5 +622,15 @@ $('#video-mode').on('click', function (e) {
       $(".main__left").css('display','none')
       $(".main__right").css('flex',1)
     }
+  }
+}
+
+function GoBackWithRefresh() {
+  if ('referrer' in document) {
+    window.location = document.referrer;
+    /* OR */
+    //location.replace(document.referrer);
+  } else {
+    window.history.back();
   }
 }

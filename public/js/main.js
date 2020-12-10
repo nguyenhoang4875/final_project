@@ -8,45 +8,6 @@ const app = {
 
         // When socket connects, get a list of chat rooms
         socket.on('connect', function () {
-            socket.on('change-room-status',function ({roomId,roomStatus}){
-                let room_join =
-                    ` <div class="card-room-status">
-                        <a class="card-link" href="/chat/${roomId}">
-                            <p class="card-text room-title__active">
-                                <i class="fa fa-phone" aria-hidden="true"></i>
-                                Join and talk now
-                            </p>
-                        </a>
-                      </div> `
-
-                let room_auth =
-                    ` <div class="card-room-status">
-                        <p class="card-text room-title__active" onclick="showEnterPasswordModal('${roomId}')">
-                            <i class="fa fa-lock" aria-hidden="true"></i>
-                            Enter password and join
-                        </p>
-                        </div>
-                     `;
-                let room_full =
-                    ` <div class="card-room-status">
-                        <p class="card-text room-title__full">
-                            <i class="fa fa-ban" aria-hidden="true"></i>
-                            This room is full
-                        </p>
-                      </div>`;
-
-
-                if (roomStatus ==='active') {
-                    console.log('in replace to active status');
-                    $("#"+roomId).find('.card-room-status').replaceWith(room_join);
-                }
-                if (roomStatus === 'auth'){
-                    $("#"+roomId).find('.card-room-status').replaceWith(room_auth);
-                }
-                if (roomStatus === 'full') {
-                    $("#"+roomId).find('.card-room-status').replaceWith(room_full);
-                }
-            })
 
             // Update rooms list upon emitting updateRoomsList event
             socket.on('updateRoomsList', function ({room, creator, users}) {
@@ -133,6 +94,45 @@ const app = {
                 console.log('^_^');
             })
         });
+        socket.on('change-room-status',function ({roomId,roomStatus}){
+            let room_join =
+                ` <div class="card-room-status">
+                        <a class="card-link" href="/chat/${roomId}">
+                            <p class="card-text room-title__active">
+                                <i class="fa fa-phone" aria-hidden="true"></i>
+                                Join and talk now
+                            </p>
+                        </a>
+                      </div> `
+
+            let room_auth =
+                ` <div class="card-room-status">
+                        <p class="card-text room-title__active" onclick="showEnterPasswordModal('${roomId}')">
+                            <i class="fa fa-lock" aria-hidden="true"></i>
+                            Enter password and join
+                        </p>
+                        </div>
+                     `;
+            let room_full =
+                ` <div class="card-room-status">
+                        <p class="card-text room-title__full">
+                            <i class="fa fa-ban" aria-hidden="true"></i>
+                            This room is full
+                        </p>
+                      </div>`;
+
+
+            if (roomStatus ==='active') {
+                console.log('in replace to active status');
+                $("#"+roomId).find('.card-room-status').replaceWith(room_join);
+            }
+            if (roomStatus === 'auth'){
+                $("#"+roomId).find('.card-room-status').replaceWith(room_auth);
+            }
+            if (roomStatus === 'full') {
+                $("#"+roomId).find('.card-room-status').replaceWith(room_full);
+            }
+        })
     },
 
     helpers: {

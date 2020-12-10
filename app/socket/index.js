@@ -145,8 +145,6 @@ const ioEvents = function (io) {
                         socket_temp.broadcast.emit('update-user-in-room', userInConnection.usersInRoom);
                     });
                 }
-
-                const temp = await  ConnectService.getUsersInConnectionAllRoom(roomId);
             }
         })
 

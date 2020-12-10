@@ -17,28 +17,27 @@
                     <div class="col-12">
                        <img src="<%= user.avatar%>" class="avatar__user__info">
                     </div>
-                        <div class="form-group">
-                            <label for="username">Username: <%= user.username%> </label>
+                        <div class="form-group d-inline-block">
+                            <label for="username">Username:</label>
+                            <input class="form-control" name="username" readonly="readonly" value="<%= user.username%>">
                         </div>
                         <div class="form-group">
-                            <label for="email">Email: <%= user.email%> </label>
+                            <label for="email">Email:</label>
+                            <input class="form-control" name="email" readonly="readonly" value="<%= user.email%>">
                         </div>
                         <div class="form-group">
-                            <label for="status">Status: <% if(user.status === 1) { %>
-                                   Active
-                                <%}%>
-                            </label>
+                            <label for="status">Status:</label>
+                            <% if(user.status === 1) { %>
+                                <input class="form-control" name="username" readonly="readonly" value="Active">
+                            <%}%>
                         </div>
                         <div class="form-group">
-                            <label for="status">Role:
-
-                                <% if(user.role === 1) { %>
-                                Member
-                                <% } else if (user.role === 3) { %>
-                                Admin
-                                <%}%>
-
-                            </label>
+                            <label for="status">Role: </label>
+                            <% if(user.role === 1) { %>
+                              <input class="form-control" name="status" readonly="readonly" value="Member">
+                            <% } else if (user.role === 3) { %>
+                              <input class="form-control" name="status" readonly="readonly" value="Admin">
+                            <%}%>
                          </div>
 
                 <div class="row">

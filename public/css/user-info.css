@@ -12,8 +12,8 @@ body {
 .main__user__info {
     margin-top: 2rem;
     justify-content: center;
-    text-align: center;
     display: flex;
+    text-align: center;
     background: white;
     padding: 1rem;
     max-width: 50rem;
@@ -23,9 +23,18 @@ body {
 }
 
 .avatar__user__info {
+    justify-content: center;
     text-align: center;
     width: 10rem;
     height: 10rem;
     border-radius: 50%;
     margin-bottom: 2rem;
+}
+
+label {
+    /* Other styling... */
+    text-align: right;
+    clear: both;
+    float:left;
+    margin-right:15px;
 }
