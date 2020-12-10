@@ -94,6 +94,7 @@ const app = {
                 console.log('^_^');
             })
         });
+
         socket.on('change-room-status',function ({roomId,roomStatus}){
             let room_join =
                 ` <div class="card-room-status">

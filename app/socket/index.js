@@ -138,12 +138,13 @@ const ioEvents = function (io) {
                     const roomSetFull = await RoomService.setStatusRoom(roomId,STATUS_ROOM.FULL);
                     let roomStatus = roomSetFull.room.status;
                     const userInConnection = await ConnectService.getUsersInConnection(roomId);
-                    io.of('/rooms').on('connection', function (socket_temp) {
-                        socket_temp.emit('change-room-status-join', {roomId,roomStatus});
-                        socket_temp.broadcast.emit('change-room-status-join', {roomId,roomStatus});
-                        socket_temp.emit('update-user-in-room', userInConnection.usersInRoom);
-                        socket_temp.broadcast.emit('update-user-in-room', userInConnection.usersInRoom);
-                    });
+                    console.log('room status', roomStatus);
+                    const socket_temp = io.of('/rooms');
+                    console.log('change room status in disconnect room');
+                    socket_temp.emit('change-room-status', {roomId,roomStatus});
+                    socket_temp.broadcast.emit('change-room-status', {roomId,roomStatus});
+                    socket_temp.emit('update-user-in-room', userInConnection.usersInRoom);
+                    socket_temp.broadcast.emit('update-user-in-room', userInConnection.usersInRoom);
                 }
             }
         })
@@ -177,13 +178,13 @@ const ioEvents = function (io) {
 
                     const userInConnection = await ConnectService.getUsersInConnection(roomId);
                     const roomStatus = await RoomService.getRoomStatus(roomId);
-                    io.of('/rooms').on('connection', function (socket_temp) {
+                    console.log('room status', roomStatus);
+                     const socket_temp = io.of('/rooms');
                         console.log('change room status in disconnect room');
                         socket_temp.emit('change-room-status', {roomId,roomStatus});
                         socket_temp.broadcast.emit('change-room-status', {roomId,roomStatus});
                         socket_temp.emit('update-user-in-room', userInConnection.usersInRoom);
                         socket_temp.broadcast.emit('update-user-in-room', userInConnection.usersInRoom);
-                    })
                     //socket.to.emit('change-room-status', roomStatus);
                 }
                 console.log('disconnect room');
