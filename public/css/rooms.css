@@ -70,7 +70,7 @@ body{
 }
 
 .form-control{
-    border: none;
+    /*border: none;*/
 }
 .ant-dropdown-menu-item a:hover{
     text-decoration: none;
