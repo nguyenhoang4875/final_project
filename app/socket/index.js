@@ -168,6 +168,14 @@ const ioEvents = function (io) {
             const room= await RoomService.findRoom({id: roomId});
             console.log('room status: ', roomStatus);
             if (conn.status === 200) {
+                console.log('disconnect room');
+                const userConnected = conn.conn.users;
+                socket.leave(roomId);
+                socket.broadcast.to(roomId).emit('remove-user', {id: socket.id});
+                socket.broadcast.to(roomId).emit('updateUsersList', conn.usersInRoom, true, userConnected);
+                console.log('socket disconnected ' + socket.id)
+                socket.broadcast.emit('removePeer', socket.id)
+                delete peers[roomId][socket.id];
                 if (checkCanChangeRoomStatus){
                     if (room.data.password ===''){
                         await RoomService.setStatusRoom(roomId,STATUS_ROOM.ACTIVE);
@@ -187,14 +195,6 @@ const ioEvents = function (io) {
                         socket_temp.broadcast.emit('update-user-in-room', userInConnection.usersInRoom);
                     //socket.to.emit('change-room-status', roomStatus);
                 }
-                console.log('disconnect room');
-                const userConnected = conn.conn.users;
-                socket.leave(roomId);
-                socket.broadcast.to(roomId).emit('remove-user', {id: socket.id});
-                socket.broadcast.to(roomId).emit('updateUsersList', conn.usersInRoom, true, userConnected);
-                console.log('socket disconnected ' + socket.id)
-                socket.broadcast.emit('removePeer', socket.id)
-                delete peers[roomId][socket.id];
             }
         });
 
