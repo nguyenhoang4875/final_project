@@ -24,7 +24,7 @@ class UserController {
             let status = 0;
             console.log('page: ', page, limit);
             const users = await UserService.getList({ search, page, limit, status });
-            return res.render('user', { data: users })
+            return res.render('users', { data: users })
         } catch (e) {
             console.log(e);
         }

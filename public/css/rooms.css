@@ -1,19 +1,14 @@
 
 body{
-    background-image: url("https://cutewallpaper.org/21/space-background-dark/videoblocks-black-empty-space-with-stars-dark-science-.png");
-    background-repeat: no-repeat;
-    z-index: -1;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    background-attachment: fixed;
+    background-color: #192c3e;
+    font-family: Arial !important;
 }
 
 .logo-image {
     width: 6rem;
     height: 4.5rem;
 }
+
 
 .user__avatar {
     width: 2rem;
@@ -116,10 +111,10 @@ body{
 
 
 .card-room {
-    background-color: white ;
+    background-color: white;
     margin: 1rem;
     width: 20rem;
-    height: 14rem;
+    min-height: 14rem;
     font-family: 'Ubuntu', sans-serif;
 }
 
@@ -142,8 +137,27 @@ body{
 }
 
 .user__avatar_in_card {
-    width: 3rem;
-    height: 3rem;
+    width:3.6rem;
+    height:3.6rem;
+    border-radius: 50%;
+    border: 1px solid whitesmoke;
+    margin: 0.2rem;
+    object-fit: cover;
+    box-shadow: 0 2px 4.7px 0.4px rgba(0, 0, 0, .1);
+}
+
+.small__avatar{
+    width: 2.8rem !important;
+    height: 2.8rem !important;
+}
+
+.card-no-user{
+    margin: 0.2rem;
+    border: 1px dashed #28a745;
+    width:3.6rem;
+    height:3.6rem;
+    object-fit: cover;
+    overflow: hidden;
     border-radius: 50%;
 }
 
@@ -176,6 +190,11 @@ body{
     justify-content: space-between;
 }
 
+.user-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .room-topic {
     display: flex;
     justify-content: space-between;
@@ -185,12 +204,12 @@ body{
     font-weight: bold;
     font-size: 18px;
     margin-bottom: 0px;
-    font-family: 'Playfair Display', serif;
+    font-family: Arial;
 }
 
 .room-title__active {
     padding: 0.2rem;
-    color: seagreen;
+    color: #28a745;
     text-align: center;
     border: 1.5px dashed;
     border-radius: 0.5rem;
@@ -203,7 +222,9 @@ body{
     border-radius: 0.5rem;
 }
 
+.card-user__avatar{
 
+}
 
 .room-title__full {
     color: red;
@@ -211,6 +232,7 @@ body{
     border: 1px dashed;
     font-weight: bold;
     border-radius: 0.5rem;
+    padding: 0.2rem;
 }
 
 
