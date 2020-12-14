@@ -15,6 +15,7 @@ router.use((req, res, next) => {
 // Rooms
 router.get('/me', (req, res) => RoomController.getListByMe(req, res));
 router.get('/all', (req, res) => RoomController.getListAll(req, res));
+router.get('/manages', (req, res) => RoomController.getListRoomManage(req, res));
 router.get('/:id', (req, res) => RoomController.findRoom(req, res));
 //router.post('/create', Validator.createRoomValidator, (req, res) => RoomController.createRoom(req, res));
 router.post('/:id/join', (req, res) => RoomController.joinRoom(req, res));

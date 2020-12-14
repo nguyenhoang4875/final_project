@@ -68,7 +68,7 @@ async getListByMe(search = '') {
         }
     }
 
-    async getListAll(req) {
+    async getListAll() {
         try {
             let rooms = await this.roomModel.find().sort({created: -1}).exec();
             return {

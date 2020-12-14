@@ -43,6 +43,58 @@ class RoomController {
         }
     }
 
+    async getListRoomManage(req, res) {
+        try {
+            console.log('in room manages')
+            let rooms = await this.roomService.getListAll();
+            console.log('room is xxx', rooms);
+            /*let isAdmin = false;
+            if (user.role === ROLES.ADMIN) {
+                isAdmin = true;
+            }*/
+           /* console.log('request:', req.query.search);
+            const search = req.query.search;*/
+             const data ={rooms: rooms.data, status: 200};
+            console.log('data before send', data);
+            res.render('manage-room', {data: data});
+        } catch (error) {
+            req.flash('error', 'Get list rooms failed');
+            res.status(500).json({
+                message: 'Get list rooms failed',
+                data: null
+            })
+        }
+    }
+
+
+/*
+    async getList({ search = '', limit = -1, page = 0, status = 1 }){
+        let query, total, users;
+        if (!!search) {
+            users = await this..find({
+                $or: [
+                    {username:  new RegExp(search, 'i') },
+                    {email:   new RegExp(search, 'i') }
+                ]}).select('-password').sort({created: -1}).exec();
+
+            total = users.length;
+        } else {
+            query = this.userModel.find(status === 1 ? { status: 1 } : {}).select('-password').sort({created: -1});
+            users = limit === -1 ? await query.exec() : await query.skip(page*limit).limit(limit).exec();
+            total = await this.userModel.countDocuments({});
+        }
+
+        return {
+            status: 200,
+            'message': 'get-user-success',
+            users,
+            current: Number(page) + 1,
+            total
+        };
+    }
+*/
+
+
     async getListAll(req, res) {
         try {
             let rooms = await this.roomService.getListAll(req);
