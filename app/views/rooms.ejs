@@ -114,9 +114,11 @@
                                 </i>
                                 <% } %>
                             </div>
+
                             <p class="card-text">Level: <%= room.level %></p>
+                        </div>
                             <% if (room.quantity <= 4) { %>
-                                <div class="">
+                                <div class="list_user_avatar">
                                     <div class="card-user__avatar user-list justify-content-center">
                                         <% if (room.avatars.length > 0) { room.avatars.forEach(avatar => { %>
                                             <img src="<%= avatar %>" class="user__avatar_in_card">
@@ -129,7 +131,7 @@
                                     </div>
                                 </div>
                             <% } else {%>
-                                <div class="">
+                                <div class="list_user_avatar">
                                     <div class="card-user__avatar user-list justify-content-center">
                                         <% if (room.avatars.length > 0) { room.avatars.forEach(avatar => { %>
                                             <img src="<%= avatar %>" class="user__avatar_in_card small__avatar">
@@ -142,7 +144,7 @@
                                     </div>
                                 </div>
                             <% }%>
-                        </div>
+
                         <footer>
                             <% if (room.status === 'active' ) { %>
                                 <div class="card-room-status">

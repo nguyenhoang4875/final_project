@@ -164,6 +164,10 @@ const app = {
                     }
                 } else if(manageRoom.isUpdate){
                     let id = room._id;
+
+                    let list_avatars = $('#'+room._id).find('.list_user_avatar').html();
+                    let a = '<div class="list_user-avatar">${list_avatar}</div>';
+                    console.log('list avatars', a);
                     let room_main = ` <div class="card card-room" id="${room._id}">
                                     <div class="card-body">
                                       <div class="card-title">
@@ -171,10 +175,8 @@ const app = {
                                          <p> Topic: ${room.name} </p>
                                         </div>
                                         <p class="card-text">Level: ${room.level}</p>
-                                         <div class="list-user-avatar">
-                                           
-                                           </div>
-                                      </div>`
+                                      </div>
+                                     <div class="list_user_avatar">`
 
                     let room_main_edit = `<div class="card card-room" id="${room._id}">
                             <div class="card-body">
@@ -190,13 +192,12 @@ const app = {
                                 </i>
                                 </div>
                                 <p class="card-text">Level: ${room.level}</p>
-                                 <div class="list-user-avatar">
-                                   
-                                   </div>
-                              </div>`
+                              </div>
+                             <div class="list_user_avatar">`
 
                     let room_join =
-                             ` <footer>
+                             ` </div>
+                                <footer>
                                 <div class="card-room-status">
                                     <a class="card-link" href="/chat/${room._id}">
                                         <p class="card-text room-title__active">
@@ -210,7 +211,8 @@ const app = {
                         </div>`
 
                     let room_auth =
-                        `<footer>
+                        `</div>
+                           <footer>
                             <div class="card-room-status">
                                 <p class="card-text room-title__active" onclick="showEnterPasswordModal('${room._id}')">
                                     <i class="fa fa-lock" aria-hidden="true"></i>
@@ -223,10 +225,10 @@ const app = {
 
                     for (let user of users) {
                         if (user._id === userId) {
-                            room_main_edit = room.password ==='' ? room_main_edit + room_join : room_main_edit + room_auth;
+                            room_main_edit = room.password ==='' ? room_main_edit +list_avatars+ room_join : room_main_edit + list_avatars + room_auth;
                             $(room_main_edit).replaceAll("#"+id);
                         } else {
-                            room_main = room.password ==='' ? room_main + room_join : room_main + room_auth;
+                            room_main = room.password ==='' ? room_main +list_avatars+ room_join : room_main + list_avatars + room_auth;
                             $(room_main).replaceAll("#"+id);
                         }
                         break;
