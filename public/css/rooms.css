@@ -114,7 +114,7 @@ body{
     background-color: white;
     margin: 1rem;
     width: 20rem;
-    min-height: 14rem;
+    min-height: 15.5rem;
     font-family: 'Ubuntu', sans-serif;
 }
 
@@ -147,8 +147,9 @@ body{
 }
 
 .small__avatar{
-    width: 2.8rem !important;
-    height: 2.8rem !important;
+    width: 3rem !important;
+    height: 3rem !important;
+    margin: 0.15rem 0.3rem !important;
 }
 
 .card-no-user{

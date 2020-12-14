@@ -115,14 +115,14 @@
                                 <% } %>
                             </div>
                             <p class="card-text">Level: <%= room.level %></p>
-                            <% if (room.avatars.length < 4) { %>
+                            <% if (room.quantity <= 4) { %>
                                 <div class="">
                                     <div class="card-user__avatar user-list justify-content-center">
                                         <% if (room.avatars.length > 0) { room.avatars.forEach(avatar => { %>
                                             <img src="<%= avatar %>" class="user__avatar_in_card">
                                         <% })} %>
                                         <%
-                                            var quantity = (room.quantity == "Unlimited" || room.quantity > 4 )? 4 : room.quantity
+                                            var quantity = room.quantity;
                                         for (var i = room.avatars.length; i < quantity ; i++){ %>
                                             <div class="card-no-user"></div>
                                         <% } %>
@@ -135,7 +135,7 @@
                                             <img src="<%= avatar %>" class="user__avatar_in_card small__avatar">
                                         <% })} %>
                                         <%
-                                            var quantity = (room.quantity == "Unlimited" || room.quantity > 8 )? 8 : room.quantity
+                                            var quantity = (room.quantity == "Unlimited" || room.quantity >= 8 )? 8 : room.quantity
                                         for (var i = room.avatars.length; i < quantity ; i++){ %>
                                             <div class="card-no-user small__avatar"></div>
                                         <% } %>
