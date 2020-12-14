@@ -138,15 +138,17 @@ class ConnectionService {
         try {
             let conn = await this.connectModel.findOne({roomId}).exec();
             let listUserId = conn.users;
+            let room = await this.roomModel.findOne({_id: roomId});
             let listUserAvatarInConnection = [];
             for (const x of listUserId) {
                let avatarUrl = await this.userModel.findOne({_id: x}, {avatar: 1}).exec();
-                listUserAvatarInConnection.push(avatarUrl);
+                listUserAvatarInConnection.push(avatarUrl.avatar);
             }
-            console.log('list user avatar', listUserAvatarInConnection);
             return {
                 status: 200,
-                usersInRoom: listUserAvatarInConnection
+                usersInRoom: listUserAvatarInConnection,
+                roomId: roomId,
+                roomQuantity: room.quantity
             }
         } catch (e) {
             console.log(e);

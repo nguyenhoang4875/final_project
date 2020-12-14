@@ -88,11 +88,42 @@ const app = {
                 }
             });
 
-            socket.on('update-user-in-room' ,function (currentUsersInRoom) {
-                console.log('^_^');
-                console.log(currentUsersInRoom);
-                console.log('^_^');
-            })
+
+        });
+
+        socket.on('update-user-in-room' ,function (currentUsersInRoom) {
+            let avatars = currentUsersInRoom.usersInRoom;
+            let result='';
+            const roomQuantity = currentUsersInRoom.roomQuantity;
+            if (roomQuantity <= 4){
+                avatars.forEach(x => {
+                    result +=`<img src="${x}" class="user__avatar_in_card">`
+                });
+
+                for (let i = avatars.length; i <roomQuantity ; i++) {
+                    result +=  `<div class="card-no-user"></div>`
+
+                }
+            }
+            else {
+                avatars.forEach(x => {
+                    result +=`<img src="${x}" class="user__avatar_in_card small__avatar">`
+                });
+                const quantity = (roomQuantity == "Unlimited" || roomQuantity >= 8 )? 8 : roomQuantity;
+
+                for (let i = avatars.length; i <quantity ; i++) {
+                    result +=  `<div class="card-no-user small__avatar"></div>`
+
+                }
+            }
+
+            let list_avatars = `<div class="list_user_avatar">
+                                    <div class="card-user__avatar user-list justify-content-center">
+                                        ${result}
+                                    </div>
+                                 </div>`
+
+            $("#"+currentUsersInRoom.roomId).find('.list_user_avatar').replaceWith(list_avatars);
         });
 
         socket.on('change-room-status',function ({roomId,roomStatus}){
