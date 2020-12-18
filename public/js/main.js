@@ -269,18 +269,17 @@ const app = {
                 else {
                     room.name = this.encodeHTML(room.name);
                     room.name = room.name.length > 25 ? room.name.substr(0, 25) + '...' : room.name;
-                    let room_main= ` <div class="card card-room" id="${room._id}">
-                                       <div class="card-body">
-                                          <div class="card-title">
-                                            <div class="room-topic">
-                                              <p> Topic: ${room.name} </p>
-                                            </div>
-                                            <p class="card-text">Max people: ${room.quantity}</p>
-                                            <p class="card-text">Level: ${room.level}</p>
-                                        </div>`;
+                    let room_main = ` <div class="card card-room" id="${room._id}">
+                                    <div class="card-body">
+                                      <div class="card-title">
+                                        <div class="room-topic">
+                                         <p> Topic: ${room.name} </p>
+                                        </div>
+                                        <p class="card-text">Level: ${room.level}</p>
+                                      </div>
+                                     <div class="list_user_avatar">`
 
-                    let room_main_edit =
-                        `<div class="card card-room" id="${room._id}">
+                    let room_main_edit = `<div class="card card-room" id="${room._id}">
                             <div class="card-body">
                               <div class="card-title">
                                 <div class="room-topic">
@@ -293,46 +292,68 @@ const app = {
                                    style="color:#495c68;cursor:pointer">
                                 </i>
                                 </div>
-                                <p class="card-text">Max people: ${room.quantity}</p>
                                 <p class="card-text">Level: ${room.level}</p>
-                              </div> `;
+                              </div>
+                             <div class="list_user_avatar">`
 
                     let room_join =
-                        ` <footer>
+                        ` </div>
+                                <footer>
                                 <div class="card-room-status">
-                                <a class="card-link" href="/chat/${room._id}">
-                                    <p class="card-text room-title__active">
-                                        <i class="fa fa-phone" aria-hidden="true"></i>
-                                        Join and talk now
-                                    </p>
-                                </a>
+                                    <a class="card-link" href="/chat/${room._id}">
+                                        <p class="card-text room-title__active">
+                                            <i class="fa fa-phone" aria-hidden="true"></i>
+                                            Join and talk now
+                                        </p>
+                                    </a>
                                 </div>
                             </footer>
                             </div>
                         </div>`;
+
                     let room_auth =
-                        `<footer>
+                        `</div>
+                           <footer>
                             <div class="card-room-status">
-                            <p class="card-text room-title__active" onclick="showEnterPasswordModal('${room._id}')">
-                                <i class="fa fa-lock" aria-hidden="true"></i>
-                                Enter password and join
-                            </p>
+                                <p class="card-text room-title__active" onclick="showEnterPasswordModal('${room._id}')">
+                                    <i class="fa fa-lock" aria-hidden="true"></i>
+                                    Enter password and join
+                                </p>
                             </div>
                         </footer>
                     </div>
                     </div>`;
+
+                    let result = '';
+                    if(room.quantity <= 4) {
+                        for (let i = 0; i <room.quantity; i++) {
+                            result +=  `<div class="card-no-user"></div>`
+                        }
+                    }
+                    else {
+                        let quantity = (room.quantity == "Unlimited" || room.quantity>= 8 )? 8 : room.quantity;
+                        for (let i = 0; i <quantity ; i++) {
+                            result +=  `<div class="card-no-user small__avatar"></div>`
+                        }
+                    }
+
+                    let list_avatars = `<div class="list_user_avatar">
+                                    <div class="card-user__avatar user-list justify-content-center">
+                                        ${result}
+                                    </div>
+                                 </div>`
+
 
                     if ($(".room-list").length === 0) {
                         $('.room-list').html('');
                     }
 
                     for (let user of users) {
-                        console.log('userId: ', user._id);
                         if (user._id === userId) {
-                            room_main_edit = room.password ==='' ? room_main_edit + room_join : room_main_edit + room_auth;
+                            room_main_edit = room.password ==='' ? room_main_edit + list_avatars + room_join : room_main_edit + list_avatars + room_auth;
                             $('.room-list').prepend(room_main_edit);
                         } else {
-                            room_main = room.password ==='' ? room_main + room_join : room_main + room_auth;
+                            room_main = room.password ==='' ? room_main + list_avatars + room_join : room_main + list_avatars + room_auth;
                             $('.room-list').prepend(room_main);
                         }
                         break;
