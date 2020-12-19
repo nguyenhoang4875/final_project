@@ -1,9 +1,11 @@
 const UserService = require('../services/UserService');
+const RoomService = require('../services/RoomService');
 const { validationResult } = require('express-validator');
 
 class UserController {
     constructor() {
         this.userService = UserService;
+        this.roomService = RoomService;
     }
 
     async getList({req, res}) {
@@ -22,9 +24,9 @@ class UserController {
             page = page ? Number(page) - 1 : 0;
             limit = !!limit ? Number(limit) : 5;
             let status = 0;
-            console.log('page: ', page, limit);
+            const rooms = await this.roomService.getListAll();
             const users = await UserService.getList({ search, page, limit, status });
-            return res.render('users', { data: users })
+            return res.render('users', { data: users,totalNumUsers: users.total, totalNumRooms: rooms.data.length })
         } catch (e) {
             console.log(e);
         }

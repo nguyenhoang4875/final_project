@@ -148,3 +148,87 @@ axios.get('/utils/levels').then(res => {
             console.log(err);
         }
 );
+
+const socket = io('/rooms', {transports: ['websocket']});
+
+// When socket connects, get a list of chat rooms
+socket.on('connect', function () {
+
+    //let users = room.users;
+    let local = localStorage.getItem('user');
+    local = !!local ? JSON.parse(local) : null;
+    let userId = local._id;
+
+    // When socket connects, get a list of chat rooms
+        // Update rooms list upon emitting updateRoomsList event
+        socket.on('updateRoomsList', function ({room, creator, users}) {
+            // Display an error message upon a user error(i.e. creating a room with an existing title)
+            console.log('room in delete manage', room);
+            $('#form_room').modal('toggle');
+            toastr.info(room.message);
+            setTimeout(function () {
+                location.reload();
+            },1000);
+
+        });
+
+    // Whenever the user hits the create button, emit createRoom event.
+    $('#submit_room').on('click', function (e) {
+        e.preventDefault();
+        let roomId = $("input[name='room_id']").val();
+        let name = $("input[name='topic']").val().trim();
+        let quantity = $("#selectMaxPeople").val();
+        let level = $("#selectLevels").val();
+        let roomPwd = $("input[name='password']").val();
+
+        let local = localStorage.getItem('user');
+        local = !!local ? JSON.parse(local) : null;
+        let userId = local._id;
+
+        if (name === '') {
+            toastr.error("Room's name and members is required !.");
+        } else {
+            if (userId) {
+                if (roomId) {
+                    $(this).attr("disabled", true).html('Updating ...');
+                    $("#delete_room").attr("style", "margin-right: 43%");
+                    socket.emit('editRoom', {name, level, quantity, userId, roomId, roomPwd});
+                } else {
+                    $(this).attr("disabled", true).html('Creating ...');
+                    socket.emit('createRoom', {name, level, quantity, userId, roomPwd});
+                }
+            }
+        }
+    });
+
+    $('#delete_room').on('click', function (e) {
+        e.preventDefault();
+        let roomId = $("input[name='room_id']").val();
+        $(this).attr("disabled", true).html('Deleting ...');
+        $(this).attr("style", "margin-right: 46%");
+        socket.emit('deleteRoom', {roomId, userId});
+    });
+
+    $('#submit_join_room').on('click', function (e) {
+        let roomPwd = $("input[name='room_password']").val();
+        let roomId = $("input[name='join_room_id']").val();
+        let local = localStorage.getItem('user');
+        local = !!local ? JSON.parse(local) : null;
+        let userId = local._id;
+
+        if (roomPwd === '') {
+            toastr.error("Room password is required !.");
+        } else {
+            if (userId) {
+                console.log('roomPwd', roomPwd);
+                console.log('room Id', roomId);
+                console.log('userId', userId);
+                socket.emit('joinRoomAuth', {roomId, roomPwd, userId});
+                socket.on('invalid-room-password', function (inValid) {
+                    toastr.error("Room password is invalid");
+                })
+            }
+        }
+    });
+});
+
