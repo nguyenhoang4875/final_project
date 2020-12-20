@@ -173,4 +173,3 @@ $('.user_avatar_parent').on('click', function () {
         $dropdown_menu_user.removeClass("is-active")
     }
 });
-

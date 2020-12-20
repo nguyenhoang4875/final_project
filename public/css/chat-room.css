@@ -294,13 +294,27 @@ video {
 
 
 .p-message {
-    height: 2rem;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     padding-top: 0.3rem;
     margin-bottom: 0.1rem;
     line-height: 1.35;
     max-width: 100%;
+}
+
+.chat-name {
+    font-weight: bold;
+    color: #172027;
+    font-size: 0.85rem;
+    background-color: transparent !important;
+    padding: 0px 0.5rem !important;
+    margin: 0px !important;
+}
+
+.chat-message{
+    font-weight: normal;
+    color: #1e272d;
+    font-size: 0.85rem;
 }
 
 .screen_sharing {
@@ -351,4 +365,10 @@ video {
     width: 2rem;
     border-radius: 50%;
     border: 1px solid white;
+}
+
+.username {
+    font-weight: bold;
+    color: black;
+    background: transparent;
 }
