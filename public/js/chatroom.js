@@ -391,21 +391,19 @@ const rooms = {
 
 
       if (username === NAME) {
-        li_node.innerHTML = ` <div class="" style="max-width: 85%">
-
-                       <p class="p-message">${message}</p>         
-</div>
+        li_node.innerHTML = ` <div class="" style="max-width: 87%">
+                                <p class="p-message">${message}</p>         
+                              </div>
                             <img src=${avatar} class="user__avatar_in_chat">`
         li_node.classList.add("message__user");
         li_node.classList.add("message__userCard");
 
       } else {
         li_node.innerHTML = `<img src=${avatar} class="user__avatar_in_chat my-auto">
-                               <div class="" style="max-width: 85%">
+                               <div class="" style="max-width: 87%">
                                 <p class="chat-name">${username}</p>  
-                       <p class="p-message">${message}</p>         
-</div>
-                            `
+                                <p class="p-message">${message}</p>         
+                               </div> `
         li_node.classList.add("message__other");
         li_node.classList.add("message__guestCard");
       }
