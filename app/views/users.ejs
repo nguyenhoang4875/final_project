@@ -66,6 +66,7 @@
                             <span class="number" style="color: #28a745"><%=totalNumUsers%></span>
                         </p>
                     </div>
+                    <a href="/users/all">
                     <div class="global-sub d-block d-flex justify-content-between align-content-center"
                          style="background-color:#28a745;">
                         <span class="title-black">See more</span>
@@ -73,6 +74,7 @@
                             <i class="fa fa-arrow-circle-right" style="color: #fff"></i>
                         </div>
                     </div>
+                    </a>
                 </div>
                 <div class="global mx-2">
                     <div class="global-main position-relative d-flex flex-row justify-content-between px-5 py-3"
@@ -87,7 +89,7 @@
                             <span class="number" style="color: #efad4c"><%=totalNumRooms%></span>
                         </p>
                     </div>
-                    <a href="/users/all">
+                    <a href="/rooms/manages">
                         <div class="global-sub d-block d-flex justify-content-between align-content-center"
                              style="background-color: #efad4c">
                             <span class="title-black">See more</span>
@@ -106,11 +108,10 @@
                             </i>
                         </div>
                         <p class="position-absolute align-content-center text-center" style="right: 1rem"><span
-                                    class="d-block title">Users</span>
-                            <span class="number" style="color: #D9524F">1111</span>
+                                    class="d-block title">Rooms online</span>
+                            <span class="number" style="color: #D9524F"><%=numRoomsOnline%></span>
                         </p>
                     </div>
-                    <a href="/rooms/manages">
                         <div class="global-sub d-block d-flex justify-content-between align-content-center"
                              style="background-color: #D9524F">
                             <span class="title-black">See more</span>
@@ -118,7 +119,6 @@
                                 <i class="fa fa-arrow-circle-right"></i>
                             </div>
                         </div>
-                    </a>
                 </div>
 
             </div>

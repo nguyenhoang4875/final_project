@@ -1,11 +1,13 @@
 const UserService = require('../services/UserService');
 const RoomService = require('../services/RoomService');
+const ConnectionService = require('../services/ConnectionService');
 const { validationResult } = require('express-validator');
 
 class UserController {
     constructor() {
         this.userService = UserService;
         this.roomService = RoomService;
+        this.conectinService = ConnectionService;
     }
 
     async getList({req, res}) {
@@ -26,7 +28,8 @@ class UserController {
             let status = 0;
             const rooms = await this.roomService.getListAll();
             const users = await UserService.getList({ search, page, limit, status });
-            return res.render('users', { data: users,totalNumUsers: users.total, totalNumRooms: rooms.data.length })
+            const roomsOnline = await  this.conectinService.getRoomsOnline();
+            return res.render('users', { data: users,totalNumUsers: users.total, totalNumRooms: rooms.data.length, numRoomsOnline: roomsOnline })
         } catch (e) {
             console.log(e);
         }

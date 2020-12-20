@@ -48,7 +48,8 @@ class RoomController {
             let rooms = await this.roomService.getListAll();
              const data ={rooms: rooms.data, status: 200};
             let users = await this.userService.getUser();
-            res.render('manage-room', {data: data, totalNumUsers: users.length , totalNumRooms: rooms.data.length});
+            const roomsOnline = await  this.connectionService.getRoomsOnline();
+            res.render('manage-room', {data: data, totalNumUsers: users.length , totalNumRooms: rooms.data.length,  numRoomsOnline: roomsOnline });
         } catch (error) {
             req.flash('error', 'Get list rooms failed');
             res.status(500).json({
@@ -140,7 +141,6 @@ class RoomController {
     }
 
     async checkValidRoomPassword(req, res){
-        console.log('abc xxxx');
         console.log('request: ', req.body.room_password);
         console.log('request: ', req.body_roomId);
     }

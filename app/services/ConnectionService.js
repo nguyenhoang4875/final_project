@@ -232,6 +232,13 @@ class ConnectionService {
             }
         }
     }
+
+    async getRoomsOnline(){
+        let roomsOnline = 0;
+        let cons = await this.connectModel.find().exec();
+        cons.forEach(x => {if(x.users.length > 0 ){ roomsOnline ++;}})
+        return roomsOnline;
+    }
 }
 
 module.exports = new ConnectionService;
